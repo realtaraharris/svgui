@@ -1,0 +1,177 @@
+<html>
+  <head>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/preact/dist/preact.min.js"></script> -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="http://www.jimsproch.com/react/babel-browser.js"></script>
+  </head>
+  <body style="margin: 0; padding: 0;">
+    <script type="text/babel">
+      const Button = (props) => {
+        return (
+          <rect x={props.x} y={props.y} width={props.width} height={props.height} rx={15} ry={15} fill={'orange'} />
+        )
+      }
+
+      const Star = (props) => (
+        <React.Fragment>
+          <rect x={0} y={0} width={props.width} height={props.height} stroke={'orange'} fill={'none'} strokeDasharray={'5,5'} />
+          <g transform={`scale(${props.scale}, ${props.scale})`}>
+            <polygon points={'90,0 30,188 180,68 0,68 150,188'} fill={'navy'} />
+          </g>
+        </React.Fragment>
+      )
+
+      const App = (props) => {
+        const star = <Star width={90} height={94} scale={0.5}/>
+        return (
+          <React.Fragment>
+            <SpacedLine width={props.width} x={0} y={120}>
+              <Center><Button width={120} height={120} /></Center>
+              <Center><Button width={120} height={120} /></Center>
+              <Center>{star}</Center>
+              <Center><Button width={200} height={50} /></Center>
+              <Center>{star}</Center>
+              <Center>{star}</Center>
+              <Center>{star}</Center>
+              <Center>{star}</Center>
+              <Center>{star}</Center>
+            </SpacedLine>
+            <Margin x={0} y={300} top={30} right={30} bottom={30} left={30} width={props.width} height={150}>
+              <Button />
+            </Margin>
+
+            <Margin x={0} y={500} top={47} right={100} bottom={47} left={100} width={props.width} height={94}>
+              <SpacedLine>
+                <Center>{star}</Center>
+                <Center>{star}</Center>
+                <Center>{star}</Center>
+                <Center>{star}</Center>
+                <Center>{star}</Center>
+                <Center>{star}</Center>
+                <Center>{star}</Center>
+                <Center>{star}</Center>
+              </SpacedLine>
+            </Margin>
+
+            {/* when no layout args are supplied, "inherit" from parent */}
+            {/* TODO: when missing layout args and not inside layout container, console.error('layout props required - supply layout args or put ${componentName} into a layout container') */}
+            {/* TODO: linear flow container that flows components in a text-like manner */}
+            {/* TODO: scrolling container */}
+          </React.Fragment>
+        )
+      }
+
+      const Center = (props) => {
+        const childWidth = props.children.props.width
+        const childHeight = props.children.props.height
+
+        const midX = -childWidth / 2
+        const midY = -childHeight / 2
+
+        return <g transform={`translate(${midX}, ${midY})`}>{props.children}</g>
+      }
+
+      const SpacedLine = (props) => {
+        const slice = props.width / (props.children.length - 1)
+
+        let result = []
+        let currentPosition = 0
+        for (let i = 0; i < props.children.length; i++) {
+          result.push(currentPosition)
+          currentPosition += slice
+        }
+        return (
+          <g transform={`translate(${props.x}, ${0})`}>
+            <line x1={0} y1={props.y} x2={props.width} y2={props.y} stroke={'green'} strokeDasharray={'5,5'} />
+            {
+              result.map((pos, index) => {
+                const child = props.children[index]
+                return <g transform={`translate(${pos}, ${props.y})`} key={index}>{child}</g>
+              })
+            }
+          </g>
+        )
+      }
+
+      const Margin = (props) => {
+        const innerX = props.x + props.left
+        const innerY = props.y + props.top
+        const innerWidth = props.width - props.left - props.right
+        const innerHeight = props.height - props.top - props.bottom
+
+        const innerProps = Object.assign({}, props.children.props, {
+          x: innerX,
+          y: innerY,
+          width: innerWidth,
+          height: innerHeight
+        })
+
+        const innerChildren = Object.assign({}, props.children, { props: innerProps })
+
+        return (
+          <React.Fragment>
+            <rect
+              x={props.x}
+              y={props.y}
+              width={props.width}
+              height={props.height}
+              stroke={'red'}
+              strokeDasharray={'5,5'}
+              fill={'none'}
+            />
+            <rect
+              x={innerX}
+              y={innerY}
+              width={innerWidth}
+              height={innerHeight}
+              stroke={'brown'}
+              strokeDasharray={'5,5'}
+              fill={'none'}
+            />
+            {
+              innerChildren
+            }
+          </React.Fragment>
+        )
+      }
+
+      class Root extends React.Component {
+        constructor (props) {
+          super(props)
+
+          this.state = {
+            width: this.getWindowWidth(),
+            height: this.getWindowHeight()
+          }
+        }
+
+        getWindowWidth () { return window.innerWidth * 2 }
+        getWindowHeight () { return window.innerHeight * 2 }
+
+        componentDidMount () {
+          const onResize = (e) => {
+            const height = this.getWindowHeight()
+            const width = this.getWindowWidth()
+
+            this.setState({ width, height })
+          }
+          window.addEventListener('resize', onResize)
+        }
+
+        render () {
+          return (
+            <svg viewBox={[0, 0, this.state.width, this.state.height]}>
+              <rect x={0} y={0} width={this.state.width} height={this.state.height} fill={'cornsilk'} stroke={'red'} strokeWidth={2} strokeDasharray={'5,5'}/>
+              <text x={0} y={30} fill={'black'} style={{ font: '30px sans-serif' }}>Label</text>
+              <App width={this.state.width} />
+            </svg>
+          )
+        }
+      }
+
+      ReactDOM.render(<Root />, document.getElementById('root'))
+    </script>
+    <div id="root">
+  </body>
+</html>
