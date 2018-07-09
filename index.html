@@ -46,11 +46,21 @@
         )
       }
 
+      const Input = (props) => {
+        return (
+          <React.Fragment>
+            <rect x={props.x} y={props.y} width={props.width} height={props.height} stroke={'red'} fill={'none'} rx={4} ry={4} strokeDasharray={'5,5'} />
+            <text x={props.x} y={props.y + props.height} fill={'black'} style={{ font: '30px sans-serif' }} >{props.text}</text>
+          </React.Fragment>
+        )
+      }
+
       const App = (props) => {
         const star = <Star width={90} height={94} scale={0.5}/>
         return (
           <React.Fragment>
             <Button x={100} y={800} width={400} height={380} text={'App'} fill={'teal'}/>
+            <Input x={600} y={800} width={400} height={100} text={'This is an input element'} />
             <SpacedLine width={props.width} x={0} y={120}>
               <Center><Button width={120} height={120} text={'App'} fill={'red'}/></Center>
               <Center><Button width={120} height={120} text={'B'} fill={'goldenrod'}/></Center>
