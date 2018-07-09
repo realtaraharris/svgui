@@ -6,10 +6,25 @@
     <script src="http://www.jimsproch.com/react/babel-browser.js"></script>
   </head>
   <body style="margin: 0; padding: 0;">
+    <div id="root" />
     <script type="text/babel">
       const Button = (props) => {
+        const textWidth = measureTextWidth({
+          text: props.text,
+          fontWeight: 500,
+          fontStyle: 'regular',
+          fontSize: '30px',
+          fontFamily: 'sans-serif'
+        })
+        console.log(`measured text width: ${textWidth}`)
+
         return (
-          <rect x={props.x} y={props.y} width={props.width} height={props.height} rx={15} ry={15} fill={'orange'} />
+          <React.Fragment>
+            <g transform={`translate(${props.x}, ${props.y})`}>
+              <rect x={0} y={0} width={props.width} height={props.height} rx={15} ry={15} fill={props.fill} />
+              <Center><Label text={props.text} x={props.width / 2} y={props.height / 2} width={textWidth * 3} height={21} /></Center>
+            </g>
+          </React.Fragment>
         )
       }
 
@@ -22,15 +37,25 @@
         </React.Fragment>
       )
 
+      const Label = (props) => {
+        return (
+          <React.Fragment>
+            <rect x={props.x} y={props.y} width={props.width} height={props.height} stroke={'red'} fill={'none'} strokeDasharray={'5,5'} />
+            <text x={props.x} y={props.y + props.height} fill={'black'} style={{ font: '30px sans-serif' }} >{props.text}</text>
+          </React.Fragment>
+        )
+      }
+
       const App = (props) => {
         const star = <Star width={90} height={94} scale={0.5}/>
         return (
           <React.Fragment>
+            <Button x={100} y={800} width={400} height={380} text={'App'} fill={'teal'}/>
             <SpacedLine width={props.width} x={0} y={120}>
-              <Center><Button width={120} height={120} /></Center>
-              <Center><Button width={120} height={120} /></Center>
+              <Center><Button width={120} height={120} text={'App'} fill={'red'}/></Center>
+              <Center><Button width={120} height={120} text={'B'} fill={'goldenrod'}/></Center>
               <Center>{star}</Center>
-              <Center><Button width={200} height={50} /></Center>
+              <Center><Button width={200} height={50} text={'Short Button'} fill={'orangered'}/></Center>
               <Center>{star}</Center>
               <Center>{star}</Center>
               <Center>{star}</Center>
@@ -38,7 +63,7 @@
               <Center>{star}</Center>
             </SpacedLine>
             <Margin x={0} y={300} top={30} right={30} bottom={30} left={30} width={props.width} height={150}>
-              <Button />
+              <Button text={'Button Inside Margin'} fill={'purple'} />
             </Margin>
 
             <Margin x={0} y={500} top={47} right={100} bottom={47} left={100} width={props.width} height={94}>
@@ -161,17 +186,24 @@
 
         render () {
           return (
-            <svg viewBox={[0, 0, this.state.width, this.state.height]}>
-              <rect x={0} y={0} width={this.state.width} height={this.state.height} fill={'cornsilk'} stroke={'red'} strokeWidth={2} strokeDasharray={'5,5'}/>
-              <text x={0} y={30} fill={'black'} style={{ font: '30px sans-serif' }}>Label</text>
-              <App width={this.state.width} />
-            </svg>
+            <React.Fragment>
+              <svg viewBox={[0, 0, this.state.width, this.state.height]}>
+                <rect x={0} y={0} width={this.state.width} height={this.state.height} fill={'cornsilk'} stroke={'red'} strokeWidth={2} strokeDasharray={'5,5'}/>
+                <App width={this.state.width} height={this.state.height} />
+              </svg>
+            </React.Fragment>
           )
         }
       }
 
+      const measureTextWidth = ({ text, fontWeight, fontStyle, fontSize, fontFamily }) => {
+        const canvas = document.createElement('canvas')
+        const ctx = canvas.getContext('2d')
+        ctx.font = `${fontWeight} ${fontStyle} ${fontSize} ${fontFamily}`
+        return ctx.measureText(text).width
+      }
+
       ReactDOM.render(<Root />, document.getElementById('root'))
     </script>
-    <div id="root">
   </body>
 </html>
