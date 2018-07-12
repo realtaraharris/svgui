@@ -22,7 +22,7 @@
           <React.Fragment>
             <g transform={`translate(${props.x}, ${props.y})`}>
               <rect x={0} y={0} width={props.width} height={props.height} rx={15} ry={15} fill={props.fill} />
-              <Center><Label text={props.text} x={props.width / 2} y={props.height / 2} width={textWidth * 3} height={21} /></Center>
+              <Center><Label text={props.text} x={props.width / 2} y={props.height / 2} width={textWidth * 3} height={21} fill={'white'} /></Center>
             </g>
           </React.Fragment>
         )
@@ -30,7 +30,7 @@
 
       const Star = (props) => (
         <React.Fragment>
-          <rect x={0} y={0} width={props.width} height={props.height} stroke={'orange'} fill={'none'} strokeDasharray={'5,5'} />
+          {props.showLayout && <rect x={0} y={0} width={props.width} height={props.height} stroke={'orange'} fill={'none'} strokeDasharray={'5,5'} />}
           <g transform={`scale(${props.scale}, ${props.scale})`}>
             <polygon points={'90,0 30,188 180,68 0,68 150,188'} fill={'navy'} />
           </g>
@@ -40,28 +40,141 @@
       const Label = (props) => {
         return (
           <React.Fragment>
-            <rect x={props.x} y={props.y} width={props.width} height={props.height} stroke={'red'} fill={'none'} strokeDasharray={'5,5'} />
-            <text x={props.x} y={props.y + props.height} fill={'black'} style={{ font: '30px sans-serif' }} >{props.text}</text>
+            {props.showLayout && <rect x={props.x} y={props.y} width={props.width} height={props.height} stroke={'red'} fill={'none'} strokeDasharray={'5,5'} />}
+            <text x={props.x} y={props.y + props.height} fill={props.fill} style={{ font: '30px sans-serif' }}>{props.text}</text>
           </React.Fragment>
+        )
+      }
+
+      class InputController extends React.Component {
+        constructor (props) {
+          super(props)
+          this.state = {
+            displayValue: ''
+          }
+
+          this.onKeyUp = this.onKeyUp.bind(this)
+        }
+
+        onKeyUp ({ charCode, keyCode }) {
+          if (keyCode === 8) {
+            const displayValue = this.state.displayValue.slice(0, this.state.displayValue.length - 1)
+            console.log('displayValue:', displayValue)
+            this.setState({ displayValue })
+          } else {
+            console.log('charCode:', charCode)
+            this.setState({ displayValue: this.state.displayValue + charCode })
+          }
+        }
+
+        render () {
+          return <Input {...this.props} onKeyUp={this.onKeyUp} text={this.state.displayValue} />
+        }
+      }
+
+      const translateKeyCode = (keyCode) => {
+        switch (keyCode) {
+          case 32: return ' '
+          case 65: return 'a'
+          case 66: return 'b'
+          case 67: return 'c'
+          case 68: return 'd'
+          case 69: return 'e'
+          case 70: return 'f'
+          case 71: return 'g'
+          case 72: return 'h'
+          case 73: return 'i'
+          case 74: return 'j'
+          case 75: return 'k'
+          case 76: return 'l'
+          case 77: return 'm'
+          case 78: return 'n'
+          case 79: return 'o'
+          case 80: return 'p'
+          case 81: return 'q'
+          case 82: return 'r'
+          case 83: return 's'
+          case 84: return 't'
+          case 85: return 'u'
+          case 86: return 'v'
+          case 87: return 'w'
+          case 88: return 'x'
+          case 89: return 'y'
+          case 90: return 'z'
+          case 188: return ','
+          case 190: return '.'
+          case 191: return '/'
+          default: {
+            console.error(`TODO: add support for key code ${keyCode}`)
+            return ''
+          }
+        }
+      }
+
+      const Focusable = (props) => {
+        return (
+          <a
+            style={{ userSelect: 'none' }}
+            xlinkHref={'#'}
+            onFocus={(event) => console.log('focused')}
+            onKeyUp={(event) => {
+              props.onKeyUp({ charCode: translateKeyCode(event.keyCode), keyCode: event.keyCode })
+            }}
+          >
+            {props.children}
+          </a>
         )
       }
 
       const Input = (props) => {
         return (
           <React.Fragment>
-            <rect x={props.x} y={props.y} width={props.width} height={props.height} stroke={'red'} fill={'none'} rx={4} ry={4} strokeDasharray={'5,5'} />
-            <text x={props.x} y={props.y + props.height} fill={'black'} style={{ font: '30px sans-serif' }} >{props.text}</text>
+            <Focusable onKeyUp={props.onKeyUp}>
+              <rect
+                x={props.x}
+                y={props.y}
+                width={props.width}
+                height={props.height}
+                stroke={'gray'}
+                fill={'darkgray'}
+                rx={4}
+                ry={4}
+                onMouseEnter={(event) => console.log('mouseEnter', event)}
+              />
+              <text
+                x={props.x}
+                y={props.y + (props.height / 2) }
+                fill={'black'}
+                style={{ font: '30px sans-serif' }}
+                tabIndex={0}
+              >{props.text}</text>
+            </Focusable>
           </React.Fragment>
         )
       }
+
 
       const App = (props) => {
         const star = <Star width={90} height={94} scale={0.5}/>
         return (
           <React.Fragment>
-            <Button x={100} y={800} width={400} height={380} text={'App'} fill={'teal'}/>
-            <Input x={600} y={800} width={400} height={100} text={'This is an input element'} />
-            <SpacedLine width={props.width} x={0} y={120}>
+            <InputController x={800} y={100} width={600} height={100} text={'Full Name'} showLayout={props.showLayout} />
+            <InputController x={800} y={200} width={600} height={100} text={'Address'} showLayout={props.showLayout} />
+            <InputController x={800} y={300} width={600} height={100} text={'City'} showLayout={props.showLayout} />
+            <InputController x={800} y={400} width={600} height={100} text={'State'} showLayout={props.showLayout} />
+            <InputController x={800} y={500} width={600} height={100} text={'ZIP Code'} showLayout={props.showLayout} />
+            <Button x={800} y={600} width={600} height={100} text={'Sign Up'} fill={'teal'} showLayout={props.showLayout} />
+          </React.Fragment>
+        )
+      }
+
+      const Demo = (props) => {
+        const star = <Star width={90} height={94} scale={0.5}/>
+        return (
+          <React.Fragment>
+            <Button x={100} y={800} width={400} height={380} text={'App'} fill={'teal'} showLayout={props.showLayout} />
+            <Input x={600} y={800} width={400} height={100} text={'This is an input element'} showLayout={props.showLayout} />
+            <SpacedLine width={props.width} x={0} y={120} showLayout={props.showLayout} >
               <Center><Button width={120} height={120} text={'App'} fill={'red'}/></Center>
               <Center><Button width={120} height={120} text={'B'} fill={'goldenrod'}/></Center>
               <Center>{star}</Center>
@@ -118,7 +231,7 @@
         }
         return (
           <g transform={`translate(${props.x}, ${0})`}>
-            <line x1={0} y1={props.y} x2={props.width} y2={props.y} stroke={'green'} strokeDasharray={'5,5'} />
+            {props.showLayout && <line x1={0} y1={props.y} x2={props.width} y2={props.y} stroke={'green'} strokeDasharray={'5,5'} />}
             {
               result.map((pos, index) => {
                 const child = props.children[index]
@@ -146,24 +259,30 @@
 
         return (
           <React.Fragment>
-            <rect
-              x={props.x}
-              y={props.y}
-              width={props.width}
-              height={props.height}
-              stroke={'red'}
-              strokeDasharray={'5,5'}
-              fill={'none'}
-            />
-            <rect
-              x={innerX}
-              y={innerY}
-              width={innerWidth}
-              height={innerHeight}
-              stroke={'brown'}
-              strokeDasharray={'5,5'}
-              fill={'none'}
-            />
+            {
+              props.showLayout && (
+                <React.Fragment>
+                  <rect
+                    x={props.x}
+                    y={props.y}
+                    width={props.width}
+                    height={props.height}
+                    stroke={'red'}
+                    strokeDasharray={'5,5'}
+                    fill={'none'}
+                  />
+                  <rect
+                    x={innerX}
+                    y={innerY}
+                    width={innerWidth}
+                    height={innerHeight}
+                    stroke={'brown'}
+                    strokeDasharray={'5,5'}
+                    fill={'none'}
+                  />
+                </React.Fragment>
+              )
+            }
             {
               innerChildren
             }
@@ -199,7 +318,7 @@
             <React.Fragment>
               <svg viewBox={[0, 0, this.state.width, this.state.height]}>
                 <rect x={0} y={0} width={this.state.width} height={this.state.height} fill={'cornsilk'} stroke={'red'} strokeWidth={2} strokeDasharray={'5,5'}/>
-                <App width={this.state.width} height={this.state.height} />
+                <App width={this.state.width} height={this.state.height} showLayout />
               </svg>
             </React.Fragment>
           )
