@@ -4,31 +4,13 @@
     <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
     <script src="http://www.jimsproch.com/react/babel-browser.js"></script>
+    <script crossorigin type="text/babel" src="./margin.js"></script>
     <script crossorigin type="text/babel" src="./input.js"></script>
+    <script crossorigin type="text/babel" src="./button.js"></script>
   </head>
   <body style="margin: 0; padding: 0;">
     <div id="root" />
     <script type="text/babel">
-      const Button = (props) => {
-        const textWidth = measureTextWidth({
-          text: props.text,
-          fontWeight: 500,
-          fontStyle: 'regular',
-          fontSize: '30px',
-          fontFamily: 'sans-serif'
-        })
-        console.log(`measured text width: ${textWidth}`)
-
-        return (
-          <React.Fragment>
-            <g transform={`translate(${props.x}, ${props.y})`}>
-              <rect x={0} y={0} width={props.width} height={props.height} rx={15} ry={15} fill={props.fill} />
-              <Center><Label text={props.text} x={props.width / 2} y={props.height / 2} width={textWidth * 3} height={21} fill={'white'} /></Center>
-            </g>
-          </React.Fragment>
-        )
-      }
-
       const Star = (props) => (
         <React.Fragment>
           {props.showLayout && <rect x={0} y={0} width={props.width} height={props.height} stroke={'orange'} fill={'none'} strokeDasharray={'5,5'} />}
@@ -186,54 +168,6 @@
               })
             }
           </g>
-        )
-      }
-
-      const Margin = (props) => {
-        const innerX = props.x + props.left
-        const innerY = props.y + props.top
-        const innerWidth = props.width - props.left - props.right
-        const innerHeight = props.height - props.top - props.bottom
-
-        const innerProps = Object.assign({}, props.children.props, {
-          x: innerX,
-          y: innerY,
-          width: innerWidth,
-          height: innerHeight
-        })
-
-        const innerChildren = Object.assign({}, props.children, { props: innerProps })
-
-        return (
-          <React.Fragment>
-            {
-              props.showLayout && (
-                <React.Fragment>
-                  <rect
-                    x={props.x}
-                    y={props.y}
-                    width={props.width}
-                    height={props.height}
-                    stroke={'red'}
-                    strokeDasharray={'5,5'}
-                    fill={'none'}
-                  />
-                  <rect
-                    x={innerX}
-                    y={innerY}
-                    width={innerWidth}
-                    height={innerHeight}
-                    stroke={'brown'}
-                    strokeDasharray={'5,5'}
-                    fill={'none'}
-                  />
-                </React.Fragment>
-              )
-            }
-            {
-              innerChildren
-            }
-          </React.Fragment>
         )
       }
 
