@@ -68,26 +68,14 @@
         }
       }
 
-      const Focusable = (props) => {
-        return (
-          <a
-            style={{ userSelect: 'none' }}
-            xlinkHref={'#'}
-            onFocus={(event) => console.log('focused')}
-            onKeyUp={(event) => {
-              props.onKeyUp({ charCode: translateKeyCode(event.keyCode), keyCode: event.keyCode })
-            }}
-          >
-            {props.children}
-          </a>
-        )
-      }
-
       const App = (props) => {
         const star = <Star width={90} height={94} scale={0.5}/>
         return (
           <React.Fragment>
-            <InputController x={800} y={100} width={600} height={100} text={'Full Name'} showLayout={props.showLayout} />
+            {/* NEXT STEP: write a dispatcher (probably a stateful component) that focuses the KeyboardContext onto the input element in focus */}
+            <KeyboardContext.Consumer>
+              {keystroke => <InputController x={800} y={100} width={600} height={100} text={'Full Name'} showLayout={props.showLayout} keystroke={keystroke} />}
+            </KeyboardContext.Consumer>
             <InputController x={800} y={200} width={600} height={100} text={'Address'} showLayout={props.showLayout} />
             <InputController x={800} y={300} width={600} height={100} text={'City'} showLayout={props.showLayout} />
             <InputController x={800} y={400} width={600} height={100} text={'State'} showLayout={props.showLayout} />
@@ -171,14 +159,18 @@
         )
       }
 
+      const KeyboardContext = React.createContext(() => console.error('whoops, got default keyboard handler'))
+
       class Root extends React.Component {
         constructor (props) {
           super(props)
 
           this.state = {
             width: this.getWindowWidth(),
-            height: this.getWindowHeight()
+            height: this.getWindowHeight(),
+            keystroke: null
           }
+          this.handleKeystroke = this.handleKeystroke.bind(this)
         }
 
         getWindowWidth () { return window.innerWidth * 2 }
@@ -192,16 +184,23 @@
             this.setState({ width, height })
           }
           window.addEventListener('resize', onResize)
+          window.addEventListener('keydown', this.handleKeystroke)
+        }
+
+        handleKeystroke (event) {
+          if (event && event.key) {
+            this.setState({ keystroke: event.key })
+          }
         }
 
         render () {
           return (
-            <React.Fragment>
+            <KeyboardContext.Provider value={this.state.keystroke}>
               <svg viewBox={[0, 0, this.state.width, this.state.height]}>
                 <rect x={0} y={0} width={this.state.width} height={this.state.height} fill={'cornsilk'} stroke={'red'} strokeWidth={2} strokeDasharray={'5,5'}/>
                 <App width={this.state.width} height={this.state.height} showLayout />
               </svg>
-            </React.Fragment>
+            </KeyboardContext.Provider>
           )
         }
       }
