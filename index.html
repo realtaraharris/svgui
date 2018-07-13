@@ -68,20 +68,58 @@
         }
       }
 
+      // this is a dispatcher that focuses the KeyboardContext onto the input element in focus
+      class InputFocuser extends React.Component {
+        constructor (props) {
+          super(props)
+
+          this.state = {
+            focusIndex: 0
+          }
+        }
+
+        componentWillReceiveProps (nextProps) {
+          if (nextProps.keystroke === 'Tab') {
+            const nextFocusedIndex = this.state.focusIndex + 1
+            const nextChildrenLength = nextProps.children.length - 1
+
+            if (nextChildrenLength < nextFocusedIndex) {
+              this.setState({ focusIndex: 0 })
+            } else {
+              this.setState({ focusIndex: nextFocusedIndex })
+            }
+          }
+        }
+
+        render () {
+          return this.props.children.map((child, index) => {
+            if (index === this.state.focusIndex) {
+              const props = Object.assign({}, child.props, { focused: true, keystroke: this.props.keystroke })
+              return Object.assign({}, child, { props })
+            }
+
+            return child
+          })
+        }
+      }
+
       const App = (props) => {
         const star = <Star width={90} height={94} scale={0.5}/>
         return (
-          <React.Fragment>
-            {/* NEXT STEP: write a dispatcher (probably a stateful component) that focuses the KeyboardContext onto the input element in focus */}
-            <KeyboardContext.Consumer>
-              {keystroke => <InputController x={800} y={100} width={600} height={100} text={'Full Name'} showLayout={props.showLayout} keystroke={keystroke} />}
-            </KeyboardContext.Consumer>
-            <InputController x={800} y={200} width={600} height={100} text={'Address'} showLayout={props.showLayout} />
-            <InputController x={800} y={300} width={600} height={100} text={'City'} showLayout={props.showLayout} />
-            <InputController x={800} y={400} width={600} height={100} text={'State'} showLayout={props.showLayout} />
-            <InputController x={800} y={500} width={600} height={100} text={'ZIP Code'} showLayout={props.showLayout} />
-            <Button x={800} y={600} width={600} height={100} text={'Sign Up'} fill={'teal'} showLayout={props.showLayout} />
-          </React.Fragment>
+          <KeyboardContext.Consumer>
+            {
+              keystroke => (
+                <InputFocuser keystroke={keystroke}>
+                  <InputController x={800} y={100} width={600} height={100} text={'Full Name'} showLayout={props.showLayout} />
+                  <InputController x={800} y={200} width={600} height={100} text={'Address'} showLayout={props.showLayout} />
+                  <InputController x={800} y={300} width={600} height={100} text={'City'} showLayout={props.showLayout} />
+                  <InputController x={800} y={400} width={600} height={100} text={'State'} showLayout={props.showLayout} />
+                  <InputController x={800} y={500} width={600} height={100} text={'ZIP Code'} showLayout={props.showLayout} />
+                  <Button x={800} y={600} width={600} height={100} text={'Sign Up'} fill={'teal'} showLayout={props.showLayout} />
+                </InputFocuser>
+              )
+            }
+          </KeyboardContext.Consumer>
         )
       }
 
@@ -188,6 +226,10 @@
         }
 
         handleKeystroke (event) {
+          if (event.keyCode === 9) { // tab
+            event.preventDefault()
+          }
+
           if (event && event.key) {
             this.setState({ keystroke: event.key })
           }

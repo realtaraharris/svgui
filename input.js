@@ -28,7 +28,8 @@ const Input = (props) => {
         y={props.y}
         width={props.width}
         height={props.height}
-        stroke={'gray'}
+        stroke={props.focused ? 'skyblue' : 'gray'}
+        strokeWidth={props.focused ? 4 : 0}
         fill={'darkgray'}
         rx={4}
         ry={4}
