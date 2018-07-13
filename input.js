@@ -9,8 +9,13 @@ class InputController extends React.Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (nextProps.keystroke === undefined) { return }
-    this.setState({ displayValue: this.state.displayValue + nextProps.keystroke })
+    if (!nextProps || !nextProps.keystroke || !nextProps.keystroke.code) { return }
+
+    if (nextProps.keystroke.code === 8) { // backspace
+      this.setState({ displayValue: this.state.displayValue.slice(0, this.state.displayValue.length - 1) })
+    } else {
+      this.setState({ displayValue: this.state.displayValue + nextProps.keystroke.character })
+    }
   }
 
   render () {
@@ -34,6 +39,7 @@ const Input = (props) => {
         rx={4}
         ry={4}
         onMouseEnter={(event) => console.log('mouseEnter', event)}
+        onClick={(event) => props.onClick(props.index)}
       />
       <text
         x={props.x}

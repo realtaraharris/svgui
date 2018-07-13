@@ -29,45 +29,6 @@
         )
       }
 
-      const translateKeyCode = (keyCode) => {
-        switch (keyCode) {
-          case 32: return ' '
-          case 65: return 'a'
-          case 66: return 'b'
-          case 67: return 'c'
-          case 68: return 'd'
-          case 69: return 'e'
-          case 70: return 'f'
-          case 71: return 'g'
-          case 72: return 'h'
-          case 73: return 'i'
-          case 74: return 'j'
-          case 75: return 'k'
-          case 76: return 'l'
-          case 77: return 'm'
-          case 78: return 'n'
-          case 79: return 'o'
-          case 80: return 'p'
-          case 81: return 'q'
-          case 82: return 'r'
-          case 83: return 's'
-          case 84: return 't'
-          case 85: return 'u'
-          case 86: return 'v'
-          case 87: return 'w'
-          case 88: return 'x'
-          case 89: return 'y'
-          case 90: return 'z'
-          case 188: return ','
-          case 190: return '.'
-          case 191: return '/'
-          default: {
-            console.error(`TODO: add support for key code ${keyCode}`)
-            return ''
-          }
-        }
-      }
-
       // this is a dispatcher that focuses the KeyboardContext onto the input element in focus
       class InputFocuser extends React.Component {
         constructor (props) {
@@ -76,10 +37,12 @@
           this.state = {
             focusIndex: 0
           }
+
+          this.handleFocus = this.handleFocus.bind(this)
         }
 
         componentWillReceiveProps (nextProps) {
-          if (nextProps.keystroke === 'Tab') {
+          if (nextProps.keystroke.code === 9) {
             const nextFocusedIndex = this.state.focusIndex + 1
             const nextChildrenLength = nextProps.children.length - 1
 
@@ -91,14 +54,28 @@
           }
         }
 
+        handleFocus (index) {
+          this.setState({ focusIndex: index })
+        }
+
         render () {
           return this.props.children.map((child, index) => {
             if (index === this.state.focusIndex) {
-              const props = Object.assign({}, child.props, { focused: true, keystroke: this.props.keystroke })
+              const props = Object.assign({}, child.props, {
+                focused: true,
+                keystroke: this.props.keystroke,
+                onClick: this.handleFocus,
+                index
+              })
               return Object.assign({}, child, { props })
             }
 
-            return child
+            const props = Object.assign({}, child.props, {
+              onClick: this.handleFocus,
+              index
+            })
+
+            return Object.assign({}, child, { props })
           })
         }
       }
@@ -110,12 +87,12 @@
             {
               keystroke => (
                 <InputFocuser keystroke={keystroke}>
-                  <InputController x={800} y={100} width={600} height={100} text={'Full Name'} showLayout={props.showLayout} />
-                  <InputController x={800} y={200} width={600} height={100} text={'Address'} showLayout={props.showLayout} />
-                  <InputController x={800} y={300} width={600} height={100} text={'City'} showLayout={props.showLayout} />
-                  <InputController x={800} y={400} width={600} height={100} text={'State'} showLayout={props.showLayout} />
-                  <InputController x={800} y={500} width={600} height={100} text={'ZIP Code'} showLayout={props.showLayout} />
-                  <Button x={800} y={600} width={600} height={100} text={'Sign Up'} fill={'teal'} showLayout={props.showLayout} />
+                  <InputController x={800} y={100} width={1200} height={80} text={'Full Name'} showLayout={props.showLayout} />
+                  <InputController x={800} y={200} width={1200} height={80} text={'Address'} showLayout={props.showLayout} />
+                  <InputController x={800} y={300} width={1200} height={80} text={'City'} showLayout={props.showLayout} />
+                  <InputController x={800} y={400} width={1200} height={80} text={'State'} showLayout={props.showLayout} />
+                  <InputController x={800} y={500} width={1200} height={80} text={'ZIP Code'} showLayout={props.showLayout} />
+                  <Button x={800} y={600} width={1200} height={80} text={'Sign Up'} fill={'teal'} showLayout={props.showLayout} />
                 </InputFocuser>
               )
             }
@@ -197,7 +174,18 @@
         )
       }
 
-      const KeyboardContext = React.createContext(() => console.error('whoops, got default keyboard handler'))
+      const KeyboardDefault = { code: null, character: null }
+
+      const KeyboardContext = React.createContext(() => {
+        console.error('whoops, got default keyboard handler')
+        return KeyboardDefault
+      })
+
+      // ensures that Tab, Enter, Meta, etc. strings don't make their way into `key`
+      const filterKeyCharacter = (key) => {
+        if (key.length > 1) { return '' }
+        return key
+      }
 
       class Root extends React.Component {
         constructor (props) {
@@ -206,7 +194,7 @@
           this.state = {
             width: this.getWindowWidth(),
             height: this.getWindowHeight(),
-            keystroke: null
+            keystroke: KeyboardDefault
           }
           this.handleKeystroke = this.handleKeystroke.bind(this)
         }
@@ -231,7 +219,7 @@
           }
 
           if (event && event.key) {
-            this.setState({ keystroke: event.key })
+            this.setState({ keystroke: { code: event.keyCode, character: filterKeyCharacter(event.key) } })
           }
         }
 
