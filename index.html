@@ -11,6 +11,16 @@
   <body style="margin: 0; padding: 0;">
     <div id="root" />
     <script type="text/babel">
+      const forwardProps = (child, newProps) => {
+        const props = Object.assign({}, child.props, newProps)
+        return Object.assign({}, child, { props })
+      }
+
+      const normalizeChildren = (childOrChildren) => {
+        if (childOrChildren === undefined) { return [] }
+        return Array.isArray(childOrChildren) ? childOrChildren : [ childOrChildren ]
+      }
+
       const Star = (props) => (
         <React.Fragment>
           {props.showLayout && <rect x={0} y={0} width={props.width} height={props.height} stroke={'orange'} fill={'none'} strokeDasharray={'5,5'} />}
@@ -61,23 +71,20 @@
             }
           }
 
-          return this.props.children.map((child, index) => {
+          return normalizeChildren(this.props.children).map((child, index) => {
             if (index === this.state.focusIndex) {
-              const props = Object.assign({}, child.props, {
+              return forwardProps(child, {
                 focused: true,
                 keystroke: keystroke,
                 onClick: this.handleFocus,
                 index
               })
-              return Object.assign({}, child, { props })
             }
 
-            const props = Object.assign({}, child.props, {
+            return forwardProps(child, {
               onClick: this.handleFocus,
               index
             })
-
-            return Object.assign({}, child, { props })
           })
         }
       }
@@ -90,7 +97,7 @@
               {
                 keystroke => (
                   <InputFocuser keystroke={keystroke}>
-                    <InputController x={800} y={100} width={1200} height={80} text={'Full Name'} showLayout={props.showLayout} />
+                    <Center><InputController x={800} y={100} width={1200} height={80} text={'Full Name'} showLayout={props.showLayout} /></Center>
                     <InputController x={800} y={200} width={1200} height={80} text={'Address'} showLayout={props.showLayout} />
                     <InputController x={800} y={300} width={1200} height={80} text={'City'} showLayout={props.showLayout} />
                     <InputController x={800} y={400} width={1200} height={80} text={'State'} showLayout={props.showLayout} />
@@ -165,7 +172,15 @@
         const midX = -childWidth / 2
         const midY = -childHeight / 2
 
-        return <g transform={`translate(${midX}, ${midY})`}>{props.children}</g>
+        return (
+          <g transform={`translate(${midX}, ${midY})`}>
+            {
+              normalizeChildren(props.children).map((child, index) => {
+                return forwardProps(child, props)
+              })
+            }
+          </g>
+        )
       }
 
       const SpacedLine = (props) => {
