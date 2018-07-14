@@ -1,5 +1,55 @@
 'use strict'
 
+// this is a dispatcher that focuses the KeyboardContext onto the input element in focus
+class InputFocuser extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      focusIndex: 0
+    }
+
+    this.handleFocus = this.handleFocus.bind(this)
+  }
+
+  handleFocus (index) {
+    this.setState({ focusIndex: index })
+  }
+
+  render () {
+    const keystroke = this.props.keystroke()
+
+    if (keystroke.code === 'Tab') {
+      const nextFocusedIndex = this.state.focusIndex + (keystroke.shiftKey ? -1 : 1)
+      const nextChildrenLength = this.props.children.length - 1
+
+      if (nextChildrenLength < nextFocusedIndex) {
+        this.state.focusIndex = 0
+      } else if (nextFocusedIndex < 0) {
+        this.state.focusIndex = nextChildrenLength
+      } else {
+        this.state.focusIndex = nextFocusedIndex
+      }
+    }
+
+    return normalizeChildren(this.props.children).map((child, index) => {
+      if (index === this.state.focusIndex) {
+        return forwardProps(child, {
+          focused: true,
+          keystroke: keystroke,
+          onClick: this.handleFocus,
+          index
+        })
+      }
+
+      return forwardProps(child, {
+        onClick: this.handleFocus,
+        index
+      })
+    })
+  }
+}
+
 class InputController extends React.Component {
   constructor (props) {
     super(props)
