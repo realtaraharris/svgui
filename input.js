@@ -11,7 +11,7 @@ class InputController extends React.Component {
   componentWillReceiveProps (nextProps) {
     if (!nextProps || !nextProps.keystroke || !nextProps.keystroke.code) { return }
 
-    if (nextProps.keystroke.code === 8) { // backspace
+    if (nextProps.keystroke.code === 'Backspace') {
       this.setState({ displayValue: this.state.displayValue.slice(0, this.state.displayValue.length - 1) })
     } else {
       this.setState({ displayValue: this.state.displayValue + nextProps.keystroke.character })

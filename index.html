@@ -48,12 +48,14 @@
         render () {
           const keystroke = this.props.keystroke()
 
-          if (keystroke.code === 9) {
-            const nextFocusedIndex = this.state.focusIndex + 1
+          if (keystroke.code === 'Tab') {
+            const nextFocusedIndex = this.state.focusIndex + (keystroke.shiftKey ? -1 : 1)
             const nextChildrenLength = this.props.children.length - 1
 
             if (nextChildrenLength < nextFocusedIndex) {
               this.state.focusIndex = 0
+            } else if (nextFocusedIndex < 0) {
+              this.state.focusIndex = nextChildrenLength
             } else {
               this.state.focusIndex = nextFocusedIndex
             }
@@ -188,7 +190,22 @@
         )
       }
 
-      function KeyboardDefault () { return { code: null, character: null } }
+      function KeyboardDefault () {
+        return {
+          altKey: false,
+          ctrlKey: false,
+          shiftKey: false,
+          code: '',
+          key: '',
+          character: '',
+          location: 0,
+          metaKey: false,
+          repeat: false,
+          getModifierState: () => false,
+          isComposing: false,
+          isTrusted: true
+        }
+      }
 
       const KeyboardContext = React.createContext(() => {
         console.error('whoops, got default keyboard handler')
@@ -198,13 +215,13 @@
       let currentKeystroke = KeyboardDefault()
 
       function getCurrentKeystrokeOnce () {
-        const { code, character } = currentKeystroke
+        const keyEvent = Object.assign({}, currentKeystroke)
         currentKeystroke = {}
-        return { code, character }
+        return keyEvent
       }
 
-      const setCurrentKeystroke = (code, character) => {
-        currentKeystroke = { code, character }
+      const setCurrentKeystroke = (keyEvent) => {
+        currentKeystroke = keyEvent
       }
 
       // ensures that Tab, Enter, Meta, etc. strings don't make their way into `key`
@@ -240,14 +257,29 @@
         }
 
         handleKeystroke (event) {
-          if (event.keyCode === 9) { // tab
-            event.preventDefault()
+          switch (event.code) {
+            case 'Backspace': // so many poor people have lost so much unsaved state because of this idiotic "shortcut"
+            case 'Tab':
+              event.preventDefault()
           }
 
           if (event && event.key) {
-            const code = event.keyCode
-            const character = filterKeyCharacter(event.key)
-            setCurrentKeystroke(code, character)
+            const { altKey, ctrlKey, shiftKey, code, key, location, metaKey, repeat, getModifierState, isComposing, isTrusted } = event
+
+            setCurrentKeystroke({
+              altKey,
+              ctrlKey,
+              shiftKey,
+              code,
+              key,
+              character: filterKeyCharacter(key),
+              location,
+              metaKey,
+              repeat,
+              getModifierState,
+              isComposing,
+              isTrusted
+            })
             this.setState({ keystroke: getCurrentKeystrokeOnce })
           }
         }
