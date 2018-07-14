@@ -4,6 +4,7 @@ const App = (props) => {
   const star = <Star width={90} height={94} scale={0.5}/>
   return (
     <React.Fragment>
+      <rect x={0} y={0} width={props.width} height={props.height} fill={'white'} stroke={'cornsilk'} strokeWidth={2} strokeDasharray={'5,5'}/>
       <KeyboardContext.Consumer>
         {
           keystroke => (

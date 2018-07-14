@@ -58,7 +58,6 @@ class Root extends React.Component {
     return (
       <KeyboardContext.Provider value={this.state.keystroke}>
         <svg viewBox={[0, 0, this.state.width, this.state.height]}>
-          <rect x={0} y={0} width={this.state.width} height={this.state.height} fill={'cornsilk'} stroke={'red'} strokeWidth={2} strokeDasharray={'5,5'}/>
           <App width={this.state.width} height={this.state.height} showLayout />
         </svg>
       </KeyboardContext.Provider>
