@@ -76,6 +76,7 @@ class InputController extends React.Component {
 }
 
 const Input = (props) => {
+  const textHeight = 21
   return (
     <React.Fragment>
       <rect
@@ -91,25 +92,12 @@ const Input = (props) => {
         onMouseEnter={(event) => console.log('mouseEnter', event)}
         onClick={(event) => props.onClick(props.index)}
       />
-      {
-        !props.text
-        ? (
-          <text
-            x={props.x}
-            y={props.y + (props.height / 2) }
-            fill={'gray'}
-            style={{ font: '30px sans-serif' }}
-          >{props.placeholder}</text>
-          )
-        : (
-          <text
-            x={props.x}
-            y={props.y + (props.height / 2) }
-            fill={'black'}
-            style={{ font: '30px sans-serif' }}
-          >{props.text}</text>
-          )
-      }
+      <text
+        x={props.x + 20}
+        y={props.y + (props.height / 2) + (textHeight / 2)}
+        fill={!props.text ? 'gray' : 'black'}
+        style={{ font: '30px sans-serif' }}
+      >{!props.text ? props.placeholder : props.text}</text>
     </React.Fragment>
   )
 }
