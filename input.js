@@ -91,12 +91,25 @@ const Input = (props) => {
         onMouseEnter={(event) => console.log('mouseEnter', event)}
         onClick={(event) => props.onClick(props.index)}
       />
-      <text
-        x={props.x}
-        y={props.y + (props.height / 2) }
-        fill={'black'}
-        style={{ font: '30px sans-serif' }}
-      >{props.text}</text>
+      {
+        !props.text
+        ? (
+          <text
+            x={props.x}
+            y={props.y + (props.height / 2) }
+            fill={'gray'}
+            style={{ font: '30px sans-serif' }}
+          >{props.placeholder}</text>
+          )
+        : (
+          <text
+            x={props.x}
+            y={props.y + (props.height / 2) }
+            fill={'black'}
+            style={{ font: '30px sans-serif' }}
+          >{props.text}</text>
+          )
+      }
     </React.Fragment>
   )
 }

@@ -8,11 +8,11 @@ const App = (props) => {
         {
           keystroke => (
             <InputFocuser keystroke={keystroke}>
-              <InputController x={800} y={100} width={1200} height={80} text={'Full Name'} showLayout={props.showLayout} />
-              <InputController x={800} y={200} width={1200} height={80} text={'Address'} showLayout={props.showLayout} />
-              <InputController x={800} y={300} width={1200} height={80} text={'City'} showLayout={props.showLayout} />
-              <InputController x={800} y={400} width={1200} height={80} text={'State'} showLayout={props.showLayout} />
-              <InputController x={800} y={500} width={1200} height={80} text={'ZIP Code'} showLayout={props.showLayout} />
+              <InputController x={800} y={100} width={1200} height={80} placeholder={'Full Name'} showLayout={props.showLayout} />
+              <InputController x={800} y={200} width={1200} height={80} placeholder={'Address'} showLayout={props.showLayout} />
+              <InputController x={800} y={300} width={1200} height={80} placeholder={'City'} showLayout={props.showLayout} />
+              <InputController x={800} y={400} width={1200} height={80} placeholder={'State'} showLayout={props.showLayout} />
+              <InputController x={800} y={500} width={1200} height={80} placeholder={'ZIP Code'} showLayout={props.showLayout} />
               <Button x={800} y={600} width={1200} height={80} text={'Sign Up'} fill={'teal'} showLayout={props.showLayout} />
             </InputFocuser>
           )
