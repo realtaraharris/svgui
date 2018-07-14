@@ -97,7 +97,7 @@
               {
                 keystroke => (
                   <InputFocuser keystroke={keystroke}>
-                    <Center><InputController x={800} y={100} width={1200} height={80} text={'Full Name'} showLayout={props.showLayout} /></Center>
+                    <InputController x={800} y={100} width={1200} height={80} text={'Full Name'} showLayout={props.showLayout} />
                     <InputController x={800} y={200} width={1200} height={80} text={'Address'} showLayout={props.showLayout} />
                     <InputController x={800} y={300} width={1200} height={80} text={'City'} showLayout={props.showLayout} />
                     <InputController x={800} y={400} width={1200} height={80} text={'State'} showLayout={props.showLayout} />
@@ -108,7 +108,7 @@
               }
             </KeyboardContext.Consumer>
             <Margin x={0} y={800} top={47} right={100} bottom={47} left={100} width={props.width} height={94}>
-              <SpacedLine>
+              <HorizontalSpacedLine>
                 <Center>{star}</Center>
                 <Center>{star}</Center>
                 <Center>{star}</Center>
@@ -117,7 +117,7 @@
                 <Center>{star}</Center>
                 <Center>{star}</Center>
                 <Center>{star}</Center>
-              </SpacedLine>
+              </HorizontalSpacedLine>
             </Margin>
           </React.Fragment>
         )
@@ -129,7 +129,7 @@
           <React.Fragment>
             <Button x={100} y={800} width={400} height={380} text={'App'} fill={'teal'} showLayout={props.showLayout} />
             <Input x={600} y={800} width={400} height={100} text={'This is an input element'} showLayout={props.showLayout} />
-            <SpacedLine width={props.width} x={0} y={120} showLayout={props.showLayout} >
+            <HorizontalSpacedLine width={props.width} x={0} y={120} showLayout={props.showLayout} >
               <Center><Button width={120} height={120} text={'App'} fill={'red'}/></Center>
               <Center><Button width={120} height={120} text={'B'} fill={'goldenrod'}/></Center>
               <Center>{star}</Center>
@@ -139,13 +139,13 @@
               <Center>{star}</Center>
               <Center>{star}</Center>
               <Center>{star}</Center>
-            </SpacedLine>
+            </HorizontalSpacedLine>
             <Margin x={0} y={300} top={30} right={30} bottom={30} left={30} width={props.width} height={150}>
               <Button text={'Button Inside Margin'} fill={'purple'} />
             </Margin>
 
             <Margin x={0} y={500} top={47} right={100} bottom={47} left={100} width={props.width} height={94}>
-              <SpacedLine>
+              <HorizontalSpacedLine>
                 <Center>{star}</Center>
                 <Center>{star}</Center>
                 <Center>{star}</Center>
@@ -154,7 +154,7 @@
                 <Center>{star}</Center>
                 <Center>{star}</Center>
                 <Center>{star}</Center>
-              </SpacedLine>
+              </HorizontalSpacedLine>
             </Margin>
 
             {/* when no layout args are supplied, "inherit" from parent */}
@@ -183,7 +183,7 @@
         )
       }
 
-      const SpacedLine = (props) => {
+      const HorizontalSpacedLine = (props) => {
         const slice = props.width / (props.children.length - 1)
 
         let result = []
