@@ -41,29 +41,29 @@
           this.handleFocus = this.handleFocus.bind(this)
         }
 
-        componentWillReceiveProps (nextProps) {
-          if (nextProps.keystroke.code === 9) {
-            const nextFocusedIndex = this.state.focusIndex + 1
-            const nextChildrenLength = nextProps.children.length - 1
-
-            if (nextChildrenLength < nextFocusedIndex) {
-              this.setState({ focusIndex: 0 })
-            } else {
-              this.setState({ focusIndex: nextFocusedIndex })
-            }
-          }
-        }
-
         handleFocus (index) {
           this.setState({ focusIndex: index })
         }
 
         render () {
+          const keystroke = this.props.keystroke()
+
+          if (keystroke.code === 9) {
+            const nextFocusedIndex = this.state.focusIndex + 1
+            const nextChildrenLength = this.props.children.length - 1
+
+            if (nextChildrenLength < nextFocusedIndex) {
+              this.state.focusIndex = 0
+            } else {
+              this.state.focusIndex = nextFocusedIndex
+            }
+          }
+
           return this.props.children.map((child, index) => {
             if (index === this.state.focusIndex) {
               const props = Object.assign({}, child.props, {
                 focused: true,
-                keystroke: this.props.keystroke,
+                keystroke: keystroke,
                 onClick: this.handleFocus,
                 index
               })
@@ -174,12 +174,24 @@
         )
       }
 
-      const KeyboardDefault = { code: null, character: null }
+      function KeyboardDefault () { return { code: null, character: null } }
 
       const KeyboardContext = React.createContext(() => {
         console.error('whoops, got default keyboard handler')
         return KeyboardDefault
       })
+
+      let currentKeystroke = KeyboardDefault()
+
+      function getCurrentKeystrokeOnce () {
+        const { code, character } = currentKeystroke
+        currentKeystroke = {}
+        return { code, character }
+      }
+
+      const setCurrentKeystroke = (code, character) => {
+        currentKeystroke = { code, character }
+      }
 
       // ensures that Tab, Enter, Meta, etc. strings don't make their way into `key`
       const filterKeyCharacter = (key) => {
@@ -219,7 +231,10 @@
           }
 
           if (event && event.key) {
-            this.setState({ keystroke: { code: event.keyCode, character: filterKeyCharacter(event.key) } })
+            const code = event.keyCode
+            const character = filterKeyCharacter(event.key)
+            setCurrentKeystroke(code, character)
+            this.setState({ keystroke: getCurrentKeystrokeOnce })
           }
         }
 
