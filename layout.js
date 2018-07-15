@@ -39,3 +39,33 @@ const HorizontalSpacedLine = (props) => {
     </g>
   )
 }
+
+// <SpacedRay x1={0} y1={0} x2={500} y2={500} interval={30} />
+const SpacedRay = (props) => {
+  const { x1, y1, x2, y2 } = props
+  const slope = (y2 - y1) / (x2 - x1)
+
+  const angle = Math.atan(slope)
+  const deltaX = props.interval * Math.cos(angle)
+  const deltaY = props.interval * Math.sin(angle)
+
+  return (
+    <React.Fragment>
+      {
+        props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
+      }
+      <g transform={`translate(${x1}, ${y1})`}>
+        {
+          normalizeChildren(props.children).map((child, index) => {
+            return (
+              <g transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
+                {child}
+                <circle cx={0} cy={0} r={2} stroke={'red'}/>
+              </g>
+            )
+          })
+        }
+      </g>
+    </React.Fragment>
+  )
+}
