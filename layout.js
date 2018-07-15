@@ -1,6 +1,14 @@
 'use strict'
 
 const Center = (props) => {
+  if (Array.isArray(props.children)) {
+    return console.error('Center component only accepts single children')
+  }
+
+  if (!props.children.props.width || !props.children.props.height) {
+    return console.error('Center component requires that child have width and height props')
+  }
+
   const childWidth = props.children.props.width
   const childHeight = props.children.props.height
 
