@@ -16,3 +16,6 @@ const measureTextWidth = ({ text, fontWeight, fontStyle, fontSize, fontFamily })
   ctx.font = `${fontWeight} ${fontStyle} ${fontSize} ${fontFamily}`
   return ctx.measureText(text).width
 }
+
+// original: https://stackoverflow.com/a/13403498
+const generateQuickGuid = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
