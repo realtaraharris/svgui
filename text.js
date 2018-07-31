@@ -116,8 +116,7 @@ class Text extends React.Component {
       guid: generateQuickGuid()
     }
 
-    console.log('this.state.wrappedText:', this.state.wrappedText)
-
+    this.scrollRectRef = React.createRef()
     this.onWheel = this.onWheel.bind(this)
   }
 
@@ -131,17 +130,15 @@ class Text extends React.Component {
     if (scrollPositionVertical < bottom) { scrollPositionVertical = bottom }
     if (scrollPositionVertical > 0) { scrollPositionVertical = 0 }
 
-    console.log(`in onWheel, setting scrollPositionVertical to ${scrollPositionVertical}`)
-
     this.setState({ scrollPositionVertical })
   }
 
   componentDidMount () {
-    window.addEventListener('wheel', this.onWheel)
+    this.scrollRectRef.current.addEventListener('wheel', this.onWheel)
   }
 
   componentWillUnmount () {
-    window.removeEventListener('wheel', this.onWheel)
+    this.scrollRectRef.current.removeEventListener('wheel', this.onWheel)
   }
 
   render () {
@@ -149,13 +146,14 @@ class Text extends React.Component {
     const skipToLine = parseInt((scrollPositionAbs / this.props.lineHeight).toFixed())
     const skipAfterLine = parseInt(((this.props.height) / this.props.lineHeight).toFixed()) + Math.abs(skipToLine) + 1
 
+    const textHeightFudge = 9 // TODO: clean this up - this is probably just the descender height?
     let verticalScratchPosition = 0
-    const textClipId = `textClip-${this.state.guid}`
+    const textClipId = `textClip-${this.state.guid}` // SVG clipPath uses this annoying global url(#thing)
 
     return (
-      <React.Fragment>
+      <g>
         <clipPath id={textClipId}>
-          <rect x={0} y={0} width={this.props.width} height={this.props.height} stroke={'blue'} fill={'none'} />
+          <rect x={-1} y={-1} width={this.props.width + 1} height={this.props.height + 1} stroke={'none'} />
         </clipPath>
         {
           this.state.wrappedText.map((line, lineIndex) => {
@@ -167,14 +165,9 @@ class Text extends React.Component {
               let result
               if (token.token !== ' ') {
                 result = (
-                  <g key={`${lineIndex}-${tokenIndex}-${token.token}`}>
-                    {/*
-                      <rect x={horizontalScratchPosition} y={verticalScratchPosition - this.props.lineHeight + h} width={token.width} height={this.props.lineHeight} stroke={'red'} fill={'none'} />
-                    */}
-                    <text style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h} clipPath={`url(#${textClipId})`}>
-                      {token.token}
-                    </text>
-                  </g>
+                  <text style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
+                    {token.token}
+                  </text>
                 )
               }
               horizontalScratchPosition += token.width
@@ -182,7 +175,15 @@ class Text extends React.Component {
             })
           })
         }
-      </React.Fragment>
+        // NB: this rect catches pointer events, so it _must_ sit on top of the text
+        <rect ref={this.scrollRectRef} fill={'rgba(0,0,0,0)'} stroke={'none'} x={0} y={0} width={this.props.width} height={this.props.height} />
+      </g>
     )
   }
 }
+
+/*
+  <g key={`${lineIndex}-${tokenIndex}-${token.token}`}>
+    <rect x={horizontalScratchPosition} y={verticalScratchPosition - this.props.lineHeight + h} width={token.width} height={this.props.lineHeight} stroke={'red'} fill={'none'} />
+  </g>
+*/
