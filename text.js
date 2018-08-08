@@ -106,14 +106,21 @@ class Text extends React.Component {
   constructor (props) {
     super(props)
 
+console.log('props.children:', props.children)
+
     const text = this.props.children
+    // const text = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.`
     const tokens = measure(text, props.fontStyle)
 
     this.state = {
       scrollPositionVertical: 0,
       tokens,
       wrappedText: wrap(tokens, this.props.width),
-      guid: generateQuickGuid()
+      guid: generateQuickGuid(),
+      boundingClientRect: {},
+      mouseDown: false,
+      dragStartCoords: {},
+      dragEndCoords: {}
     }
 
     this.scrollRectRef = React.createRef()
@@ -133,12 +140,48 @@ class Text extends React.Component {
     this.setState({ scrollPositionVertical })
   }
 
+  translateCoords = ({ clientX, clientY }) => {
+    const { x, y } = this.state.boundingClientRect
+    const clickX = clientX - x
+    const clickY = clientY - y
+    return { x: clickX * 2, y: clickY * 2 }
+  }
+
+  onMouseDown = (event) => {
+    const { x, y } = this.translateCoords(event)
+    console.log(`mouse down on (${x}, ${y})`)
+    this.setState({ mouseDown: true, dragStartCoords: { x, y }, dragEndCoords: { x, y } })
+  }
+
+  onMouseUp = () => {
+    const { x, y } = this.translateCoords(event)
+    console.log(`mouse up on (${x}, ${y})`)
+    this.setState({ mouseDown: false, dragEndCoords: { x, y } })
+  }
+
+  onMouseMove = (event) => {
+    if (this.state.mouseDown) {
+      const { x, y } = this.translateCoords(event)
+      console.log(`mouse move on (${x}, ${y})`)
+      this.setState({ dragEndCoords: { x, y } })
+    }
+  }
+
   componentDidMount () {
     this.scrollRectRef.current.addEventListener('wheel', this.onWheel)
+    this.scrollRectRef.current.addEventListener('mousemove', this.onMouseMove)
+    this.scrollRectRef.current.addEventListener('mousedown', this.onMouseDown)
+    this.scrollRectRef.current.addEventListener('mouseup', this.onMouseUp)
+
+    const boundingClientRect = this.scrollRectRef.current.getBoundingClientRect()
+    this.setState({ boundingClientRect })
   }
 
   componentWillUnmount () {
     this.scrollRectRef.current.removeEventListener('wheel', this.onWheel)
+    this.scrollRectRef.current.removeEventListener('mousemove', this.onMouseMove)
+    this.scrollRectRef.current.removeEventListener('mousedown', this.onMouseDown)
+    this.scrollRectRef.current.removeEventListener('mouseup', this.onMouseUp)
   }
 
   render () {
@@ -150,31 +193,80 @@ class Text extends React.Component {
     let verticalScratchPosition = 0
     const textClipId = `textClip-${this.state.guid}` // SVG clipPath uses this annoying global url(#thing)
 
+    // console.log(`dragStartCoords: ${this.state.dragStartCoords.x}, dragEndCoords: ${this.state.dragEndCoords.x}`)
+
+    let tokenIndex = 0
+    let insideStartTokenIndex
+    let insideEndTokenIndex = 999999999
+
+    let selectionBoxes = []
+    let textBoxes = []
+
+
+    this.state.wrappedText.map((line, lineIndex) => {
+      if (lineIndex < skipToLine || lineIndex > skipAfterLine) { return }
+      const h = (lineIndex * this.props.lineHeight) - scrollPositionAbs
+
+      let horizontalScratchPosition = 0
+      return line.map((token) => {
+        let result
+
+
+        const textRect = {
+          x: horizontalScratchPosition,
+          y: verticalScratchPosition - this.props.lineHeight + h,
+          width: token.width,
+          height: this.props.lineHeight
+        }
+
+        const isInsideStart = insideBox({ clickX: this.state.dragStartCoords.x, clickY: this.state.dragStartCoords.y - scrollPositionAbs }, textRect)
+        const isInsideEnd = insideBox({ clickX: this.state.dragEndCoords.x, clickY: this.state.dragEndCoords.y - scrollPositionAbs }, textRect)
+
+        if (isInsideStart) {
+          insideStartTokenIndex = tokenIndex
+        }
+
+        if (isInsideEnd) {
+          insideEndTokenIndex = tokenIndex
+        }
+
+        const selection = (insideStartTokenIndex <= tokenIndex && tokenIndex <= insideEndTokenIndex) ? 'lightblue' : 'none'
+
+        if (selection) {
+          selectionBoxes.push(<rect x={textRect.x} y={textRect.y} width={textRect.width} height={textRect.height} stroke={selection} fill={selection} clipPath={`url(#${textClipId})`} />)
+        }
+
+        if (token.token !== '') {
+          // TODO: don't push all this extra geometry - just find the box encompassing the text selection for the entire line
+          textBoxes.push(
+            <text style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
+              {token.token}
+            </text>
+          )
+        }
+
+        tokenIndex++
+        horizontalScratchPosition += token.width
+        return result
+      })
+    })
+
     return (
       <g>
         <clipPath id={textClipId}>
           <rect x={-1} y={-1} width={this.props.width + 1} height={this.props.height + 1} stroke={'none'} />
         </clipPath>
-        {
-          this.state.wrappedText.map((line, lineIndex) => {
-            if (lineIndex < skipToLine || lineIndex > skipAfterLine) { return }
-            const h = (lineIndex * this.props.lineHeight) - scrollPositionAbs
-
-            let horizontalScratchPosition = 0
-            return line.map((token, tokenIndex) => {
-              let result
-              if (token.token !== ' ') {
-                result = (
-                  <text style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
-                    {token.token}
-                  </text>
-                )
-              }
-              horizontalScratchPosition += token.width
-              return result
-            })
-          })
-        }
+        {/*
+          <rect
+            x={this.state.dragStartCoords.x}
+            y={this.state.dragStartCoords.y}
+            width={Math.abs(this.state.dragEndCoords.x - this.state.dragStartCoords.x)}
+            height={Math.abs(this.state.dragEndCoords.y - this.state.dragStartCoords.y)}
+            fill={'lightblue'}
+          />
+        */}
+        {selectionBoxes}
+        {textBoxes}
         // NB: this rect catches pointer events, so it _must_ sit on top of the text
         <rect ref={this.scrollRectRef} fill={'rgba(0,0,0,0)'} stroke={'none'} x={0} y={0} width={this.props.width} height={this.props.height} />
       </g>
@@ -182,8 +274,11 @@ class Text extends React.Component {
   }
 }
 
-/*
-  <g key={`${lineIndex}-${tokenIndex}-${token.token}`}>
-    <rect x={horizontalScratchPosition} y={verticalScratchPosition - this.props.lineHeight + h} width={token.width} height={this.props.lineHeight} stroke={'red'} fill={'none'} />
-  </g>
-*/
+const insideBox = ({ clickX, clickY }, { x, y, width, height }) => {
+  return (
+    clickX > x &&
+    clickY > y &&
+    clickX < x + width &&
+    clickY < y + height
+  )
+}

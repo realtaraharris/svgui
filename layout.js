@@ -16,13 +16,7 @@ const Center = (props) => {
   const midY = -childHeight / 2
 
   return (
-    <g transform={`translate(${midX}, ${midY})`}>
-      {
-        normalizeChildren(props.children).map((child, index) => {
-          return forwardProps(child, props)
-        })
-      }
-    </g>
+    <g transform={`translate(${midX}, ${midY})`}>{props.children}</g>
   )
 }
 

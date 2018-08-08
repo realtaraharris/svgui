@@ -103,22 +103,24 @@ const App = (props) => {
                         focusedIndex={focusedIndex}
                       />
                     </Center>
-                    <Text
-                      x={-inputWidth / 2}
-                      y={0}
+                    <Center>
+                      <Text
+                        x={-inputWidth / 2}
+                        y={0}
 
-                      width={inputWidth}
-                      height={400}
-                      fontStyle={{
-                        fontWeight: 100,
-                        fontStyle: 'regular',
-                        fontSize: 30,
-                        fontFamily: 'helvetica, sans-serif'
-                      }}
-                      lineHeight={31}
-                    >
-                     {[sampleText, sampleText, sampleText].join()}
-                    </Text>
+                        width={inputWidth}
+                        height={100}
+                        fontStyle={{
+                          fontWeight: 100,
+                          fontStyle: 'regular',
+                          fontSize: 30,
+                          fontFamily: 'helvetica, sans-serif'
+                        }}
+                        lineHeight={31}
+                      >
+                       {[sampleText, sampleText, sampleText].join()}
+                      </Text>
+                    </Center>
                   </SpacedRay>
                 )}
               />
