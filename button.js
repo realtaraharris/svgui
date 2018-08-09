@@ -17,7 +17,7 @@ const Button = (props) => {
           stroke={props.focused ? 'skyblue' : props.fill}
           strokeWidth={props.focused ? 4 : 0}
         />
-        <Center><Label text={props.text} x={props.width / 2} y={props.height / 2} width={textWidth * 3} height={21} fill={'white'} /></Center>
+        <Center width={textWidth * 3} height={21}><Label text={props.text} x={props.width / 2} y={props.height / 2} fill={'white'} /></Center>
       </g>
     </React.Fragment>
   )

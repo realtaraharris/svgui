@@ -1,22 +1,13 @@
 'use strict'
 
 const Center = (props) => {
-  if (Array.isArray(props.children)) {
-    return console.error('Center component only accepts single children')
-  }
-
-  if (!props.children.props.width || !props.children.props.height) {
-    return console.error('Center component requires that child have width and height props')
-  }
-
-  const childWidth = props.children.props.width
-  const childHeight = props.children.props.height
-
-  const midX = -childWidth / 2
-  const midY = -childHeight / 2
+  const midX = -props.width / 2
+  const midY = -props.height / 2
 
   return (
-    <g transform={`translate(${midX}, ${midY})`}>{props.children}</g>
+    <g transform={`translate(${midX}, ${midY})`}>{
+      normalizeChildren(props.children).map(child => forwardProps(child, { width: props.width, height: props.height }))
+    }</g>
   )
 }
 
@@ -63,10 +54,7 @@ const ShiftXCenterY = (props) => {
 // TODO: props.interval should be renamed to props.spaceBetween or something?
 // mode: spaceBetween, spaceAround?
 const HorizontalSpacedRay = (props) => {
-  const x1 = props.x
-  const x2 = props.width
-  const y1 = props.y
-  const y2 = props.y
+  const { x1, x2, y1, y2 } = props
 
   const slope = (y2 - y1) / (x2 - x1)
 

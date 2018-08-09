@@ -23,10 +23,8 @@ const App = (props) => {
                 keystroke={keystroke}
                 render={(focusedIndex, handleFocus) => (
                   <SpacedRay x1={props.width/2} y1={100} x2={props.width/2} y2={props.height} interval={140} showLayout>
-                    <Center>
+                    <Center width={inputWidth} height={inputHeight}>
                       <InputController
-                         width={inputWidth}
-                         height={inputHeight}
                          placeholder={'Full Name'}
                          tabIndex={0}
                          focusedIndex={focusedIndex}
@@ -34,10 +32,8 @@ const App = (props) => {
                          onClick={(tabIndex) => handleFocus(tabIndex)}
                       />
                     </Center>
-                    <Center>
+                    <Center width={inputWidth} height={inputHeight}>
                       <InputController
-                        width={inputWidth}
-                        height={inputHeight}
                         placeholder={'Address'}
                         tabIndex={1}
                         focusedIndex={focusedIndex}
@@ -45,16 +41,8 @@ const App = (props) => {
                         onClick={(tabIndex) => handleFocus(tabIndex)}
                       />
                     </Center>
-                    <Center>
-                      <HorizontalSpacedRay
-                        x={0}
-                        y={0}
-                        width={inputWidth}
-                        height={inputHeight}
-
-                        interval={60}
-                        showLayout
-                      >
+                    <Center width={inputWidth} height={inputHeight}>
+                      <HorizontalSpacedRay x1={0} y1={0} x2={inputWidth} y2={0} interval={60} showLayout>
                         <InputController
                           width={600}
                           height={inputHeight}
@@ -84,12 +72,8 @@ const App = (props) => {
                         />
                       </HorizontalSpacedRay>
                     </Center>
-                    <Center>
+                    <Center width={inputWidth} height={inputHeight}>
                       <Button
-                        x={0}
-                        y={0}
-                        width={inputWidth}
-                        height={inputHeight}
                         text={'Sign Up'}
                         fill={'teal'}
                         tabIndex={5}
@@ -101,8 +85,6 @@ const App = (props) => {
                     </Center>
                     <CenterHorizontal offsetY={-inputHeight/2}>
                       <Text
-                        x={0}
-                        y={0}
                         width={inputWidth}
                         height={500}
                         fontStyle={{
