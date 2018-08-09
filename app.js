@@ -12,7 +12,7 @@ const App = (props) => {
   const inputHeight = 80
   return (
     <React.Fragment>
-      <rect x={0} y={0} width={props.width} height={props.height} fill={'white'} stroke={'cornsilk'} strokeWidth={2} strokeDasharray={'5,5'}/>
+      <rect x={0} y={0} width={props.width} height={props.height} fill={'lightgray'} stroke={'cornsilk'} strokeWidth={2} strokeDasharray={'5,5'}/>
       <KeyboardContext.Consumer>
         {
           getKeystroke => {
@@ -21,23 +21,8 @@ const App = (props) => {
               <InputFocuser
                 tabs={6}
                 keystroke={keystroke}
-                render={focusedIndex => (
+                render={(focusedIndex, handleFocus) => (
                   <SpacedRay x1={props.width/2} y1={100} x2={props.width/2} y2={props.height} interval={140} showLayout>
-                    <Text
-                      x={-inputWidth / 2}
-                      y={0}
-                      width={300}
-                      height={400}
-                      fontStyle={{
-                        fontWeight: 100,
-                        fontStyle: 'regular',
-                        fontSize: 30,
-                        fontFamily: 'helvetica, sans-serif'
-                      }}
-                      lineHeight={31}
-                    >
-                     {[sampleText, sampleText].join()}
-                    </Text>
                     <Center>
                       <InputController
                          width={inputWidth}
@@ -46,6 +31,7 @@ const App = (props) => {
                          tabIndex={0}
                          focusedIndex={focusedIndex}
                          keystroke={keystroke}
+                         onClick={(tabIndex) => handleFocus(tabIndex)}
                       />
                     </Center>
                     <Center>
@@ -56,37 +42,47 @@ const App = (props) => {
                         tabIndex={1}
                         focusedIndex={focusedIndex}
                         keystroke={keystroke}
+                        onClick={(tabIndex) => handleFocus(tabIndex)}
                       />
                     </Center>
                     <Center>
-                      <InputController
+                      <HorizontalSpacedRay
+                        x={0}
+                        y={0}
                         width={inputWidth}
                         height={inputHeight}
-                        placeholder={'City'}
-                        tabIndex={2}
-                        focusedIndex={focusedIndex}
-                        keystroke={keystroke}
-                      />
-                    </Center>
-                    <Center>
-                      <InputController
-                        width={inputWidth}
-                        height={inputHeight}
-                        placeholder={'State'}
-                        tabIndex={3}
-                        focusedIndex={focusedIndex}
-                        keystroke={keystroke}
-                      />
-                    </Center>
-                    <Center>
-                      <InputController
-                        width={inputWidth}
-                        height={inputHeight}
-                        placeholder={'ZIP Code'}
-                        tabIndex={4}
-                        focusedIndex={focusedIndex}
-                        keystroke={keystroke}
-                      />
+
+                        interval={60}
+                        showLayout
+                      >
+                        <InputController
+                          width={600}
+                          height={inputHeight}
+                          placeholder={'City'}
+                          tabIndex={2}
+                          focusedIndex={focusedIndex}
+                          keystroke={keystroke}
+                          onClick={(tabIndex) => handleFocus(tabIndex)}
+                        />
+                        <InputController
+                          width={280}
+                          height={inputHeight}
+                          placeholder={'State'}
+                          tabIndex={3}
+                          focusedIndex={focusedIndex}
+                          keystroke={keystroke}
+                          onClick={(tabIndex) => handleFocus(tabIndex)}
+                        />
+                        <InputController
+                          width={200}
+                          height={inputHeight}
+                          placeholder={'ZIP Code'}
+                          tabIndex={4}
+                          focusedIndex={focusedIndex}
+                          keystroke={keystroke}
+                          onClick={(tabIndex) => handleFocus(tabIndex)}
+                        />
+                      </HorizontalSpacedRay>
                     </Center>
                     <Center>
                       <Button
@@ -103,13 +99,12 @@ const App = (props) => {
                         focusedIndex={focusedIndex}
                       />
                     </Center>
-                    <Center>
+                    <CenterHorizontal offsetY={-inputHeight/2}>
                       <Text
-                        x={-inputWidth / 2}
+                        x={0}
                         y={0}
-
                         width={inputWidth}
-                        height={100}
+                        height={500}
                         fontStyle={{
                           fontWeight: 100,
                           fontStyle: 'regular',
@@ -120,7 +115,7 @@ const App = (props) => {
                       >
                        {[sampleText, sampleText, sampleText].join()}
                       </Text>
-                    </Center>
+                    </CenterHorizontal>
                   </SpacedRay>
                 )}
               />

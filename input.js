@@ -32,7 +32,7 @@ class InputFocuser extends React.Component {
       }
     }
 
-    return this.props.render(this.state.focusedIndex)
+    return this.props.render(this.state.focusedIndex, this.handleFocus)
   }
 }
 
@@ -79,7 +79,7 @@ const Input = (props) => {
         rx={4}
         ry={4}
         onMouseEnter={(event) => console.log('mouseEnter', event)}
-        onClick={(event) => props.onClick(props.index)}
+        onClick={(event) => props.onClick(props.tabIndex)}
       />
       <text
         x={20}
