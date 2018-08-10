@@ -54,7 +54,7 @@ const ShiftXCenterY = (props) => {
 // TODO: props.interval should be renamed to props.spaceBetween or something?
 // mode: spaceBetween, spaceAround?
 const HorizontalSpacedRay = (props) => {
-  const { x1, x2, y1, y2 } = props
+  const { x1, y1, x2, y2 } = props
 
   const slope = (y2 - y1) / (x2 - x1)
 
@@ -64,9 +64,6 @@ const HorizontalSpacedRay = (props) => {
   let deltaY = 0
   return (
     <React.Fragment>
-      {
-        props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
-      }
       <g transform={`translate(${x1}, ${y1})`}>
         {
           normalizeChildren(props.children).map((child, index) => {
@@ -77,36 +74,54 @@ const HorizontalSpacedRay = (props) => {
               </g>
             )
 
-            deltaX += (child.props.width + props.interval) * Math.cos(angle)
-            deltaY += child.props.height * Math.sin(angle)
+            deltaX += (child.props.width + props.spaceBetween) * Math.cos(angle)
+            deltaY += (child.props.width + props.spaceBetween) * Math.sin(angle)
 
             return result
           })
         }
       </g>
+      {
+        props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
+      }
     </React.Fragment>
   )
 }
 
 const HorizontalSpacedLine = (props) => {
-  const slice = props.width / (props.children.length - 1)
+  const { x1, y1, x2, y2 } = props
+  const slope = (y2 - y1) / (x2 - x1)
 
-  let result = []
-  let currentPosition = 0
-  for (let i = 0; i < props.children.length; i++) {
-    result.push(currentPosition)
-    currentPosition += slice
-  }
+  const a = x2 - x1
+  const b = y2 - y1
+
+  const length = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
+
+  const slice = length / (props.children.length - 1)
+
+
+  const angle = Math.atan(slope)
+  const deltaX = slice * Math.cos(angle)
+  const deltaY = slice * Math.sin(angle)
+
   return (
-    <g transform={`translate(${props.x}, ${0})`}>
-      {props.showLayout && <line x1={0} y1={props.y} x2={props.width} y2={props.y} stroke={'green'} strokeDasharray={'5,5'} />}
+    <React.Fragment>
       {
-        result.map((pos, index) => {
-          const child = props.children[index]
-          return <g transform={`translate(${pos}, ${props.y})`} key={index}>{child}</g>
-        })
+        props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
       }
-    </g>
+      <g transform={`translate(${x1}, ${y1})`}>
+        {
+          normalizeChildren(props.children).map((child, index) => {
+            return (
+              <g transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
+                {child}
+                <circle cx={0} cy={0} r={2} stroke={'red'}/>
+              </g>
+            )
+          })
+        }
+      </g>
+    </React.Fragment>
   )
 }
 

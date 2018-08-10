@@ -8,7 +8,6 @@ const Button = (props) => {
     fontSize: '30px',
     fontFamily: 'sans-serif'
   })
-  console.log(`measured text width: ${textWidth}`)
 
   return (
     <React.Fragment>

@@ -202,7 +202,6 @@ console.log('props.children:', props.children)
     let selectionBoxes = []
     let textBoxes = []
 
-
     this.state.wrappedText.map((line, lineIndex) => {
       if (lineIndex < skipToLine || lineIndex > skipAfterLine) { return }
       const h = (lineIndex * this.props.lineHeight) - scrollPositionAbs
@@ -210,7 +209,6 @@ console.log('props.children:', props.children)
       let horizontalScratchPosition = 0
       return line.map((token) => {
         let result
-
 
         const textRect = {
           x: horizontalScratchPosition,
@@ -233,13 +231,13 @@ console.log('props.children:', props.children)
         const selection = (insideStartTokenIndex <= tokenIndex && tokenIndex <= insideEndTokenIndex) ? 'lightblue' : 'none'
 
         if (selection) {
-          selectionBoxes.push(<rect x={textRect.x} y={textRect.y} width={textRect.width} height={textRect.height} stroke={selection} fill={selection} clipPath={`url(#${textClipId})`} />)
+          selectionBoxes.push(<rect key={tokenIndex} x={textRect.x} y={textRect.y} width={textRect.width} height={textRect.height} stroke={selection} fill={selection} clipPath={`url(#${textClipId})`} />)
         }
 
         if (token.token !== '') {
           // TODO: don't push all this extra geometry - just find the box encompassing the text selection for the entire line
           textBoxes.push(
-            <text style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
+            <text key={tokenIndex} style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
               {token.token}
             </text>
           )

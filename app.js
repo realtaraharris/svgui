@@ -12,7 +12,7 @@ const App = (props) => {
   const inputHeight = 80
   return (
     <React.Fragment>
-      <rect x={0} y={0} width={props.width} height={props.height} fill={'lightgray'} stroke={'cornsilk'} strokeWidth={2} strokeDasharray={'5,5'}/>
+      <rect x={0} y={0} width={props.width} height={props.height} fill={'mintcream'} stroke={'cornsilk'} strokeWidth={2} strokeDasharray={'5,5'}/>
       <KeyboardContext.Consumer>
         {
           getKeystroke => {
@@ -42,7 +42,7 @@ const App = (props) => {
                       />
                     </Center>
                     <Center width={inputWidth} height={inputHeight}>
-                      <HorizontalSpacedRay x1={0} y1={0} x2={inputWidth} y2={0} interval={60} showLayout>
+                      <HorizontalSpacedRay x1={0} y1={0} x2={inputWidth} y2={0} spaceBetween={60} showLayout>
                         <InputController
                           width={600}
                           height={inputHeight}
@@ -72,6 +72,21 @@ const App = (props) => {
                         />
                       </HorizontalSpacedRay>
                     </Center>
+                    <Center width={inputWidth} height={inputHeight}>
+                      <Margin x={0} y={0} top={10} right={100} bottom={10} left={100} width={props.width} height={194} showLayout>
+                        <Button text={'Button Inside Margin'} fill={'purple'} />
+                      </Margin>
+                    </Center>
+                    <HorizontalSpacedLine x1={-inputWidth/2 + 94/2} y1={0} x2={inputWidth/2 - 94/2} y2={0} showLayout>
+                      <Center width={90} height={94}>{star}</Center>
+                      <Center width={90} height={94}>{star}</Center>
+                      <Center width={90} height={94}>{star}</Center>
+                      <Center width={90} height={94}>{star}</Center>
+                      <Center width={90} height={94}>{star}</Center>
+                      <Center width={90} height={94}>{star}</Center>
+                      <Center width={90} height={94}>{star}</Center>
+                      <Center width={90} height={94}>{star}</Center>
+                    </HorizontalSpacedLine>
                     <Center width={inputWidth} height={inputHeight}>
                       <Button
                         text={'Sign Up'}
@@ -105,32 +120,6 @@ const App = (props) => {
           }
         }
       </KeyboardContext.Consumer>
-      <SpacedRay x1={100} y1={100} x2={100} y2={props.height} interval={props.width / 10} showLayout>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-        <Center>{star}</Center>
-      </SpacedRay>
-      <Margin x={0} y={800} top={47} right={100} bottom={47} left={100} width={props.width} height={94}>
-        <HorizontalSpacedLine>
-          <Center>{star}</Center>
-          <Center>{star}</Center>
-          <Center>{star}</Center>
-          <Center>{star}</Center>
-          <Center>{star}</Center>
-          <Center>{star}</Center>
-          <Center>{star}</Center>
-          <Center>{star}</Center>
-        </HorizontalSpacedLine>
-      </Margin>
     </React.Fragment>
   )
 }
