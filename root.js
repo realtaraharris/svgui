@@ -32,26 +32,6 @@ class Root extends React.Component {
       case 'Tab':
         event.preventDefault()
     }
-
-    if (event && event.key) {
-      const { altKey, ctrlKey, shiftKey, code, key, location, metaKey, repeat, getModifierState, isComposing, isTrusted } = event
-
-      setCurrentKeystroke({
-        altKey,
-        ctrlKey,
-        shiftKey,
-        code,
-        key,
-        character: filterKeyCharacter(key),
-        location,
-        metaKey,
-        repeat,
-        getModifierState,
-        isComposing,
-        isTrusted
-      })
-      this.setState({ keystroke: getCurrentKeystrokeOnce })
-    }
   }
 
   render () {

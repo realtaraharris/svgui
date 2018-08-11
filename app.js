@@ -13,113 +13,96 @@ const App = (props) => {
   return (
     <React.Fragment>
       <rect x={0} y={0} width={props.width} height={props.height} fill={'mintcream'} stroke={'cornsilk'} strokeWidth={2} strokeDasharray={'5,5'}/>
-      <KeyboardContext.Consumer>
-        {
-          getKeystroke => {
-            const keystroke = getKeystroke() // TODO: get rid of this. Just add an event listener in each controller, activated when focused
-            return (
-              <InputFocuser
-                tabs={6}
-                keystroke={keystroke}
-                render={(focusedIndex, handleFocus) => (
-                  <SpacedRay x1={props.width/2} y1={100} x2={props.width/2} y2={props.height} interval={140} showLayout>
-                    <Center width={inputWidth} height={inputHeight}>
-                      <InputController
-                         placeholder={'Full Name'}
-                         tabIndex={0}
-                         focusedIndex={focusedIndex}
-                         keystroke={keystroke}
-                         onClick={(tabIndex) => handleFocus(tabIndex)}
-                      />
-                    </Center>
-                    <Center width={inputWidth} height={inputHeight}>
-                      <InputController
-                        placeholder={'Address'}
-                        tabIndex={1}
-                        focusedIndex={focusedIndex}
-                        keystroke={keystroke}
-                        onClick={(tabIndex) => handleFocus(tabIndex)}
-                      />
-                    </Center>
-                    <Center width={inputWidth} height={inputHeight}>
-                      <HorizontalSpacedRay x1={0} y1={0} x2={inputWidth} y2={0} spaceBetween={60} showLayout>
-                        <InputController
-                          width={600}
-                          height={inputHeight}
-                          placeholder={'City'}
-                          tabIndex={2}
-                          focusedIndex={focusedIndex}
-                          keystroke={keystroke}
-                          onClick={(tabIndex) => handleFocus(tabIndex)}
-                        />
-                        <InputController
-                          width={280}
-                          height={inputHeight}
-                          placeholder={'State'}
-                          tabIndex={3}
-                          focusedIndex={focusedIndex}
-                          keystroke={keystroke}
-                          onClick={(tabIndex) => handleFocus(tabIndex)}
-                        />
-                        <InputController
-                          width={200}
-                          height={inputHeight}
-                          placeholder={'ZIP Code'}
-                          tabIndex={4}
-                          focusedIndex={focusedIndex}
-                          keystroke={keystroke}
-                          onClick={(tabIndex) => handleFocus(tabIndex)}
-                        />
-                      </HorizontalSpacedRay>
-                    </Center>
-                    <Center width={inputWidth} height={inputHeight}>
-                      <Margin x={0} y={0} top={10} right={100} bottom={10} left={100} width={props.width} height={194} showLayout>
-                        <Button text={'Button Inside Margin'} fill={'purple'} />
-                      </Margin>
-                    </Center>
-                    <HorizontalSpacedLine x1={-inputWidth/2 + 94/2} y1={0} x2={inputWidth/2 - 94/2} y2={0} showLayout>
-                      <Center width={90} height={94}>{star}</Center>
-                      <Center width={90} height={94}>{star}</Center>
-                      <Center width={90} height={94}>{star}</Center>
-                      <Center width={90} height={94}>{star}</Center>
-                      <Center width={90} height={94}>{star}</Center>
-                      <Center width={90} height={94}>{star}</Center>
-                      <Center width={90} height={94}>{star}</Center>
-                      <Center width={90} height={94}>{star}</Center>
-                    </HorizontalSpacedLine>
-                    <Center width={inputWidth} height={inputHeight}>
-                      <Button
-                        text={'Sign Up'}
-                        fill={'teal'}
-                        tabIndex={5}
-                        focused={focusedIndex === 5}
-                        keystroke={keystroke}
-
-                        focusedIndex={focusedIndex}
-                      />
-                    </Center>
-                    <CenterHorizontal offsetY={-inputHeight/2}>
-                      <Text
-                        width={inputWidth}
-                        height={500}
-                        fontStyle={{
-                          fontWeight: 100,
-                          fontStyle: 'regular',
-                          fontSize: 30,
-                          fontFamily: 'helvetica, sans-serif'
-                        }}
-                        lineHeight={31}
-                      >
-                       {[sampleText, sampleText, sampleText].join()}
-                      </Text>
-                    </CenterHorizontal>
-                  </SpacedRay>
-                )}
+      <InputFocuser
+        tabs={6}
+        render={(focusedIndex, handleFocus) => (
+          <SpacedRay x1={props.width/2} y1={100} x2={props.width/2} y2={props.height} interval={140} showLayout>
+            <Center width={inputWidth} height={inputHeight}>
+              <InputController
+                 placeholder={'Full Name'}
+                 tabIndex={0}
+                 focusedIndex={focusedIndex}
+                 onClick={(tabIndex) => handleFocus(tabIndex)}
               />
-            )
-          }
-        }
-      </KeyboardContext.Consumer>
+            </Center>
+            <Center width={inputWidth} height={inputHeight}>
+              <InputController
+                placeholder={'Address'}
+                tabIndex={1}
+                focusedIndex={focusedIndex}
+                onClick={(tabIndex) => handleFocus(tabIndex)}
+              />
+            </Center>
+            <Center width={inputWidth} height={inputHeight}>
+              <HorizontalSpacedRay x1={0} y1={0} x2={inputWidth} y2={0} spaceBetween={60} showLayout>
+                <InputController
+                  width={600}
+                  height={inputHeight}
+                  placeholder={'City'}
+                  tabIndex={2}
+                  focusedIndex={focusedIndex}
+                  onClick={(tabIndex) => handleFocus(tabIndex)}
+                />
+                <InputController
+                  width={280}
+                  height={inputHeight}
+                  placeholder={'State'}
+                  tabIndex={3}
+                  focusedIndex={focusedIndex}
+                  onClick={(tabIndex) => handleFocus(tabIndex)}
+                />
+                <InputController
+                  width={200}
+                  height={inputHeight}
+                  placeholder={'ZIP Code'}
+                  tabIndex={4}
+                  focusedIndex={focusedIndex}
+                  onClick={(tabIndex) => handleFocus(tabIndex)}
+                />
+              </HorizontalSpacedRay>
+            </Center>
+            <Center width={inputWidth} height={inputHeight}>
+              <Margin x={0} y={0} top={10} right={100} bottom={10} left={100} width={props.width} height={194} showLayout>
+                <Button text={'Button Inside Margin'} fill={'purple'} />
+              </Margin>
+            </Center>
+            <HorizontalSpacedLine x1={-inputWidth/2 + 94/2} y1={0} x2={inputWidth/2 - 94/2} y2={0} showLayout>
+              <Center width={90} height={94}>{star}</Center>
+              <Center width={90} height={94}>{star}</Center>
+              <Center width={90} height={94}>{star}</Center>
+              <Center width={90} height={94}>{star}</Center>
+              <Center width={90} height={94}>{star}</Center>
+              <Center width={90} height={94}>{star}</Center>
+              <Center width={90} height={94}>{star}</Center>
+              <Center width={90} height={94}>{star}</Center>
+            </HorizontalSpacedLine>
+            <Center width={inputWidth} height={inputHeight}>
+              <Button
+                text={'Sign Up'}
+                fill={'teal'}
+                tabIndex={5}
+                focused={focusedIndex === 5}
+                focusedIndex={focusedIndex}
+              />
+            </Center>
+            <CenterHorizontal offsetY={-inputHeight/2}>
+              <Text
+                width={inputWidth}
+                height={500}
+                fontStyle={{
+                  fontWeight: 100,
+                  fontStyle: 'regular',
+                  fontSize: 30,
+                  fontFamily: 'helvetica, sans-serif'
+                }}
+                lineHeight={31}
+              >
+               {[sampleText, sampleText, sampleText].join()}
+              </Text>
+            </CenterHorizontal>
+          </SpacedRay>
+        )}
+      />
     </React.Fragment>
   )
 }
