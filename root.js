@@ -7,7 +7,6 @@ class Root extends React.Component {
     this.state = {
       width: this.getWindowWidth(),
       height: this.getWindowHeight(),
-      keystroke: KeyboardDefault
     }
     this.handleKeystroke = this.handleKeystroke.bind(this)
   }
@@ -36,11 +35,9 @@ class Root extends React.Component {
 
   render () {
     return (
-      <KeyboardContext.Provider value={this.state.keystroke}>
-        <svg viewBox={[0, 0, this.state.width, this.state.height]}>
-          <App width={this.state.width} height={this.state.height} showLayout />
-        </svg>
-      </KeyboardContext.Provider>
+      <svg viewBox={[0, 0, this.state.width, this.state.height]}>
+        <App width={this.state.width} height={this.state.height} showLayout />
+      </svg>
     )
   }
 }
