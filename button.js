@@ -1,5 +1,10 @@
 'use strict'
 
+const React = require('react')
+const { Center } = require('./layout')
+const { measureTextWidth } = require('./utils')
+const Label = require('./label')
+
 const Button = (props) => {
   const textWidth = measureTextWidth({
     text: props.text,
@@ -21,3 +26,5 @@ const Button = (props) => {
     </React.Fragment>
   )
 }
+
+module.exports = Button

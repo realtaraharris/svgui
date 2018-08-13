@@ -1,5 +1,8 @@
 'use strict'
 
+const React = require('react')
+const App = require('./app')
+
 class Root extends React.Component {
   constructor (props) {
     super(props)
@@ -41,3 +44,5 @@ class Root extends React.Component {
     )
   }
 }
+
+module.exports = Root

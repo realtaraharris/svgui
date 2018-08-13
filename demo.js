@@ -1,5 +1,7 @@
 'use strict'
 
+const React = require('react')
+
 const Star = (props) => (
   <React.Fragment>
     {props.showLayout && <rect x={0} y={0} width={props.width} height={props.height} stroke={'orange'} fill={'none'} strokeDasharray={'5,5'} />}
@@ -50,3 +52,5 @@ const Demo = (props) => {
     </React.Fragment>
   )
 }
+
+module.exports = Star

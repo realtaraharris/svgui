@@ -1,5 +1,7 @@
 'use strict'
 
+const React = require('react')
+
 // this is a dispatcher that focuses the KeyboardContext onto the input element in focus
 class InputFocuser extends React.Component {
   constructor (props) {
@@ -177,3 +179,5 @@ const Input = (props) => {
     </React.Fragment>
   )
 }
+
+module.exports = { InputFocuser, InputController, Input }

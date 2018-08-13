@@ -19,3 +19,5 @@ const measureTextWidth = ({ text, fontWeight, fontStyle, fontSize, fontFamily })
 
 // original: https://stackoverflow.com/a/13403498
 const generateQuickGuid = () => Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+
+module.exports = { forwardProps, normalizeChildren, measureTextWidth, generateQuickGuid }

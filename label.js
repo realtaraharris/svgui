@@ -1,5 +1,7 @@
 'use strict'
 
+const React = require('react')
+
 const Label = (props) => {
   return (
     <React.Fragment>
@@ -8,3 +10,5 @@ const Label = (props) => {
     </React.Fragment>
   )
 }
+
+module.exports = Label

@@ -1,3 +1,9 @@
+'use strict'
+
+const React = require('react')
+
+const { generateQuickGuid } = require('./utils')
+
 const measure = (text, { fontWeight, fontStyle, fontSize, fontFamily }) => {
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')
@@ -125,9 +131,13 @@ console.log('props.children:', props.children)
 
     this.scrollRectRef = React.createRef()
     this.onWheel = this.onWheel.bind(this)
+    this.translateCoords = this.translateCoords.bind(this)
+    this.onMouseDown = this.onMouseDown.bind(this)
+    this.onMouseUp = this.onMouseUp.bind(this)
+    this.onMouseMove = this.onMouseMove.bind(this)
   }
 
-  onWheel = (event) => {
+  onWheel (event) {
     const textHeight = this.state.wrappedText.length * this.props.lineHeight
     const bottom = (this.props.height - textHeight)
 
@@ -140,26 +150,26 @@ console.log('props.children:', props.children)
     this.setState({ scrollPositionVertical })
   }
 
-  translateCoords = ({ clientX, clientY }) => {
+  translateCoords ({ clientX, clientY }) {
     const { x, y } = this.state.boundingClientRect
     const clickX = clientX - x
     const clickY = clientY - y
     return { x: clickX * 2, y: clickY * 2 }
   }
 
-  onMouseDown = (event) => {
+  onMouseDown (event) {
     const { x, y } = this.translateCoords(event)
     console.log(`mouse down on (${x}, ${y})`)
     this.setState({ mouseDown: true, dragStartCoords: { x, y }, dragEndCoords: { x, y } })
   }
 
-  onMouseUp = () => {
+  onMouseUp () {
     const { x, y } = this.translateCoords(event)
     console.log(`mouse up on (${x}, ${y})`)
     this.setState({ mouseDown: false, dragEndCoords: { x, y } })
   }
 
-  onMouseMove = (event) => {
+  onMouseMove (event) {
     if (this.state.mouseDown) {
       const { x, y } = this.translateCoords(event)
       console.log(`mouse move on (${x}, ${y})`)
@@ -280,3 +290,5 @@ const insideBox = ({ clickX, clickY }, { x, y, width, height }) => {
     clickY < y + height
   )
 }
+
+module.exports = Text
