@@ -3,13 +3,15 @@
 const React = require('react')
 const App = require('./app')
 
+// const { Demo } = require('./demo')
+
 class Root extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
       width: this.getWindowWidth(),
-      height: this.getWindowHeight(),
+      height: this.getWindowHeight()
     }
     this.handleKeystroke = this.handleKeystroke.bind(this)
   }

@@ -21,6 +21,7 @@ const measure = (text, { fontWeight, fontStyle, fontSize, fontFamily }) => {
   }))
 }
 
+/*
 // list: [ 'But', 'I', 'must', 'explain' ], newItem: ' '
 // returns: [ 'But', ' ', 'I', ' ', 'must', ' ', 'explain' ]
 const interspersePure = (list, newItem) => list.reduce((initial, token, index) => {
@@ -31,6 +32,7 @@ const interspersePure = (list, newItem) => list.reduce((initial, token, index) =
   }
 }, [])
 // exports.interspersePure = interspersePure
+*/
 
 const intersperse = (list, newItem) => {
   let result = []
@@ -54,6 +56,7 @@ const hyphenate = (input, splitChar) => input.map((token, index) => {
 })
 // exports.hyphenate = hyphenate
 
+/*
 // inputs: [ 'asdf asdf asdf asdf' ], ' ', intersperse
 // input: [ 'asdf', ' ', 'asdf', ' ', 'asdf, ' ', 'asdf' ]
 const splitPure = (input, splitChar, handler) => input.reduce((initial, token) => {
@@ -62,6 +65,7 @@ const splitPure = (input, splitChar, handler) => input.reduce((initial, token) =
   return initial.concat(newTokens)
 }, [])
 // exports.splitPure = splitPure
+*/
 
 const split = (input, splitChar, handler) => {
   let result = []
@@ -106,13 +110,11 @@ const wrap = (tokens, maxWrapWidth) => (
 )
 // exports.wrap = wrap
 
-const getLineWidths = lines => lines.map(line => line.reduce((width, line) => width + line.width, 0))
+// const getLineWidths = lines => lines.map(line => line.reduce((width, line) => width + line.width, 0))
 
 class Text extends React.Component {
   constructor (props) {
     super(props)
-
-console.log('props.children:', props.children)
 
     const text = this.props.children
     // const text = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.`
@@ -163,7 +165,7 @@ console.log('props.children:', props.children)
     this.setState({ mouseDown: true, dragStartCoords: { x, y }, dragEndCoords: { x, y } })
   }
 
-  onMouseUp () {
+  onMouseUp (event) {
     const { x, y } = this.translateCoords(event)
     console.log(`mouse up on (${x}, ${y})`)
     this.setState({ mouseDown: false, dragEndCoords: { x, y } })

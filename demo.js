@@ -2,6 +2,10 @@
 
 const React = require('react')
 
+const { Center, Margin, HorizontalSpacedLine } = require('./layout')
+const Button = require('./button')
+const { Input } = require('./input')
+
 const Star = (props) => (
   <React.Fragment>
     {props.showLayout && <rect x={0} y={0} width={props.width} height={props.height} stroke={'orange'} fill={'none'} strokeDasharray={'5,5'} />}
@@ -12,16 +16,16 @@ const Star = (props) => (
 )
 
 const Demo = (props) => {
-  const star = <Star width={90} height={94} scale={0.5}/>
+  const star = <Star width={90} height={94} scale={0.5} />
   return (
     <React.Fragment>
       <Button x={100} y={800} width={400} height={380} text={'App'} fill={'teal'} showLayout={props.showLayout} />
       <Input x={600} y={800} width={400} height={100} text={'This is an input element'} showLayout={props.showLayout} />
       <HorizontalSpacedLine width={props.width} x={0} y={120} showLayout={props.showLayout} >
-        <Center><Button width={120} height={120} text={'App'} fill={'red'}/></Center>
-        <Center><Button width={120} height={120} text={'B'} fill={'goldenrod'}/></Center>
+        <Center><Button width={120} height={120} text={'App'} fill={'red'} /></Center>
+        <Center><Button width={120} height={120} text={'B'} fill={'goldenrod'} /></Center>
         <Center>{star}</Center>
-        <Center><Button width={200} height={50} text={'Short Button'} fill={'orangered'}/></Center>
+        <Center><Button width={200} height={50} text={'Short Button'} fill={'orangered'} /></Center>
         <Center>{star}</Center>
         <Center>{star}</Center>
         <Center>{star}</Center>
@@ -53,4 +57,4 @@ const Demo = (props) => {
   )
 }
 
-module.exports = Star
+module.exports = { Star, Demo }

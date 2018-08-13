@@ -24,34 +24,34 @@ const CenterHorizontal = (props) => {
   }
 
   const childWidth = props.children.props.width
-  const childHeight = props.children.props.height
+  // const childHeight = props.children.props.height
 
   const midX = -childWidth / 2
-  const midY = -childHeight / 2
+  // const midY = -childHeight / 2
 
   return (
     <g transform={`translate(${midX}, ${props.offsetY})`}>{props.children}</g>
   )
 }
 
-const ShiftXCenterY = (props) => {
-  if (Array.isArray(props.children)) {
-    return console.error('ShiftXCenterY component only accepts single children')
-  }
+// const ShiftXCenterY = (props) => {
+//   if (Array.isArray(props.children)) {
+//     return console.error('ShiftXCenterY component only accepts single children')
+//   }
 
-  if (!props.children.props.width || !props.children.props.height) {
-    return console.error('ShiftXCenterY component requires that child have width and height props')
-  }
+//   if (!props.children.props.width || !props.children.props.height) {
+//     return console.error('ShiftXCenterY component requires that child have width and height props')
+//   }
 
-  const childWidth = props.children.props.width
-  const childHeight = props.children.props.height
+//   const childWidth = props.children.props.width
+//   const childHeight = props.children.props.height
 
-  const midY = -childHeight / 2
+//   const midY = -childHeight / 2
 
-  return (
-    <g transform={`translate(${props.x}, ${midY})`}>{props.children}</g>
-  )
-}
+//   return (
+//     <g transform={`translate(${props.x}, ${midY})`}>{props.children}</g>
+//   )
+// }
 
 // TODO: rename!
 // TODO: props.interval should be renamed to props.spaceBetween or something?
@@ -73,7 +73,7 @@ const HorizontalSpacedRay = (props) => {
             const result = (
               <g transform={`translate(${deltaX}, ${deltaY})`} key={index}>
                 {child}
-                <circle cx={0} cy={0} r={2} stroke={'red'}/>
+                <circle cx={0} cy={0} r={2} stroke={'red'} />
               </g>
             )
 
@@ -102,7 +102,6 @@ const HorizontalSpacedLine = (props) => {
 
   const slice = length / (props.children.length - 1)
 
-
   const angle = Math.atan(slope)
   const deltaX = slice * Math.cos(angle)
   const deltaY = slice * Math.sin(angle)
@@ -118,7 +117,7 @@ const HorizontalSpacedLine = (props) => {
             return (
               <g transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
                 {child}
-                <circle cx={0} cy={0} r={2} stroke={'red'}/>
+                <circle cx={0} cy={0} r={2} stroke={'red'} />
               </g>
             )
           })
@@ -148,7 +147,7 @@ const SpacedRay = (props) => {
             return (
               <g transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
                 {child}
-                <circle cx={0} cy={0} r={2} stroke={'red'}/>
+                <circle cx={0} cy={0} r={2} stroke={'red'} />
               </g>
             )
           })
