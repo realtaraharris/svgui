@@ -174,7 +174,6 @@ class Text extends React.Component {
   onMouseMove (event) {
     if (this.state.mouseDown) {
       const { x, y } = this.translateCoords(event)
-      console.log(`mouse move on (${x}, ${y})`)
       this.setState({ dragEndCoords: { x, y } })
     }
   }
