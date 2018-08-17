@@ -10,25 +10,6 @@ const findHits = (x, y) => shapes.filter(shape => (
   y <= shape.y + shape.height
 ))
 
-/*
-const findHits = (x, y) => {
-  let hits = []
-  for (let i = 0; i < shapes.length; i++) {
-    const shape = shapes[i]
-
-    const hit = (
-      x >= shape.x &&
-      x <= shape.x + shape.width &&
-      y >= shape.y &&
-      y <= shape.y + shape.height
-    )
-
-    if (hit) { hits.push(i) }
-  }
-  return hits
-}
-*/
-
 const addShape = (shape) => {
   console.log('adding shape:', shape)
   const shapeId = uuid()
@@ -67,26 +48,22 @@ const removeShape = (shapeId) => {
 //   onMouseMove: (stuff) => console.log(stuff)
 // })
 
-const awesomeUp = (x, y) => {
-  const hits = findHits(x, y)
-  // console.log(`test ${x}, ${y}:`, hits)
-  hits.forEach(shape => shape.onMouseUp(`onMouseUp: ${shape.shapeId}, ${shape.x}, ${shape.y}, ${shape.width}, ${shape.height}`))
-}
+let hits
 
 const awesomeDown = (x, y) => {
-  const hits = findHits(x, y)
-  // console.log(`test ${x}, ${y}:`, hits)
-  hits.forEach(shape => {
-    shape.onMouseDown({ x, y })
-  })
+  hits = findHits(x, y)
+
+  hits.forEach(shape => { shape.onMouseDown({ x, y }) })
+}
+
+const awesomeUp = (x, y) => {
+  hits.forEach(shape => shape.onMouseUp())
+  hits = []
 }
 
 const awesomeMove = (x, y) => {
-  const hits = findHits(x, y)
-  // console.log(`test ${x}, ${y}:`, hits)
-  hits.forEach(shape => {
-    shape.onMouseMove({ x, y })
-  })
+  if (!hits) { return }
+  hits.forEach(shape => { shape.onMouseMove({ x, y }) })
 }
 
 window.addEventListener('mouseup', (event) => {
