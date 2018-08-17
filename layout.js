@@ -214,13 +214,19 @@ class MovableDot extends React.Component {
 
   onMouseMove ({ x, y }) {
     if (this.state.mouseDown) {
-      const { previousMousePosition } = this.state
+      const { previousMousePosition, shapePosition } = this.state
       const dragDelta = {
         x: (x - previousMousePosition.x) * 2,
         y: (y - previousMousePosition.y) * 2
       }
 
       this.setState({ dragDelta })
+
+      const currentPosition = {
+        x: shapePosition.x + dragDelta.x,
+        y: shapePosition.y + dragDelta.y
+      }
+      this.props.onMouseMove(currentPosition)
     }
   }
 
@@ -229,6 +235,7 @@ class MovableDot extends React.Component {
 
     return (
       <React.Fragment>
+        {/*
         <line
           x1={0}
           y1={0}
@@ -245,6 +252,7 @@ class MovableDot extends React.Component {
           stroke={'brown'}
           strokeDasharray={'5,5'}
         />
+        */}
         <Rect
           x={state.shapePosition.x + state.dragDelta.x}
           y={state.shapePosition.y + state.dragDelta.y}
@@ -264,7 +272,15 @@ class MarginDev extends React.Component {
   constructor (props) {
     super(props)
 
-    this.state = {}
+    this.state = {
+      foo: 0
+    }
+
+    this.foo = this.foo.bind(this)
+  }
+
+  foo ({ x, y }) {
+    this.setState({ foo: x })
   }
 
   render () {
@@ -276,9 +292,9 @@ class MarginDev extends React.Component {
     const innerHeight = props.height - props.top - props.bottom
 
     const innerProps = Object.assign({}, props.children.props, {
-      x: innerX,
+      x: innerX + this.state.foo,
       y: innerY,
-      width: innerWidth,
+      width: innerWidth - this.state.foo,
       height: innerHeight
     })
 
@@ -299,9 +315,9 @@ class MarginDev extends React.Component {
                 fill={'none'}
               />
               <rect
-                x={innerX}
+                x={innerX + this.state.foo}
                 y={innerY}
-                width={innerWidth}
+                width={innerWidth - this.state.foo}
                 height={innerHeight}
                 stroke={'brown'}
                 strokeDasharray={'5,5'}
@@ -313,9 +329,9 @@ class MarginDev extends React.Component {
         {
           innerChildren
         }
-        <MovableDot restrictVect={{ x: 200, y: 0 }} width={100} height={200} fill={'rgba(255,0,0,0.2)'} />
-        <MovableDot restrictVect={{ x: 200, y: 0 }} width={200} height={100} fill={'rgba(0,255,0,0.2)'} />
-        <MovableDot restrictVect={{ x: 200, y: 0 }} width={200} height={200} fill={'rgba(0,0,255,0.2)'} />
+        {/*<MovableDot restrictVect={{ x: 200, y: 0 }} width={100} height={200} fill={'rgba(255,0,0,0.2)'} onMouseMove={} />*/}
+        <MovableDot restrictVect={{ x: 200, y: 0 }} x={100} y={50} width={200} height={100} fill={'rgba(0,255,255,0.2)'} onMouseMove={this.foo} />
+        {/*<MovableDot restrictVect={{ x: 200, y: 0 }} width={200} height={200} fill={'rgba(0,0,255,0.2)'} onMouseMove={} />*/}
       </React.Fragment>
     )
   }
