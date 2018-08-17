@@ -2,6 +2,7 @@
 const React = require('react')
 
 const { normalizeChildren, forwardProps } = require('./utils')
+const Rect = require('./shapes')
 
 const Center = (props) => {
   const midX = -props.width / 2
@@ -157,52 +158,213 @@ const SpacedRay = (props) => {
   )
 }
 
-const Margin = (props) => {
-  const innerX = props.x + props.left
-  const innerY = props.y + props.top
-  const innerWidth = props.width - props.left - props.right
-  const innerHeight = props.height - props.top - props.bottom
+// const dot = (v1, v2) => {
+//   const slope1 = (v1.y2 - v1.y1) / (v1.x2 - v1.x1)
 
-  const innerProps = Object.assign({}, props.children.props, {
-    x: innerX,
-    y: innerY,
-    width: innerWidth,
-    height: innerHeight
-  })
+//   const a = v2.x2 - v2.x1
+//   const b = v2.y2 - v2.y1
 
-  const innerChildren = Object.assign({}, props.children, { props: innerProps })
+//   const length = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
 
-  return (
-    <React.Fragment>
-      {
-        props.showLayout && (
-          <React.Fragment>
-            <rect
-              x={props.x}
-              y={props.y}
-              width={props.width}
-              height={props.height}
-              stroke={'red'}
-              strokeDasharray={'5,5'}
-              fill={'none'}
-            />
-            <rect
-              x={innerX}
-              y={innerY}
-              width={innerWidth}
-              height={innerHeight}
-              stroke={'brown'}
-              strokeDasharray={'5,5'}
-              fill={'none'}
-            />
-          </React.Fragment>
-        )
+//   const angle = Math.atan(slope1)
+//   const deltaX = length * Math.cos(angle)
+//   const deltaY = length * Math.sin(angle)
+
+//   return { x: deltaX, y: deltaY }
+// }
+
+class MovableDot extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      x1: 0,
+      y1: 0,
+      x2: 0,
+      y2: 100,
+      mouseDown: false,
+
+      itemScratchPos: { x: 0, y: 0 },
+      prevWorldCoords: { x: 0, y: 0 },
+
+      delta: { x: 0, y: 0 }
+    }
+
+    this.onMouseDown = this.onMouseDown.bind(this)
+    this.onMouseUp = this.onMouseUp.bind(this)
+    this.onMouseMove = this.onMouseMove.bind(this)
+  }
+
+  onMouseDown ({ x, y }) {
+    this.setState({
+      mouseDown: true,
+      prevWorldCoords: { x, y }
+    })
+  }
+
+  onMouseUp () {
+    this.setState({
+      mouseDown: false,
+      itemScratchPos: {
+        x: this.state.itemScratchPos.x + this.state.delta.x,
+        y: this.state.itemScratchPos.y + this.state.delta.y
+      },
+      delta: { x: 0, y: 0 }
+    })
+  }
+
+  onMouseMove ({ x, y }) {
+    if (this.state.mouseDown) {
+      const delta = {
+        x: (x - this.state.prevWorldCoords.x) * 2,
+        y: (y - this.state.prevWorldCoords.y) * 2
       }
-      {
-        innerChildren
-      }
-    </React.Fragment>
-  )
+
+      this.setState({ delta })
+    }
+  }
+
+  render () {
+    const { state, props } = this
+
+    const blueRect = {
+      x: state.itemScratchPos.x + state.delta.x,
+      y: state.itemScratchPos.y + state.delta.y
+    }
+    return (
+      <React.Fragment>
+        <line
+          x1={0}
+          y1={0}
+          x2={props.restrictVect.x}
+          y2={props.restrictVect.y}
+          stroke={'orange'}
+          strokeDasharray={'2,2'}
+        />
+        <line
+          x1={state.x1}
+          y1={state.y1}
+          x2={state.x2}
+          y2={state.y2}
+          stroke={'brown'}
+          strokeDasharray={'5,5'}
+        />
+        <rect fill={'rgba(0,0,0,0)'} stroke={'black'} x={0} y={0} width={this.props.width} height={this.props.height} />
+        <Rect x={blueRect.x} y={blueRect.y} width={200} height={200} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove} fill={'rgba(0,0,255,0.5)'} />
+        {/*
+        <Rect x={0} y={0} width={80} height={20} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove} fill={'rgba(255,0,0,0.2)'} />
+        <Rect x={0} y={0} width={20} height={80} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove} fill={'rgba(0,255,0,0.2)'} />
+        */}
+      </React.Fragment>
+    )
+  }
 }
 
-module.exports = { Center, CenterHorizontal, Margin, HorizontalSpacedRay, HorizontalSpacedLine, SpacedRay }
+class MarginDev extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {}
+  }
+
+  render () {
+    const { props } = this
+
+    const innerX = props.x + props.left
+    const innerY = props.y + props.top
+    const innerWidth = props.width - props.left - props.right
+    const innerHeight = props.height - props.top - props.bottom
+
+    const innerProps = Object.assign({}, props.children.props, {
+      x: innerX,
+      y: innerY,
+      width: innerWidth,
+      height: innerHeight
+    })
+
+    const innerChildren = Object.assign({}, props.children, { props: innerProps })
+
+    return (
+      <React.Fragment>
+        {
+          props.showLayout && (
+            <React.Fragment>
+              <rect
+                x={props.x}
+                y={props.y}
+                width={props.width}
+                height={props.height}
+                stroke={'red'}
+                strokeDasharray={'5,5'}
+                fill={'none'}
+              />
+              <rect
+                x={innerX}
+                y={innerY}
+                width={innerWidth}
+                height={innerHeight}
+                stroke={'brown'}
+                strokeDasharray={'5,5'}
+                fill={'none'}
+              />
+            </React.Fragment>
+          )
+        }
+        {
+          innerChildren
+        }
+        <MovableDot restrictVect={{ x: 200, y: 0 }} width={this.props.width} height={this.props.height} />
+      </React.Fragment>
+    )
+  }
+}
+
+// const Margin = (props) => {
+//   const innerX = props.x + props.left
+//   const innerY = props.y + props.top
+//   const innerWidth = props.width - props.left - props.right
+//   const innerHeight = props.height - props.top - props.bottom
+
+//   const innerProps = Object.assign({}, props.children.props, {
+//     x: innerX,
+//     y: innerY,
+//     width: innerWidth,
+//     height: innerHeight
+//   })
+
+//   const innerChildren = Object.assign({}, props.children, { props: innerProps })
+
+//   return (
+//     <React.Fragment>
+//       {
+//         props.showLayout && (
+//           <React.Fragment>
+//             <rect
+//               x={props.x}
+//               y={props.y}
+//               width={props.width}
+//               height={props.height}
+//               stroke={'red'}
+//               strokeDasharray={'5,5'}
+//               fill={'none'}
+//             />
+//             <rect
+//               x={innerX}
+//               y={innerY}
+//               width={innerWidth}
+//               height={innerHeight}
+//               stroke={'brown'}
+//               strokeDasharray={'5,5'}
+//               fill={'none'}
+//             />
+//           </React.Fragment>
+//         )
+//       }
+//       {
+//         innerChildren
+//       }
+//     </React.Fragment>
+//   )
+// }
+
+module.exports = { Center, CenterHorizontal, Margin: MarginDev, HorizontalSpacedRay, HorizontalSpacedLine, SpacedRay }

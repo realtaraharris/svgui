@@ -5,6 +5,8 @@ const App = require('./app')
 
 // const { Demo } = require('./demo')
 
+require('./events')
+
 class Root extends React.Component {
   constructor (props) {
     super(props)
@@ -40,7 +42,7 @@ class Root extends React.Component {
 
   render () {
     return (
-      <svg viewBox={[0, 0, this.state.width, this.state.height]}>
+      <svg viewBox={[0, 0, this.state.width, this.state.height]} id={'svg-root'}>
         <App width={this.state.width} height={this.state.height} showLayout />
       </svg>
     )
