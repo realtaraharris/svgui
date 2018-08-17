@@ -183,11 +183,9 @@ class MovableDot extends React.Component {
       x2: 0,
       y2: 100,
       mouseDown: false,
-
-      itemScratchPos: { x: 0, y: 0 },
-      prevWorldCoords: { x: 0, y: 0 },
-
-      delta: { x: 0, y: 0 }
+      shapePosition: { x: 0, y: 0 },
+      previousMousePosition: { x: 0, y: 0 },
+      dragDelta: { x: 0, y: 0 }
     }
 
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -198,29 +196,31 @@ class MovableDot extends React.Component {
   onMouseDown ({ x, y }) {
     this.setState({
       mouseDown: true,
-      prevWorldCoords: { x, y }
+      previousMousePosition: { x, y }
     })
   }
 
   onMouseUp () {
+    const { shapePosition, dragDelta } = this.state
     this.setState({
       mouseDown: false,
-      itemScratchPos: {
-        x: this.state.itemScratchPos.x + this.state.delta.x,
-        y: this.state.itemScratchPos.y + this.state.delta.y
+      shapePosition: {
+        x: shapePosition.x + dragDelta.x,
+        y: shapePosition.y + dragDelta.y
       },
-      delta: { x: 0, y: 0 }
+      dragDelta: { x: 0, y: 0 }
     })
   }
 
   onMouseMove ({ x, y }) {
     if (this.state.mouseDown) {
-      const delta = {
-        x: (x - this.state.prevWorldCoords.x) * 2,
-        y: (y - this.state.prevWorldCoords.y) * 2
+      const { previousMousePosition } = this.state
+      const dragDelta = {
+        x: (x - previousMousePosition.x) * 2,
+        y: (y - previousMousePosition.y) * 2
       }
 
-      this.setState({ delta })
+      this.setState({ dragDelta })
     }
   }
 
@@ -228,8 +228,8 @@ class MovableDot extends React.Component {
     const { state, props } = this
 
     const blueRect = {
-      x: state.itemScratchPos.x + state.delta.x,
-      y: state.itemScratchPos.y + state.delta.y
+      x: state.shapePosition.x + state.dragDelta.x,
+      y: state.shapePosition.y + state.dragDelta.y
     }
     return (
       <React.Fragment>
