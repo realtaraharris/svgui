@@ -173,17 +173,13 @@ const SpacedRay = (props) => {
 //   return { x: deltaX, y: deltaY }
 // }
 
-class MovableDot extends React.Component {
+class DraggableRect extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      x1: 0,
-      y1: 0,
-      x2: 0,
-      y2: 100,
       mouseDown: false,
-      shapePosition: { x: 0, y: 0 },
+      shapePosition: { x: this.props.x, y: this.props.y },
       previousMousePosition: { x: 0, y: 0 },
       dragDelta: { x: 0, y: 0 }
     }
@@ -231,39 +227,20 @@ class MovableDot extends React.Component {
   }
 
   render () {
-    const { state, props } = this
+    const { width, height, fill } = this.props
+    const { shapePosition, dragDelta } = this.state
 
     return (
-      <React.Fragment>
-        {/*
-        <line
-          x1={0}
-          y1={0}
-          x2={props.restrictVect.x}
-          y2={props.restrictVect.y}
-          stroke={'orange'}
-          strokeDasharray={'2,2'}
-        />
-        <line
-          x1={state.x1}
-          y1={state.y1}
-          x2={state.x2}
-          y2={state.y2}
-          stroke={'brown'}
-          strokeDasharray={'5,5'}
-        />
-        */}
-        <Rect
-          x={state.shapePosition.x + state.dragDelta.x}
-          y={state.shapePosition.y + state.dragDelta.y}
-          width={this.props.width}
-          height={this.props.height}
-          onMouseDown={this.onMouseDown}
-          onMouseUp={this.onMouseUp}
-          onMouseMove={this.onMouseMove}
-          fill={this.props.fill}
-        />
-      </React.Fragment>
+      <Rect
+        x={shapePosition.x + dragDelta.x}
+        y={shapePosition.y + dragDelta.y}
+        width={width}
+        height={height}
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+        onMouseMove={this.onMouseMove}
+        fill={fill}
+      />
     )
   }
 }
@@ -273,14 +250,20 @@ class MarginDev extends React.Component {
     super(props)
 
     this.state = {
-      foo: 0
+      foo: 0,
+      bar: 0
     }
 
     this.foo = this.foo.bind(this)
+    this.bar = this.bar.bind(this)
   }
 
   foo ({ x, y }) {
     this.setState({ foo: x })
+  }
+
+  bar ({ x, y }) {
+    this.setState({ bar: x })
   }
 
   render () {
@@ -294,7 +277,7 @@ class MarginDev extends React.Component {
     const innerProps = Object.assign({}, props.children.props, {
       x: innerX + this.state.foo,
       y: innerY,
-      width: innerWidth - this.state.foo,
+      width: innerWidth - this.state.foo + this.state.bar,
       height: innerHeight
     })
 
@@ -317,7 +300,7 @@ class MarginDev extends React.Component {
               <rect
                 x={innerX + this.state.foo}
                 y={innerY}
-                width={innerWidth - this.state.foo}
+                width={innerWidth - this.state.foo + this.state.bar}
                 height={innerHeight}
                 stroke={'brown'}
                 strokeDasharray={'5,5'}
@@ -329,9 +312,9 @@ class MarginDev extends React.Component {
         {
           innerChildren
         }
-        {/*<MovableDot restrictVect={{ x: 200, y: 0 }} width={100} height={200} fill={'rgba(255,0,0,0.2)'} onMouseMove={} />*/}
-        <MovableDot restrictVect={{ x: 200, y: 0 }} x={100} y={50} width={200} height={100} fill={'rgba(0,255,255,0.2)'} onMouseMove={this.foo} />
-        {/*<MovableDot restrictVect={{ x: 200, y: 0 }} width={200} height={200} fill={'rgba(0,0,255,0.2)'} onMouseMove={} />*/}
+        {/*<DraggableRect restrictVect={{ x: 200, y: 0 }} width={100} height={200} fill={'rgba(255,0,0,0.2)'} onMouseMove={} />*/}
+        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={100} y={50} width={50} height={100} fill={'rgba(0,255,255,0.2)'} onMouseMove={this.foo} />
+        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={100} y={100} width={50} height={200} fill={'rgba(0,0,255,0.2)'} onMouseMove={this.bar} />
       </React.Fragment>
     )
   }
