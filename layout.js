@@ -227,10 +227,6 @@ class MovableDot extends React.Component {
   render () {
     const { state, props } = this
 
-    const blueRect = {
-      x: state.shapePosition.x + state.dragDelta.x,
-      y: state.shapePosition.y + state.dragDelta.y
-    }
     return (
       <React.Fragment>
         <line
@@ -249,12 +245,16 @@ class MovableDot extends React.Component {
           stroke={'brown'}
           strokeDasharray={'5,5'}
         />
-        <rect fill={'rgba(0,0,0,0)'} stroke={'black'} x={0} y={0} width={this.props.width} height={this.props.height} />
-        <Rect x={blueRect.x} y={blueRect.y} width={200} height={200} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove} fill={'rgba(0,0,255,0.5)'} />
-        {/*
-        <Rect x={0} y={0} width={80} height={20} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove} fill={'rgba(255,0,0,0.2)'} />
-        <Rect x={0} y={0} width={20} height={80} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} onMouseMove={this.onMouseMove} fill={'rgba(0,255,0,0.2)'} />
-        */}
+        <Rect
+          x={state.shapePosition.x + state.dragDelta.x}
+          y={state.shapePosition.y + state.dragDelta.y}
+          width={this.props.width}
+          height={this.props.height}
+          onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
+          onMouseMove={this.onMouseMove}
+          fill={this.props.fill}
+        />
       </React.Fragment>
     )
   }
@@ -313,7 +313,9 @@ class MarginDev extends React.Component {
         {
           innerChildren
         }
-        <MovableDot restrictVect={{ x: 200, y: 0 }} width={this.props.width} height={this.props.height} />
+        <MovableDot restrictVect={{ x: 200, y: 0 }} width={100} height={200} fill={'rgba(255,0,0,0.2)'} />
+        <MovableDot restrictVect={{ x: 200, y: 0 }} width={200} height={100} fill={'rgba(0,255,0,0.2)'} />
+        <MovableDot restrictVect={{ x: 200, y: 0 }} width={200} height={200} fill={'rgba(0,0,255,0.2)'} />
       </React.Fragment>
     )
   }
