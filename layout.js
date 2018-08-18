@@ -245,39 +245,44 @@ class DraggableRect extends React.Component {
   }
 }
 
+const DRAGGER_HEIGHT = 50
+const DRAGGER_WIDTH = 25
+
 class MarginDev extends React.Component {
   constructor (props) {
     super(props)
 
+    const { width, left, right } = props
+
     this.state = {
-      foo: 0,
-      bar: 0
+      leftDragLoc: left,
+      rightDragLoc: width - right
     }
 
-    this.foo = this.foo.bind(this)
-    this.bar = this.bar.bind(this)
+    this.setLeftDragLoc = this.setLeftDragLoc.bind(this)
+    this.setRightDragLoc = this.setRightDragLoc.bind(this)
   }
 
-  foo ({ x, y }) {
-    this.setState({ foo: x })
+  setLeftDragLoc ({ x, y }) {
+    this.setState({ leftDragLoc: x + (DRAGGER_WIDTH / 2) })
   }
 
-  bar ({ x, y }) {
-    this.setState({ bar: x })
+  setRightDragLoc ({ x, y }) {
+    this.setState({ rightDragLoc: x + (DRAGGER_WIDTH / 2) })
   }
 
   render () {
     const { props } = this
 
-    const innerX = props.x + props.left
+    const innerX = props.x + this.state.leftDragLoc
     const innerY = props.y + props.top
-    const innerWidth = props.width - props.left - props.right
+    const innerWidth = this.state.rightDragLoc - this.state.leftDragLoc
     const innerHeight = props.height - props.top - props.bottom
 
     const innerProps = Object.assign({}, props.children.props, {
-      x: innerX + this.state.foo,
+      x: innerX,
       y: innerY,
-      width: innerWidth - this.state.foo + this.state.bar,
+      width: innerWidth,
       height: innerHeight
     })
 
@@ -298,9 +303,9 @@ class MarginDev extends React.Component {
                 fill={'none'}
               />
               <rect
-                x={innerX + this.state.foo}
+                x={innerX}
                 y={innerY}
-                width={innerWidth - this.state.foo + this.state.bar}
+                width={innerWidth}
                 height={innerHeight}
                 stroke={'brown'}
                 strokeDasharray={'5,5'}
@@ -312,9 +317,8 @@ class MarginDev extends React.Component {
         {
           innerChildren
         }
-        {/*<DraggableRect restrictVect={{ x: 200, y: 0 }} width={100} height={200} fill={'rgba(255,0,0,0.2)'} onMouseMove={} />*/}
-        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={100} y={50} width={50} height={100} fill={'rgba(0,255,255,0.2)'} onMouseMove={this.foo} />
-        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={100} y={100} width={50} height={200} fill={'rgba(0,0,255,0.2)'} onMouseMove={this.bar} />
+        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={this.state.leftDragLoc - (DRAGGER_WIDTH / 2)} y={12.5} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(0,255,255,0.2)'} onMouseMove={this.setLeftDragLoc} />
+        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={this.state.rightDragLoc - (DRAGGER_WIDTH / 2)} y={12.5} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(0,0,255,0.2)'} onMouseMove={this.setRightDragLoc} />
       </React.Fragment>
     )
   }

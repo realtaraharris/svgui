@@ -69,10 +69,36 @@ const App = (props) => {
               </HorizontalSpacedRay>
             </Center>
             <Center width={inputWidth} height={inputHeight}>
+              <Margin x={0} y={0} top={10} right={0} bottom={10} left={0} width={props.width} height={194} showLayout>
+                <Button text={'Button Inside Margin'} fill={'purple'} />
+              </Margin>
+            </Center>
+            {/*
+            <Center width={inputWidth} height={inputHeight}>
+              <Margin x={0} y={0} top={10} right={10} bottom={10} left={10} width={props.width} height={194} showLayout>
+                <Button text={'Button Inside Margin'} fill={'purple'} />
+              </Margin>
+            </Center>
+            <Center width={inputWidth} height={inputHeight}>
               <Margin x={0} y={0} top={10} right={100} bottom={10} left={100} width={props.width} height={194} showLayout>
                 <Button text={'Button Inside Margin'} fill={'purple'} />
               </Margin>
             </Center>
+
+
+            <Center width={inputWidth} height={inputHeight}>
+              <Margin x={0} y={0} top={10} right={100} bottom={10} left={0} width={props.width} height={194} showLayout>
+                <Button text={'Button Inside Margin'} fill={'purple'} />
+              </Margin>
+            </Center>
+
+            <Center width={inputWidth} height={inputHeight}>
+              <Margin x={0} y={0} top={10} right={0} bottom={10} left={100} width={props.width} height={194} showLayout>
+                <Button text={'Button Inside Margin'} fill={'purple'} />
+              </Margin>
+            </Center>
+            */}
+
             <HorizontalSpacedLine x1={-inputWidth / 2 + 94 / 2} y1={0} x2={inputWidth / 2 - 94 / 2} y2={0} showLayout>
               <Center width={90} height={94}>{star}</Center>
               <Center width={90} height={94}>{star}</Center>
