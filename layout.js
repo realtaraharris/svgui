@@ -252,15 +252,27 @@ class MarginDev extends React.Component {
   constructor (props) {
     super(props)
 
-    const { width, left, right } = props
+    const { width, height, left, right, top, bottom } = props
 
     this.state = {
+      topDragLoc: top,
       leftDragLoc: left,
-      rightDragLoc: width - right
+      rightDragLoc: width - right,
+      bottomDragLoc: height - bottom
     }
 
+    this.setTopDragLoc = this.setTopDragLoc.bind(this)
+    this.setBottomDragLoc = this.setBottomDragLoc.bind(this)
     this.setLeftDragLoc = this.setLeftDragLoc.bind(this)
     this.setRightDragLoc = this.setRightDragLoc.bind(this)
+  }
+
+  setTopDragLoc ({ x, y }) {
+    this.setState({ topDragLoc: y + (DRAGGER_HEIGHT / 2) })
+  }
+
+  setBottomDragLoc ({ x, y }) {
+    this.setState({ bottomDragLoc: y + (DRAGGER_HEIGHT / 2) })
   }
 
   setLeftDragLoc ({ x, y }) {
@@ -275,9 +287,9 @@ class MarginDev extends React.Component {
     const { props } = this
 
     const innerX = props.x + this.state.leftDragLoc
-    const innerY = props.y + props.top
+    const innerY = props.y + this.state.topDragLoc
     const innerWidth = this.state.rightDragLoc - this.state.leftDragLoc
-    const innerHeight = props.height - props.top - props.bottom
+    const innerHeight = this.state.bottomDragLoc - this.state.topDragLoc
 
     const innerProps = Object.assign({}, props.children.props, {
       x: innerX,
@@ -317,6 +329,9 @@ class MarginDev extends React.Component {
         {
           innerChildren
         }
+        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={(this.props.width / 2) - (DRAGGER_WIDTH / 2)} y={this.state.topDragLoc - (DRAGGER_HEIGHT / 2)} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(255,255,0,0.2)'} onMouseMove={this.setTopDragLoc} />
+        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={(this.props.width / 2) - (DRAGGER_WIDTH / 2)} y={this.state.bottomDragLoc - (DRAGGER_HEIGHT / 2)} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(255,255,0,0.2)'} onMouseMove={this.setBottomDragLoc} />
+
         <DraggableRect restrictVect={{ x: 200, y: 0 }} x={this.state.leftDragLoc - (DRAGGER_WIDTH / 2)} y={12.5} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(0,255,255,0.2)'} onMouseMove={this.setLeftDragLoc} />
         <DraggableRect restrictVect={{ x: 200, y: 0 }} x={this.state.rightDragLoc - (DRAGGER_WIDTH / 2)} y={12.5} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(0,0,255,0.2)'} onMouseMove={this.setRightDragLoc} />
       </React.Fragment>
