@@ -84,6 +84,7 @@ class App2 extends React.Component {
           onMouseMove={this.handleMouseMove}
         />
         <DropTargetRect x={400} y={400} width={200} height={200} fill={'none'} stroke={'rgba(29,82,255,0.6)'} name={'blue'} onDragMove={this.handleDragMove} />
+        <DropTargetRect x={900} y={300} width={200} height={200} fill={'none'} stroke={'rgba(29,82,255,0.6)'} name={'blue'} onDragMove={this.handleDragMove} />
 
         <DraggableRect
           width={200}
@@ -101,6 +102,7 @@ class App2 extends React.Component {
           onMouseMove={this.handleMouseMove}
         />
         <DropTargetRect x={450} y={450} width={200} height={200} fill={'none'} stroke={'rgba(93,27,255,0.6)'} name={'purple'} onDragMove={this.handleDragMove} />
+        <DropTargetRect x={1150} y={300} width={200} height={200} fill={'none'} stroke={'rgba(93,27,255,0.6)'} name={'purple'} onDragMove={this.handleDragMove} />
 
         <DraggableRect
           width={200}
@@ -118,6 +120,7 @@ class App2 extends React.Component {
           onMouseMove={this.handleMouseMove}
         />
         <DropTargetRect x={500} y={500} width={200} height={200} fill={'none'} stroke={'rgba(255,217,0,0.6)'} name={'yellow'} onDragMove={this.handleDragMove} />
+        <DropTargetRect x={900} y={550} width={200} height={200} fill={'none'} stroke={'rgba(255,217,0,0.6)'} name={'yellow'} onDragMove={this.handleDragMove} />
 
         <DraggableRect
           width={200}
@@ -135,6 +138,7 @@ class App2 extends React.Component {
           onMouseMove={this.handleMouseMove}
         />
         <DropTargetRect x={550} y={550} width={200} height={200} fill={'none'} stroke={'rgba(255,176,0,0.6)'} name={'orange'} onDragMove={this.handleDragMove} />
+        <DropTargetRect x={1150} y={550} width={200} height={200} fill={'none'} stroke={'rgba(255,176,0,0.6)'} name={'orange'} onDragMove={this.handleDragMove} />
       </React.Fragment>
     )
   }
