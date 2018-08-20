@@ -2,7 +2,7 @@ const React = require('react')
 const DraggableRect = require('./draggablerectgood') // TODO: consistentify the naming
 const DropTargetRect = require('./droptargetrect')
 
-class App2 extends React.Component {
+class DragAndDropDemo extends React.Component {
   constructor (props) {
     super(props)
 
@@ -30,15 +30,18 @@ class App2 extends React.Component {
   }
 
   handleMouseDown (previousMousePosition, name) {
+console.log('in handleMouseDown', name)
     const nextState = Object.assign({}, this.state.rects[name], {
       mouseDown: true,
       previousMousePosition
     })
+console.log('nextState:', nextState)
 
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
   handleMouseUp (shapePosition, dragDelta, name) {
+console.log('in handleMouseUp', name)
     const nextState = Object.assign({}, this.state.rects[name], {
       mouseDown: false,
       shapePosition,
@@ -48,6 +51,7 @@ class App2 extends React.Component {
   }
 
   handleMouseMove (dragDelta, currentPosition, name) {
+console.log('in handleMouseMove', name)
     const nextState = Object.assign({}, this.state.rects[name], {
       currentPosition,
       dragDelta
@@ -56,11 +60,14 @@ class App2 extends React.Component {
   }
 
   handleDragMove ({ x, y }, name) {
+console.log('in handleDragMove', name)
     if (!this.state.rects[name].mouseDown) { return }
     const nextState = Object.assign({}, this.state.rects[name], {
       shapePosition: { x, y },
-      dragDelta: { x: 0, y: 0 }
+      dragDelta: { x: 0, y: 0 },
+      mouseDown: false
     })
+console.log('nextState:', nextState)
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
@@ -144,4 +151,4 @@ class App2 extends React.Component {
   }
 }
 
-module.exports = App2
+module.exports = DragAndDropDemo
