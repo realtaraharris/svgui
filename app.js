@@ -84,14 +84,11 @@ const App = (props) => {
                 <Button text={'Button Inside Margin'} fill={'purple'} />
               </Margin>
             </Center>
-
-
             <Center width={inputWidth} height={inputHeight}>
               <Margin x={0} y={0} top={10} right={100} bottom={10} left={0} width={props.width} height={194} showLayout>
                 <Button text={'Button Inside Margin'} fill={'purple'} />
               </Margin>
             </Center>
-
             <Center width={inputWidth} height={inputHeight}>
               <Margin x={0} y={0} top={10} right={0} bottom={10} left={100} width={props.width} height={194} showLayout>
                 <Button text={'Button Inside Margin'} fill={'purple'} />

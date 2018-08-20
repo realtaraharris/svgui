@@ -1,5 +1,5 @@
 const React = require('react')
-const { addShape, updateShape, removeShape } = require('./events')
+const { addShape, updateShape, removeShape } = require('../events')
 
 const getWorldCoordinate = (x, y, root, shape) => {
   const point = root.createSVGPoint()
@@ -37,7 +37,7 @@ class Rect extends React.Component {
   }
 
   componentDidMount () {
-    const { x, y, width, height, onMouseUp, onMouseDown, onMouseMove } = this.props
+    const { x, y, width, height, onMouseUp, onMouseDown, onMouseMove, onDragMove } = this.props
 
     const worldCoords = this.getWorldCoords(x, y, width, height)
 
@@ -46,16 +46,17 @@ class Rect extends React.Component {
       y: worldCoords.y,
       width: width / 2, // worldCoords.width,
       height: height / 2, // worldCoords.height,
-      onMouseUp: onMouseUp, // ? onMouseUp : (stuff) => console.log(stuff),
-      onMouseDown: onMouseDown, // ? onMouseDown : (stuff) => console.log(stuff),
-      onMouseMove: onMouseMove // ? onMouseMove : (stuff) => console.log(stuff)
+      onMouseUp,
+      onMouseDown,
+      onMouseMove,
+      onDragMove
     })
 
     this.setState({ shapeId })
   }
 
   componentDidUpdate (prevProps) {
-    const { x, y, width, height, rx, ry, pathLength, onMouseUp, onMouseDown, onMouseMove } = this.props
+    const { x, y, width, height, rx, ry, pathLength, onMouseUp, onMouseDown, onMouseMove, onDragMove } = this.props
 
     const worldCoords = this.getWorldCoords(x, y, width, height)
 
@@ -74,9 +75,10 @@ class Rect extends React.Component {
         y: worldCoords.y,
         width: width / 2, // worldCoords.width,
         height: height / 2, // worldCoords.height,
-        onMouseUp: onMouseUp || (stuff => console.log(stuff)),
-        onMouseDown: onMouseDown || (stuff => console.log(stuff)),
-        onMouseMove: onMouseMove || (stuff => console.log(stuff))
+        onMouseUp,
+        onMouseDown,
+        onMouseMove,
+        onDragMove
       })
     }
   }

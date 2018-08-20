@@ -2,7 +2,7 @@
 const React = require('react')
 
 const { normalizeChildren, forwardProps } = require('./utils')
-const Rect = require('./shapes')
+const DraggableRect = require('./draggablerect')
 
 const Center = (props) => {
   const midX = -props.width / 2
@@ -173,78 +173,6 @@ const SpacedRay = (props) => {
 //   return { x: deltaX, y: deltaY }
 // }
 
-class DraggableRect extends React.Component {
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      mouseDown: false,
-      shapePosition: { x: this.props.x, y: this.props.y },
-      previousMousePosition: { x: 0, y: 0 },
-      dragDelta: { x: 0, y: 0 }
-    }
-
-    this.onMouseDown = this.onMouseDown.bind(this)
-    this.onMouseUp = this.onMouseUp.bind(this)
-    this.onMouseMove = this.onMouseMove.bind(this)
-  }
-
-  onMouseDown ({ x, y }) {
-    this.setState({
-      mouseDown: true,
-      previousMousePosition: { x, y }
-    })
-  }
-
-  onMouseUp () {
-    const { shapePosition, dragDelta } = this.state
-    this.setState({
-      mouseDown: false,
-      shapePosition: {
-        x: shapePosition.x + dragDelta.x,
-        y: shapePosition.y + dragDelta.y
-      },
-      dragDelta: { x: 0, y: 0 }
-    })
-  }
-
-  onMouseMove ({ x, y }) {
-    if (this.state.mouseDown) {
-      const { previousMousePosition, shapePosition } = this.state
-      const dragDelta = {
-        x: (x - previousMousePosition.x) * 2,
-        y: (y - previousMousePosition.y) * 2
-      }
-
-      this.setState({ dragDelta })
-
-      const currentPosition = {
-        x: shapePosition.x + dragDelta.x,
-        y: shapePosition.y + dragDelta.y
-      }
-      this.props.onMouseMove(currentPosition)
-    }
-  }
-
-  render () {
-    const { width, height, fill } = this.props
-    const { shapePosition, dragDelta } = this.state
-
-    return (
-      <Rect
-        x={shapePosition.x + dragDelta.x}
-        y={shapePosition.y + dragDelta.y}
-        width={width}
-        height={height}
-        onMouseDown={this.onMouseDown}
-        onMouseUp={this.onMouseUp}
-        onMouseMove={this.onMouseMove}
-        fill={fill}
-      />
-    )
-  }
-}
-
 const DRAGGER_HEIGHT = 50
 const DRAGGER_WIDTH = 25
 
@@ -331,7 +259,6 @@ class MarginDev extends React.Component {
         }
         <DraggableRect restrictVect={{ x: 200, y: 0 }} x={(this.props.width / 2) - (DRAGGER_WIDTH / 2)} y={this.state.topDragLoc - (DRAGGER_HEIGHT / 2)} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(255,255,0,0.2)'} onMouseMove={this.setTopDragLoc} />
         <DraggableRect restrictVect={{ x: 200, y: 0 }} x={(this.props.width / 2) - (DRAGGER_WIDTH / 2)} y={this.state.bottomDragLoc - (DRAGGER_HEIGHT / 2)} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(255,255,0,0.2)'} onMouseMove={this.setBottomDragLoc} />
-
         <DraggableRect restrictVect={{ x: 200, y: 0 }} x={this.state.leftDragLoc - (DRAGGER_WIDTH / 2)} y={12.5} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(0,255,255,0.2)'} onMouseMove={this.setLeftDragLoc} />
         <DraggableRect restrictVect={{ x: 200, y: 0 }} x={this.state.rightDragLoc - (DRAGGER_WIDTH / 2)} y={12.5} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(0,0,255,0.2)'} onMouseMove={this.setRightDragLoc} />
       </React.Fragment>

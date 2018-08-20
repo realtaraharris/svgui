@@ -53,17 +53,24 @@ let hits
 const awesomeDown = (x, y) => {
   hits = findHits(x, y)
 
-  hits.forEach(shape => { shape.onMouseDown({ x, y }) })
+  hits.forEach(shape => { shape.onMouseDown && shape.onMouseDown({ x, y }) })
 }
 
 const awesomeUp = (x, y) => {
-  hits.forEach(shape => shape.onMouseUp())
+  hits.forEach(shape => shape.onMouseUp && shape.onMouseUp())
   hits = []
 }
 
 const awesomeMove = (x, y) => {
-  if (!hits) { return }
-  hits.forEach(shape => { shape.onMouseMove({ x, y }) })
+  if (hits) {
+    hits.forEach(shape => { shape.onMouseMove && shape.onMouseMove({ x, y }) })
+  }
+
+  const hoverHits = findHits(x, y)
+  if (hoverHits) {
+    // TODO: consider filtering out shapes that are also in `hits`
+    hoverHits.forEach(shape => shape.onDragMove && shape.onDragMove({ x, y }))
+  }
 }
 
 window.addEventListener('mouseup', (event) => {
