@@ -12,9 +12,6 @@ class DropTargetRect extends React.Component {
       dragDelta: { x: 0, y: 0 }
     }
 
-    // this.onMouseDown = this.onMouseDown.bind(this)
-    // this.onMouseUp = this.onMouseUp.bind(this)
-    // this.onMouseMove = this.onMouseMove.bind(this)
     this.onDragMove = this.onDragMove.bind(this)
   }
 
@@ -22,22 +19,6 @@ class DropTargetRect extends React.Component {
     console.log('in onDragMove')
     const { x, y } = this.props
     this.props.onDragMove({ x, y })
-
-    // if (this.state.mouseDown) {
-    //   const { previousMousePosition, shapePosition } = this.state
-    //   const dragDelta = {
-    //     x: (x - previousMousePosition.x) * 2,
-    //     y: (y - previousMousePosition.y) * 2
-    //   }
-
-    //   this.setState({ dragDelta })
-
-    //   // const currentPosition = {
-    //   //   x: shapePosition.x + dragDelta.x,
-    //   //   y: shapePosition.y + dragDelta.y
-    //   // }
-    //   // this.props.onMouseMove(currentPosition)
-    // }
   }
 
   render () {

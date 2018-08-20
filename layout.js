@@ -257,10 +257,42 @@ class MarginDev extends React.Component {
         {
           innerChildren
         }
-        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={(this.props.width / 2) - (DRAGGER_WIDTH / 2)} y={this.state.topDragLoc - (DRAGGER_HEIGHT / 2)} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(255,255,0,0.2)'} onMouseMove={this.setTopDragLoc} />
-        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={(this.props.width / 2) - (DRAGGER_WIDTH / 2)} y={this.state.bottomDragLoc - (DRAGGER_HEIGHT / 2)} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(255,255,0,0.2)'} onMouseMove={this.setBottomDragLoc} />
-        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={this.state.leftDragLoc - (DRAGGER_WIDTH / 2)} y={12.5} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(0,255,255,0.2)'} onMouseMove={this.setLeftDragLoc} />
-        <DraggableRect restrictVect={{ x: 200, y: 0 }} x={this.state.rightDragLoc - (DRAGGER_WIDTH / 2)} y={12.5} width={DRAGGER_WIDTH} height={DRAGGER_HEIGHT} fill={'rgba(0,0,255,0.2)'} onMouseMove={this.setRightDragLoc} />
+        <DraggableRect
+          restrictVect={{ x: 200, y: 0 }}
+          initialX={(this.props.width / 2) - (DRAGGER_WIDTH / 2)}
+          initialY={this.state.topDragLoc - (DRAGGER_HEIGHT / 2)}
+          width={DRAGGER_WIDTH}
+          height={DRAGGER_HEIGHT}
+          fill={'rgba(255,255,0,0.2)'}
+          onMouseMove={this.setTopDragLoc}
+        />
+        <DraggableRect
+          restrictVect={{ x: 200, y: 0 }}
+          initialX={(this.props.width / 2) - (DRAGGER_WIDTH / 2)}
+          initialY={this.state.bottomDragLoc - (DRAGGER_HEIGHT / 2)}
+          width={DRAGGER_WIDTH}
+          height={DRAGGER_HEIGHT}
+          fill={'rgba(255,255,0,0.2)'}
+          onMouseMove={this.setBottomDragLoc}
+        />
+        <DraggableRect
+          restrictVect={{ x: 200, y: 0 }}
+          initialX={this.state.leftDragLoc - (DRAGGER_WIDTH / 2)}
+          initialY={12.5}
+          width={DRAGGER_WIDTH}
+          height={DRAGGER_HEIGHT}
+          fill={'rgba(0,255,255,0.2)'}
+          onMouseMove={this.setLeftDragLoc}
+        />
+        <DraggableRect
+          restrictVect={{ x: 200, y: 0 }}
+          initialX={this.state.rightDragLoc - (DRAGGER_WIDTH / 2)}
+          initialY={12.5}
+          width={DRAGGER_WIDTH}
+          height={DRAGGER_HEIGHT}
+          fill={'rgba(0,0,255,0.2)'}
+          onMouseMove={this.setRightDragLoc}
+        />
       </React.Fragment>
     )
   }

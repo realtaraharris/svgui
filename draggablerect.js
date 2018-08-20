@@ -7,7 +7,7 @@ class DraggableRect extends React.Component {
 
     this.state = {
       mouseDown: false,
-      shapePosition: { x: this.props.x, y: this.props.y },
+      shapePosition: { x: this.props.initialX, y: this.props.initialY },
       previousMousePosition: { x: 0, y: 0 },
       dragDelta: { x: 0, y: 0 }
     }
@@ -50,7 +50,8 @@ class DraggableRect extends React.Component {
         x: shapePosition.x + dragDelta.x,
         y: shapePosition.y + dragDelta.y
       }
-      this.props.mouseMove && this.props.onMouseMove(currentPosition)
+
+      this.props.onMouseMove && this.props.onMouseMove(currentPosition)
     }
   }
 
