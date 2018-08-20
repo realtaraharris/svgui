@@ -1,95 +1,140 @@
 const React = require('react')
-const DraggableRect = require('./draggablerect')
+const DraggableRect = require('./draggablerectgood') // TODO: consistentify the naming
 const DropTargetRect = require('./droptargetrect')
-const Rect = require('./shapes/rect')
 
 class App2 extends React.Component {
   constructor (props) {
     super(props)
 
+    const initial = (x, y) => ({
+      mouseDown: false,
+      previousMousePosition: { x: 0, y: 0 },
+      currentPosition: { x: 0, y: 0 },
+      dragDelta: { x: 0, y: 0 },
+      shapePosition: { x, y }
+    })
+
     this.state = {
-      blueRectPos: { x: 100, y: 100 },
-      purpleRectPos: { x: 200, y: 100 },
-      yellowRectPos: { x: 200, y: 200 },
-      orangeRectPos: { x: 100, y: 200 }
+      rects: {
+        blue: initial(100, 100),
+        purple: initial(200, 100),
+        yellow: initial(200, 200),
+        orange: initial(100, 200)
+      }
     }
 
-    this.handleDragMoveBlue = this.handleDragMoveBlue.bind(this)
-    this.handleDragMoveOrange = this.handleDragMoveOrange.bind(this)
-    this.handleDragMoveYellow = this.handleDragMoveYellow.bind(this)
-    this.handleDragMovePurple = this.handleDragMovePurple.bind(this)
+    this.handleMouseDown = this.handleMouseDown.bind(this)
+    this.handleMouseUp = this.handleMouseUp.bind(this)
+    this.handleMouseMove = this.handleMouseMove.bind(this)
+    this.handleDragMove = this.handleDragMove.bind(this)
   }
 
-  handleDragMoveBlue ({ x, y }) {
-    this.setState({ blueRectPos: { x, y } })
+  handleMouseDown (previousMousePosition, name) {
+    const nextState = Object.assign({}, this.state.rects[name], {
+      mouseDown: true,
+      previousMousePosition
+    })
+
+    this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
-  handleDragMovePurple ({ x, y }) {
-    this.setState({ purpleRectPos: { x, y } })
+  handleMouseUp (shapePosition, dragDelta, name) {
+    const nextState = Object.assign({}, this.state.rects[name], {
+      mouseDown: false,
+      shapePosition,
+      dragDelta
+    })
+    this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
-  handleDragMoveOrange ({ x, y }) {
-    this.setState({ orangeRectPos: { x, y } })
+  handleMouseMove (dragDelta, currentPosition, name) {
+    const nextState = Object.assign({}, this.state.rects[name], {
+      currentPosition,
+      dragDelta
+    })
+    this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
-  handleDragMoveYellow ({ x, y }) {
-    this.setState({ yellowRectPos: { x, y } })
+  handleDragMove ({ x, y }, name) {
+    if (!this.state.rects[name].mouseDown) { return }
+    const nextState = Object.assign({}, this.state.rects[name], {
+      shapePosition: { x, y },
+      dragDelta: { x: 0, y: 0 }
+    })
+    this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
   render () {
-    const {
-      yellowRectPos,
-      orangeRectPos,
-      blueRectPos,
-      purpleRectPos
-    } = this.state
+    const { rects } = this.state
     return (
       <React.Fragment>
         <DraggableRect
-          initialX={blueRectPos.x}
-          initialY={blueRectPos.y}
-          x={blueRectPos.x}
-          y={blueRectPos.y}
           width={200}
           height={200}
           fill={'rgba(29,82,255,0.6)'}
+          name={'blue'}
+
+          shapePosition={rects['blue'].shapePosition}
+          previousMousePosition={rects['blue'].previousMousePosition}
+          dragDelta={rects['blue'].dragDelta}
+          mouseDown={rects['blue'].mouseDown}
+
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseMove={this.handleMouseMove}
         />
-        <DropTargetRect x={400} y={400} width={200} height={200} fill={'none'} stroke={'rgba(29,82,255,0.6)'} onDragMove={this.handleDragMoveBlue} />
+        <DropTargetRect x={400} y={400} width={200} height={200} fill={'none'} stroke={'rgba(29,82,255,0.6)'} name={'blue'} onDragMove={this.handleDragMove} />
 
         <DraggableRect
-          initialX={purpleRectPos.x}
-          initialY={purpleRectPos.y}
-          x={purpleRectPos.x}
-          y={purpleRectPos.y}
           width={200}
           height={200}
           fill={'rgba(93,27,255,0.6)'}
+          name={'purple'}
+
+          shapePosition={rects['purple'].shapePosition}
+          previousMousePosition={rects['purple'].previousMousePosition}
+          dragDelta={rects['purple'].dragDelta}
+          mouseDown={rects['purple'].mouseDown}
+
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseMove={this.handleMouseMove}
         />
-        <DropTargetRect x={450} y={450} width={200} height={200} fill={'none'} stroke={'rgba(93,27,255,0.6)'} onDragMove={this.handleDragMovePurple} />
+        <DropTargetRect x={450} y={450} width={200} height={200} fill={'none'} stroke={'rgba(93,27,255,0.6)'} name={'purple'} onDragMove={this.handleDragMove} />
 
         <DraggableRect
-          initialX={yellowRectPos.x}
-          initialY={yellowRectPos.y}
-          x={yellowRectPos.x}
-          y={yellowRectPos.y}
           width={200}
           height={200}
           fill={'rgba(255,217,0,0.6)'}
+          name={'yellow'}
+
+          shapePosition={rects['yellow'].shapePosition}
+          previousMousePosition={rects['yellow'].previousMousePosition}
+          dragDelta={rects['yellow'].dragDelta}
+          mouseDown={rects['yellow'].mouseDown}
+
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseMove={this.handleMouseMove}
         />
-        <DropTargetRect x={500} y={500} width={200} height={200} fill={'none'} stroke={'rgba(255,217,0,0.6)'} onDragMove={this.handleDragMoveYellow} />
+        <DropTargetRect x={500} y={500} width={200} height={200} fill={'none'} stroke={'rgba(255,217,0,0.6)'} name={'yellow'} onDragMove={this.handleDragMove} />
 
         <DraggableRect
-          initialX={orangeRectPos.x}
-          initialY={orangeRectPos.y}
-          x={orangeRectPos.x}
-          y={orangeRectPos.y}
           width={200}
           height={200}
           fill={'rgba(255,176,0,0.6)'}
-        />
-        <DropTargetRect x={550} y={550} width={200} height={200} fill={'none'} stroke={'rgba(255,176,0,0.6)'} onDragMove={this.handleDragMoveOrange} />
+          name={'orange'}
 
-        <DraggableRect initialX={900} initialY={900} width={200} height={200} fill={'rgba(255,176,0,0.6)'} onMouseMove={console.log} />
+          shapePosition={rects['orange'].shapePosition}
+          previousMousePosition={rects['orange'].previousMousePosition}
+          dragDelta={rects['orange'].dragDelta}
+          mouseDown={rects['orange'].mouseDown}
+
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseMove={this.handleMouseMove}
+        />
+        <DropTargetRect x={550} y={550} width={200} height={200} fill={'none'} stroke={'rgba(255,176,0,0.6)'} name={'orange'} onDragMove={this.handleDragMove} />
       </React.Fragment>
     )
   }

@@ -16,9 +16,8 @@ class DropTargetRect extends React.Component {
   }
 
   onDragMove () {
-    console.log('in onDragMove')
-    const { x, y } = this.props
-    this.props.onDragMove({ x, y })
+    const { x, y, name } = this.props
+    this.props.onDragMove({ x, y }, name)
   }
 
   render () {
