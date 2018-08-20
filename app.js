@@ -6,6 +6,7 @@ const { InputController, InputFocuser } = require('./input')
 const { Center, CenterHorizontal, Margin, HorizontalSpacedRay, HorizontalSpacedLine, SpacedRay } = require('./layout')
 const Button = require('./button')
 const Text = require('./text')
+const DragAndDropDemo = require('./drag-and-drop-demo')
 
 const sampleText = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.
 
@@ -13,7 +14,7 @@ But I must explain to you how all this mistaken idea of denouncing pleasure and 
 
 On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammeled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.`
 
-const App = (props) => {
+const AddressForm = (props) => {
   const star = <Star width={90} height={94} scale={0.5} />
   const inputWidth = 1200
   const inputHeight = 80
@@ -135,6 +136,21 @@ const App = (props) => {
       />
     </React.Fragment>
   )
+}
+
+class App extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      selectedView: 'x' // 'AddressForm'
+    }
+  }
+
+  render () {
+    const { selectedView } = this.state
+    return selectedView === 'AddressForm' ? <AddressForm {...this.props} /> : <DragAndDropDemo {...this.props} />
+  }
 }
 
 module.exports = App

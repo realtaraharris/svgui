@@ -1,8 +1,7 @@
 'use strict'
 
 const React = require('react')
-// const App = require('./app')
-const DragAndDropDemo = require('./drag-and-drop-demo')
+const App = require('./app')
 
 // const { Demo } = require('./demo')
 
@@ -44,7 +43,7 @@ class Root extends React.Component {
   render () {
     return (
       <svg viewBox={[0, 0, this.state.width, this.state.height]} id={'svg-root'}>
-        <DragAndDropDemo width={this.state.width} height={this.state.height} showLayout />
+        <App width={this.state.width} height={this.state.height} showLayout />
       </svg>
     )
   }
