@@ -240,7 +240,7 @@ class MarginDev extends React.Component {
                 y={props.y}
                 width={props.width}
                 height={props.height}
-                stroke={'red'}
+                stroke={'blue'}
                 strokeDasharray={'5,5'}
                 fill={'none'}
               />
@@ -249,7 +249,7 @@ class MarginDev extends React.Component {
                 y={innerY}
                 width={innerWidth}
                 height={innerHeight}
-                stroke={'brown'}
+                stroke={'red'}
                 strokeDasharray={'5,5'}
                 fill={'none'}
               />

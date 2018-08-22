@@ -142,12 +142,34 @@ const AddressForm = (props) => {
   )
 }
 
+const DoubleMarginDemo = (props) => {
+  return (
+    <Margin
+      x={props.x} y={props.y}
+      width={props.width} height={props.height}
+      showLayout
+      top={100} right={100} bottom={100} left={100}
+      render={({ x, y, width, height }) => (
+        <Margin
+          x={0} y={0}
+          width={width} height={height}
+          showLayout
+          top={200} right={200} bottom={200} left={200}
+          render={({ x, y, width, height }) => (
+            <Button x={x} y={y} width={width} height={height} text={'Button Inside Margin'} fill={'gray'} />
+          )}
+        />
+      )}
+    />
+  )
+}
+
 class App extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      selectedView: 'AddressForm' // 'DragAndDrop' // 
+      selectedView: 'AddressForm' // 'DragAndDrop'
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -159,6 +181,16 @@ class App extends React.Component {
 
   render () {
     const { selectedView } = this.state
+
+    let view
+
+    if (selectedView === 'AddressForm') {
+      view = <AddressForm {...this.props} />
+    } else if (selectedView === 'DoubleMarginDemo') {
+      view = <DoubleMarginDemo x={0} y={0} width={this.props.width} height={this.props.height} />
+    } else if (selectedView === 'DragAndDrop') {
+      view = <DragAndDropDemo {...this.props} />
+    }
 
     return (
       <React.Fragment>
@@ -173,7 +205,7 @@ class App extends React.Component {
                 <Button text={'Drag And Drop'} fill={selectedView !== 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('DragAndDrop')} />
               </Center>
               <Center width={width} height={200}>
-                {selectedView === 'AddressForm' ? <AddressForm {...this.props} /> : <DragAndDropDemo {...this.props} />}
+                {view}
               </Center>
             </SpacedRay>
           )}
