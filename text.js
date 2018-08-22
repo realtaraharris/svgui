@@ -1,6 +1,7 @@
 'use strict'
 
 const React = require('react')
+const G = require('./shapes/g')
 
 const { generateQuickGuid } = require('./utils')
 
@@ -261,7 +262,7 @@ class Text extends React.Component {
     })
 
     return (
-      <g>
+      <G>
         <clipPath id={textClipId}>
           <rect x={-1} y={-1} width={this.props.width + 1} height={this.props.height + 1} stroke={'none'} />
         </clipPath>
@@ -278,7 +279,7 @@ class Text extends React.Component {
         {textBoxes}
         // NB: this rect catches pointer events, so it _must_ sit on top of the text
         <rect ref={this.scrollRectRef} fill={'rgba(0,0,0,0)'} stroke={'none'} x={0} y={0} width={this.props.width} height={this.props.height} />
-      </g>
+      </G>
     )
   }
 }

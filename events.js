@@ -3,17 +3,23 @@ const uuid = require('uuid')
 // do this slowly, simply at first. replace with quadtree once API is right
 let shapes = []
 
-const findHits = (x, y) => shapes.filter(shape => (
-  x >= shape.x &&
-  x <= shape.x + shape.width &&
-  y >= shape.y &&
-  y <= shape.y + shape.height
-))
+const React = require('react')
+const ShapeRender = (props) => shapes.map(shape => <rect fill={'orange'} stroke={'red'} x={shape.x * 2} y={shape.y * 2} width={shape.width * 2} height={shape.height * 2} />)
+
+const findHits = (x, y) => shapes.filter(shape => {
+  return (
+    x >= shape.x &&
+    x <= shape.x + shape.width &&
+    y >= shape.y &&
+    y <= shape.y + shape.height
+  )
+})
 
 const addShape = (shape) => {
-  console.log('adding shape:', shape)
   const shapeId = uuid()
+
   shapes.push(Object.assign({}, shape, { shapeId }))
+  console.log('addShape:', shapes)
   return shapeId
 }
 
@@ -24,10 +30,12 @@ const updateShape = (newShape) => {
       shapes[i].y = newShape.y
     }
   }
+  console.log('updateShape:', shapes)
 }
 
 const removeShape = (shapeId) => {
-  shapes = shapes.filter(shape => shape.shapeId === shapeId)
+  shapes = shapes.filter(shape => shape.shapeId !== shapeId)
+  console.log('removeShape:', shapes)
 }
 
 // const first = addShape({ x: 10, y: 10, width: 20, height: 20,
@@ -91,4 +99,4 @@ window.addEventListener('mousemove', (event) => {
   awesomeMove(clientX, clientY)
 })
 
-module.exports = { addShape, updateShape, removeShape }
+module.exports = { addShape, updateShape, removeShape, ShapeRender }

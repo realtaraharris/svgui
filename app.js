@@ -7,6 +7,7 @@ const { Center, CenterHorizontal, Margin, HorizontalSpacedRay, HorizontalSpacedL
 const Button = require('./button')
 const Text = require('./text')
 const DragAndDropDemo = require('./drag-and-drop-demo')
+const { ShapeRender } = require('./events')
 
 const sampleText = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.
 
@@ -70,9 +71,12 @@ const AddressForm = (props) => {
               </HorizontalSpacedRay>
             </Center>
             <Center width={inputWidth} height={inputHeight}>
-              <Margin x={0} y={0} top={10} right={0} bottom={10} left={0} width={props.width} height={194} showLayout>
-                <Button text={'Button Inside Margin'} fill={'purple'} />
-              </Margin>
+              <Margin
+                x={0} y={0} top={10} right={0} bottom={10} left={0} width={props.width} height={194} showLayout
+                render={({ x, y, width, height }) => (
+                  <Button x={x} y={y} width={width} height={height} text={'Button Inside Margin'} fill={'purple'} />
+                )}
+              />
             </Center>
             {/*
             <Center width={inputWidth} height={inputHeight}>
@@ -119,7 +123,7 @@ const AddressForm = (props) => {
             <CenterHorizontal offsetY={-inputHeight / 2}>
               <Text
                 width={inputWidth}
-                height={500}
+                height={300}
                 fontStyle={{
                   fontWeight: 100,
                   fontStyle: 'regular',
@@ -143,13 +147,40 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      selectedView: 'x' // 'AddressForm'
+      selectedView: 'AddressForm' // 'DragAndDrop' // 
     }
+
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick (selectedView) {
+    this.setState({ selectedView })
   }
 
   render () {
     const { selectedView } = this.state
-    return selectedView === 'AddressForm' ? <AddressForm {...this.props} /> : <DragAndDropDemo {...this.props} />
+
+    return (
+      <React.Fragment>
+        <Margin
+          x={0} y={0} top={200} right={200} bottom={200} left={200} width={this.props.width} height={this.props.height} showLayout
+          render={({ x, y, width, height }) => (
+            <SpacedRay x1={width/2} y1={y} x2={width/2} y2={height} interval={220} showLayout>
+              <Center width={width} height={80}>
+                <Button text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
+              </Center>
+              <Center width={width} height={80}>
+                <Button text={'Drag And Drop'} fill={selectedView !== 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('DragAndDrop')} />
+              </Center>
+              <Center width={width} height={200}>
+                {selectedView === 'AddressForm' ? <AddressForm {...this.props} /> : <DragAndDropDemo {...this.props} />}
+              </Center>
+            </SpacedRay>
+          )}
+        />
+        <ShapeRender random={Math.random()} />
+      </React.Fragment>
+    )
   }
 }
 

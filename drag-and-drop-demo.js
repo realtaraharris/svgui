@@ -59,7 +59,7 @@ console.log('in handleMouseMove', name)
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
-  handleDragMove ({ x, y }, name) {
+  handleDragMove ({ x, y }, name) { // consider doing this on mouse up?
 console.log('in handleDragMove', name)
     if (!this.state.rects[name].mouseDown) { return }
     const nextState = Object.assign({}, this.state.rects[name], {

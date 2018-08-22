@@ -4,14 +4,16 @@ const React = require('react')
 const { normalizeChildren, forwardProps } = require('./utils')
 const DraggableRect = require('./draggablerect')
 
+const G = require('./shapes/g')
+
 const Center = (props) => {
   const midX = -props.width / 2
   const midY = -props.height / 2
 
   return (
-    <g transform={`translate(${midX}, ${midY})`}>{
+    <G transform={`translate(${midX}, ${midY})`}>{
       normalizeChildren(props.children).map(child => forwardProps(child, { width: props.width, height: props.height }))
-    }</g>
+    }</G>
   )
 }
 
@@ -31,7 +33,7 @@ const CenterHorizontal = (props) => {
   // const midY = -childHeight / 2
 
   return (
-    <g transform={`translate(${midX}, ${props.offsetY})`}>{props.children}</g>
+    <G transform={`translate(${midX}, ${props.offsetY})`}>{props.children}</G>
   )
 }
 
@@ -50,7 +52,7 @@ const CenterHorizontal = (props) => {
 //   const midY = -childHeight / 2
 
 //   return (
-//     <g transform={`translate(${props.x}, ${midY})`}>{props.children}</g>
+//     <G transform={`translate(${props.x}, ${midY})`}>{props.children}</G>
 //   )
 // }
 
@@ -68,14 +70,14 @@ const HorizontalSpacedRay = (props) => {
   let deltaY = 0
   return (
     <React.Fragment>
-      <g transform={`translate(${x1}, ${y1})`}>
+      <G transform={`translate(${x1}, ${y1})`}>
         {
           normalizeChildren(props.children).map((child, index) => {
             const result = (
-              <g transform={`translate(${deltaX}, ${deltaY})`} key={index}>
+              <G transform={`translate(${deltaX}, ${deltaY})`} key={index}>
                 {child}
                 <circle cx={0} cy={0} r={2} stroke={'red'} />
-              </g>
+              </G>
             )
 
             deltaX += (child.props.width + props.spaceBetween) * Math.cos(angle)
@@ -84,7 +86,7 @@ const HorizontalSpacedRay = (props) => {
             return result
           })
         }
-      </g>
+      </G>
       {
         props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
       }
@@ -112,18 +114,18 @@ const HorizontalSpacedLine = (props) => {
       {
         props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
       }
-      <g transform={`translate(${x1}, ${y1})`}>
+      <G transform={`translate(${x1}, ${y1})`}>
         {
           normalizeChildren(props.children).map((child, index) => {
             return (
-              <g transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
+              <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
                 {child}
                 <circle cx={0} cy={0} r={2} stroke={'red'} />
-              </g>
+              </G>
             )
           })
         }
-      </g>
+      </G>
     </React.Fragment>
   )
 }
@@ -142,18 +144,18 @@ const SpacedRay = (props) => {
       {
         props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
       }
-      <g transform={`translate(${x1}, ${y1})`}>
+      <G transform={`translate(${x1}, ${y1})`}>
         {
           normalizeChildren(props.children).map((child, index) => {
             return (
-              <g transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
+              <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
                 {child}
                 <circle cx={0} cy={0} r={2} stroke={'red'} />
-              </g>
+              </G>
             )
           })
         }
-      </g>
+      </G>
     </React.Fragment>
   )
 }
@@ -219,15 +221,15 @@ class MarginDev extends React.Component {
     const innerWidth = this.state.rightDragLoc - this.state.leftDragLoc
     const innerHeight = this.state.bottomDragLoc - this.state.topDragLoc
 
-    const innerProps = Object.assign({}, props.children.props, {
+    // const innerProps = Object.assign({}, props.children.props, {
+    const innerProps = {
       x: innerX,
       y: innerY,
       width: innerWidth,
       height: innerHeight
-    })
+    }
 
-    const innerChildren = Object.assign({}, props.children, { props: innerProps })
-
+    // const innerChildren = Object.assign({}, props.children, { props: innerProps })
     return (
       <React.Fragment>
         {
@@ -254,9 +256,11 @@ class MarginDev extends React.Component {
             </React.Fragment>
           )
         }
+        <G transform={`translate(${innerX}, ${innerY})`}>
         {
-          innerChildren
+          this.props.render(innerProps)
         }
+        </G>
         <DraggableRect
           restrictVect={{ x: 200, y: 0 }}
           initialX={(this.props.width / 2) - (DRAGGER_WIDTH / 2)}
@@ -304,12 +308,12 @@ class MarginDev extends React.Component {
 //   const innerWidth = props.width - props.left - props.right
 //   const innerHeight = props.height - props.top - props.bottom
 
-//   const innerProps = Object.assign({}, props.children.props, {
+//   const innerProps = {
 //     x: innerX,
 //     y: innerY,
 //     width: innerWidth,
 //     height: innerHeight
-//   })
+//   }
 
 //   const innerChildren = Object.assign({}, props.children, { props: innerProps })
 
@@ -340,7 +344,7 @@ class MarginDev extends React.Component {
 //         )
 //       }
 //       {
-//         innerChildren
+//         this.props.render(innerProps)
 //       }
 //     </React.Fragment>
 //   )
