@@ -155,7 +155,6 @@ class InputController extends React.Component {
 
 const Input = (props) => {
   const textHeight = 21
-console.log('props:', props)
   return (
     <React.Fragment>
       <rect

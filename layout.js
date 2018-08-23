@@ -1,7 +1,7 @@
 'use strict'
 const React = require('react')
 
-const { normalizeChildren, forwardProps } = require('./utils')
+const { normalizeChildren } = require('./utils')
 // const DraggableRect = require('./draggablerect')
 const DraggableRect = require('./draggablerectgood') // TODO: consistentify the naming
 
@@ -185,7 +185,6 @@ class MarginDev extends React.Component {
 
     const { width, height, left, right, top, bottom } = props
 
-
     const initial = (x, y) => ({
       mouseDown: false,
       previousMousePosition: { x: 0, y: 0 },
@@ -193,7 +192,6 @@ class MarginDev extends React.Component {
       dragDelta: { x: 0, y: 0 },
       shapePosition: { x, y }
     })
-
 
     this.state = {
       rects: {

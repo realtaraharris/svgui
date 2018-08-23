@@ -28,7 +28,7 @@ class DraggableRectGood extends React.Component {
 
   onMouseMove ({ x, y }) {
     if (this.props.mouseDown) {
-      const { dragDelta, previousMousePosition, shapePosition, name } = this.props
+      const { previousMousePosition, shapePosition, name } = this.props
 
       const newDragDelta = {
         x: (x - previousMousePosition.x) * 2,

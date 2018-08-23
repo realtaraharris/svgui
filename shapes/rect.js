@@ -53,7 +53,6 @@ class Rect extends React.Component {
     })
 
     this.setState({ shapeId })
-// console.log('in rect, componentDidMount', shapeId)
   }
 
   componentDidUpdate (prevProps) {
@@ -85,9 +84,8 @@ class Rect extends React.Component {
   }
 
   componentWillUnmount () {
-console.log('in rect, componentWillUnmount')
     removeShape(this.state.shapeId)
-    // this.setState({ shapeId: null })
+    this.setState({ shapeId: null })
   }
 
   render () {
