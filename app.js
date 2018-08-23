@@ -209,7 +209,7 @@ class App extends React.Component {
     const { selectedView } = this.state
 
 // return <AddressForm {...this.props} />
-return <DoubleMarginDemo x={0} y={0} width={this.props.width} height={this.props.height} />
+// return <DoubleMarginDemo x={0} y={0} width={this.props.width} height={this.props.height} />
 
     return (
       <React.Fragment>
