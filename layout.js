@@ -197,10 +197,10 @@ class MarginDev extends React.Component {
 
     this.state = {
       rects: {
-        top: initial((props.width / 2) - (DRAGGER_WIDTH / 2) + props.x, top - (DRAGGER_HEIGHT / 2) + props.y),
-        left: initial(left - (DRAGGER_WIDTH / 2) + props.x, props.y + (props.height / 2) - (DRAGGER_HEIGHT / 2)),
-        right: initial(width - right - (DRAGGER_WIDTH / 2) + props.x, props.y + (props.height / 2) - (DRAGGER_HEIGHT / 2)),
-        bottom: initial((props.width / 2) - (DRAGGER_WIDTH / 2) + props.x, height - bottom - (DRAGGER_HEIGHT / 2) + props.y)
+        top: initial((props.width / 2) + props.x, top + props.y),
+        left: initial(left + props.x, props.y + (props.height / 2)),
+        right: initial(width - right + props.x, props.y + (props.height / 2)),
+        bottom: initial((props.width / 2) + props.x, height - bottom + props.y)
       },
 
       topDragLoc: top,
@@ -257,13 +257,13 @@ class MarginDev extends React.Component {
   }
 
   render () {
-    const { props } = this
+    const { x, y, width, height, showLayout, render } = this.props
     const { rects } = this.state
 
-    const innerX = this.state.rects.left.shapePosition.x + (DRAGGER_WIDTH / 2)
-    const innerY = this.state.rects.top.shapePosition.y + (DRAGGER_HEIGHT / 2)
-    const innerWidth = this.state.rects.right.shapePosition.x - this.state.rects.left.shapePosition.x
-    const innerHeight = this.state.rects.bottom.shapePosition.y - this.state.rects.top.shapePosition.y
+    const innerX = rects.left.shapePosition.x + rects.left.dragDelta.x
+    const innerY = rects.top.shapePosition.y + rects.top.dragDelta.y
+    const innerWidth = rects.right.shapePosition.x - rects.left.shapePosition.x + rects.right.dragDelta.x - rects.left.dragDelta.x
+    const innerHeight = rects.bottom.shapePosition.y - rects.top.shapePosition.y + rects.bottom.dragDelta.y - rects.top.dragDelta.y
 
     const innerProps = {
       x: innerX,
@@ -275,13 +275,13 @@ class MarginDev extends React.Component {
     return (
       <React.Fragment>
         {
-          props.showLayout && (
+          showLayout && (
             <React.Fragment>
               <rect
-                x={props.x}
-                y={props.y}
-                width={props.width}
-                height={props.height}
+                x={x}
+                y={y}
+                width={width}
+                height={height}
                 stroke={'blue'}
                 strokeDasharray={'1,1'}
                 fill={'none'}
@@ -299,7 +299,7 @@ class MarginDev extends React.Component {
           )
         }
         {
-          this.props.render(innerProps)
+          render(innerProps)
         }
         <DraggableRect
           width={DRAGGER_WIDTH}
@@ -307,10 +307,10 @@ class MarginDev extends React.Component {
           fill={'rgba(29,82,255,0.6)'}
           name={'top'}
 
-          shapePosition={rects['top'].shapePosition}
-          previousMousePosition={rects['top'].previousMousePosition}
-          dragDelta={rects['top'].dragDelta}
-          mouseDown={rects['top'].mouseDown}
+          shapePosition={rects.top.shapePosition}
+          previousMousePosition={rects.top.previousMousePosition}
+          dragDelta={rects.top.dragDelta}
+          mouseDown={rects.top.mouseDown}
 
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
@@ -322,10 +322,10 @@ class MarginDev extends React.Component {
           fill={'rgba(29,82,255,0.6)'}
           name={'bottom'}
 
-          shapePosition={rects['bottom'].shapePosition}
-          previousMousePosition={rects['bottom'].previousMousePosition}
-          dragDelta={rects['bottom'].dragDelta}
-          mouseDown={rects['bottom'].mouseDown}
+          shapePosition={rects.bottom.shapePosition}
+          previousMousePosition={rects.bottom.previousMousePosition}
+          dragDelta={rects.bottom.dragDelta}
+          mouseDown={rects.bottom.mouseDown}
 
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
@@ -337,10 +337,10 @@ class MarginDev extends React.Component {
           fill={'rgba(29,82,255,0.6)'}
           name={'left'}
 
-          shapePosition={rects['left'].shapePosition}
-          previousMousePosition={rects['left'].previousMousePosition}
-          dragDelta={rects['left'].dragDelta}
-          mouseDown={rects['left'].mouseDown}
+          shapePosition={rects.left.shapePosition}
+          previousMousePosition={rects.left.previousMousePosition}
+          dragDelta={rects.left.dragDelta}
+          mouseDown={rects.left.mouseDown}
 
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
@@ -352,10 +352,10 @@ class MarginDev extends React.Component {
           fill={'rgba(29,82,255,0.6)'}
           name={'right'}
 
-          shapePosition={rects['right'].shapePosition}
-          previousMousePosition={rects['right'].previousMousePosition}
-          dragDelta={rects['right'].dragDelta}
-          mouseDown={rects['right'].mouseDown}
+          shapePosition={rects.right.shapePosition}
+          previousMousePosition={rects.right.previousMousePosition}
+          dragDelta={rects.right.dragDelta}
+          mouseDown={rects.right.mouseDown}
 
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
