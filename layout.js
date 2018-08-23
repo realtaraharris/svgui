@@ -2,19 +2,21 @@
 const React = require('react')
 
 const { normalizeChildren, forwardProps } = require('./utils')
-const DraggableRect = require('./draggablerect')
+// const DraggableRect = require('./draggablerect')
+const DraggableRect = require('./draggablerectgood') // TODO: consistentify the naming
 
 const G = require('./shapes/g')
 
 const Center = (props) => {
-  const midX = -props.width / 2
-  const midY = -props.height / 2
+  const midX = props.x + (props.width / 2)
+  const midY = props.y + (props.height / 2)
 
-  return (
-    <G transform={`translate(${midX}, ${midY})`}>{
-      normalizeChildren(props.children).map(child => forwardProps(child, { width: props.width, height: props.height }))
-    }</G>
-  )
+  return props.render(midX, midY)
+  // return (
+  //   <G transform={`translate(${midX}, ${midY})`}>{
+  //     normalizeChildren(props.children).map(child => forwardProps(child, { width: props.width, height: props.height }))
+  //   }</G>
+  // )
 }
 
 const CenterHorizontal = (props) => {
@@ -144,18 +146,17 @@ const SpacedRay = (props) => {
       {
         props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
       }
-      <G transform={`translate(${x1}, ${y1})`}>
-        {
-          normalizeChildren(props.children).map((child, index) => {
-            return (
-              <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
-                {child}
-                <circle cx={0} cy={0} r={2} stroke={'red'} />
-              </G>
-            )
-          })
-        }
-      </G>
+      {
+        props.render(deltaX, deltaY)
+        // normalizeChildren(props.children).map((child, index) => {
+        //   return (
+        //     <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
+        //       {child}
+        //       <circle cx={0} cy={0} r={2} stroke={'red'} />
+        //     </G>
+        //   )
+        // })
+      }
     </React.Fragment>
   )
 }
@@ -198,20 +199,29 @@ class MarginDev extends React.Component {
   }
 
   setTopDragLoc ({ x, y }) {
-    this.setState({ topDragLoc: y + (DRAGGER_HEIGHT / 2) })
+    this.setState({ topDragLoc: y + (DRAGGER_HEIGHT / 2) - this.props.y })
   }
 
   setBottomDragLoc ({ x, y }) {
-    this.setState({ bottomDragLoc: y + (DRAGGER_HEIGHT / 2) })
+    this.setState({ bottomDragLoc: y + (DRAGGER_HEIGHT / 2) - this.props.y })
   }
 
   setLeftDragLoc ({ x, y }) {
-    this.setState({ leftDragLoc: x + (DRAGGER_WIDTH / 2) })
+    this.setState({ leftDragLoc: x + (DRAGGER_WIDTH / 2) - this.props.x })
   }
 
   setRightDragLoc ({ x, y }) {
-    this.setState({ rightDragLoc: x + (DRAGGER_WIDTH / 2) })
+    this.setState({ rightDragLoc: x + (DRAGGER_WIDTH / 2) - this.props.x })
   }
+
+  // componentDidUpdate (prevProps) {
+  //   if (prevProps.x !== this.props.x) {
+  //     const deltaX = prevProps.x - this.state.leftDragLoc
+  //     // this.setState({ leftDragLoc: deltaX })
+  //   } else if (prevProps.y !== this.props.y) {
+  //     this.setState({ topDragLoc: this.state.topDragLoc + this.props.y })
+  //   }
+  // }
 
   render () {
     const { props } = this
@@ -241,7 +251,7 @@ class MarginDev extends React.Component {
                 width={props.width}
                 height={props.height}
                 stroke={'blue'}
-                strokeDasharray={'5,5'}
+                strokeDasharray={'1,1'}
                 fill={'none'}
               />
               <rect
@@ -256,15 +266,13 @@ class MarginDev extends React.Component {
             </React.Fragment>
           )
         }
-        <G transform={`translate(${innerX}, ${innerY})`}>
         {
           this.props.render(innerProps)
         }
-        </G>
         <DraggableRect
           restrictVect={{ x: 200, y: 0 }}
-          initialX={(this.props.width / 2) - (DRAGGER_WIDTH / 2)}
-          initialY={this.state.topDragLoc - (DRAGGER_HEIGHT / 2)}
+          initialX={(this.props.width / 2) - (DRAGGER_WIDTH / 2) + this.props.x}
+          initialY={this.state.topDragLoc - (DRAGGER_HEIGHT / 2) + this.props.y}
           width={DRAGGER_WIDTH}
           height={DRAGGER_HEIGHT}
           fill={'rgba(255,255,0,0.2)'}
@@ -272,8 +280,8 @@ class MarginDev extends React.Component {
         />
         <DraggableRect
           restrictVect={{ x: 200, y: 0 }}
-          initialX={(this.props.width / 2) - (DRAGGER_WIDTH / 2)}
-          initialY={this.state.bottomDragLoc - (DRAGGER_HEIGHT / 2)}
+          initialX={(this.props.width / 2) - (DRAGGER_WIDTH / 2) + this.props.x}
+          initialY={this.state.bottomDragLoc - (DRAGGER_HEIGHT / 2) + this.props.y}
           width={DRAGGER_WIDTH}
           height={DRAGGER_HEIGHT}
           fill={'rgba(255,255,0,0.2)'}
@@ -281,8 +289,8 @@ class MarginDev extends React.Component {
         />
         <DraggableRect
           restrictVect={{ x: 200, y: 0 }}
-          initialX={this.state.leftDragLoc - (DRAGGER_WIDTH / 2)}
-          initialY={12.5}
+          initialX={this.state.leftDragLoc - (DRAGGER_WIDTH / 2) + this.props.x}
+          initialY={12.5 + this.props.y + (this.props.height / 2) - (this.props.y / 2)}
           width={DRAGGER_WIDTH}
           height={DRAGGER_HEIGHT}
           fill={'rgba(0,255,255,0.2)'}
@@ -290,8 +298,8 @@ class MarginDev extends React.Component {
         />
         <DraggableRect
           restrictVect={{ x: 200, y: 0 }}
-          initialX={this.state.rightDragLoc - (DRAGGER_WIDTH / 2)}
-          initialY={12.5}
+          initialX={this.state.rightDragLoc - (DRAGGER_WIDTH / 2) + this.props.x}
+          initialY={12.5 + this.props.y + (this.props.height / 2) - (this.props.y / 2)}
           width={DRAGGER_WIDTH}
           height={DRAGGER_HEIGHT}
           fill={'rgba(0,0,255,0.2)'}

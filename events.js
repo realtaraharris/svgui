@@ -19,7 +19,7 @@ const addShape = (shape) => {
   const shapeId = uuid()
 
   shapes.push(Object.assign({}, shape, { shapeId }))
-  console.log('addShape:', shapes)
+  // console.log('addShape:', shapes)
   return shapeId
 }
 
@@ -30,12 +30,12 @@ const updateShape = (newShape) => {
       shapes[i].y = newShape.y
     }
   }
-  console.log('updateShape:', shapes)
+  // console.log('updateShape:', shapes)
 }
 
 const removeShape = (shapeId) => {
   shapes = shapes.filter(shape => shape.shapeId !== shapeId)
-  console.log('removeShape:', shapes)
+  // console.log('removeShape:', shapes)
 }
 
 // const first = addShape({ x: 10, y: 10, width: 20, height: 20,

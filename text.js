@@ -262,7 +262,7 @@ class Text extends React.Component {
     })
 
     return (
-      <G>
+      <G transform={`translate(${this.props.x}, ${this.props.y})`}>
         <clipPath id={textClipId}>
           <rect x={-1} y={-1} width={this.props.width + 1} height={this.props.height + 1} stroke={'none'} />
         </clipPath>

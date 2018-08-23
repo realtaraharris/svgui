@@ -155,11 +155,12 @@ class InputController extends React.Component {
 
 const Input = (props) => {
   const textHeight = 21
+console.log('props:', props)
   return (
     <React.Fragment>
       <rect
-        x={0}
-        y={0}
+        x={props.x}
+        y={props.y}
         width={props.width}
         height={props.height}
         stroke={props.focused ? 'skyblue' : 'gray'}
@@ -171,8 +172,8 @@ const Input = (props) => {
         onClick={(event) => props.onClick(props.tabIndex)}
       />
       <text
-        x={20}
-        y={(props.height / 2) + (textHeight / 2)}
+        x={props.x + 20}
+        y={props.y + (props.height / 2) + (textHeight / 2)}
         fill={!props.text ? 'gray' : 'black'}
         style={{ font: '30px sans-serif' }}
       >{!props.text ? props.placeholder : props.text}</text>
