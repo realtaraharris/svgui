@@ -204,6 +204,7 @@ class App extends React.Component {
 
   render () {
     const { selectedView } = this.state
+    const { width, height } = this.props
 
     // return <AddressFormDemo {...this.props} />
     // return <DoubleMarginDemo x={0} y={0} width={this.props.width} height={this.props.height} />
@@ -211,27 +212,31 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Margin
-          x={0} y={0} top={200} right={200} bottom={200} left={200} width={this.props.width} height={this.props.height} showLayout
+          x={0} y={0} top={200} right={200} bottom={200} left={200} width={width} height={height} showLayout
           render={({ x, y, width, height }) => (
-            <SpacedRay x1={width / 2 + x} y1={y} x2={width / 2 + x} y2={height} interval={220} showLayout render={(deltaX, deltaY) => {
+<React.Fragment>
+            <SpacedRay x1={x} y1={y} x2={x + width} y2={y} interval={520} showLayout render={(deltaX, deltaY) => {
               return [
                 <Center x={deltaX * 0} y={deltaY * 0} key={0} width={width} height={80} render={(midX, midY) => (
                   <Button x={midX} y={midY} width={400} height={100} text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
                 )} />,
                 <Center x={deltaX * 1} y={deltaY * 1} key={1} width={width} height={80} render={(midX, midY) => (
                   <Button x={midX} y={midY} width={400} height={100} text={'Drag And Drop'} fill={selectedView !== 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('DragAndDrop')} />
-                )} />,
-                <Center x={deltaX * 2} y={deltaY * 2} key={2} width={width / 2} height={800 / 2} render={(midX, midY) => {
-                  if (selectedView === 'AddressForm') {
-                    return <AddressFormDemo x={midX} y={midY} width={width / 2} height={800 / 2} />
-                  } else if (selectedView === 'DoubleMarginDemo') {
-                    return <DoubleMarginDemo x={midX} y={midY} width={width / 2} height={height / 2} />
-                  } else if (selectedView === 'DragAndDrop') {
-                    return <DragAndDropDemo {...this.props} />
-                  }
-                }} />
+                )} />
               ]
             }} />
+
+           {/* <DoubleMarginDemo x={x} y={y} width={width} height={height} /> */}
+            <Center x={x - width / 2} y={y - height / 2} key={2} width={width} height={height} render={(midX, midY) => {
+              if (selectedView === 'AddressForm') {
+                return <AddressFormDemo x={midX} y={midY} width={width} height={height} />
+              } else if (selectedView === 'DoubleMarginDemo') {
+                return <DoubleMarginDemo x={midX} y={midY} width={width} height={height} />
+              } else if (selectedView === 'DragAndDrop') {
+                return <DragAndDropDemo x={midX} y={midY} width={width} height={height} />
+              }
+            }} />
+</React.Fragment>
           )}
         />
         <ShapeRender random={Math.random()} />
@@ -239,5 +244,7 @@ class App extends React.Component {
     )
   }
 }
+
+
 
 module.exports = App
