@@ -55,17 +55,6 @@ class DraggableRect extends React.Component {
     }
   }
 
-  componentDidUpdate (prevProps) {
-    if (this.props.x !== prevProps.x || this.props.y !== prevProps.y) {
-      this.setState({
-        mouseDown: false,
-        shapePosition: { x: this.props.x, y: this.props.y },
-        previousMousePosition: { x: 0, y: 0 },
-        dragDelta: { x: 0, y: 0 }
-      })
-    }
-  }
-
   render () {
     const { width, height, stroke, fill } = this.props
     const { shapePosition, dragDelta } = this.state

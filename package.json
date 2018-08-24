@@ -4,7 +4,7 @@
   "description": "",
   "main": "root.js",
   "scripts": {
-    "start": "budo index.js --live -- -t [ babelify --extensions .js ]",
+    "start": "budo index.js --live -- -t [ babelify --extensions .js ] -g [ envify --NODE_ENV development ]",
     "prod": "budo index.js -- -g [ envify --NODE_ENV production ] -t [ babelify --extensions .js ]",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "standard"

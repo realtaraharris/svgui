@@ -14,7 +14,8 @@ class Rect extends React.Component {
     super(props)
 
     this.state = {
-      shapeId: null
+      shapeId: null,
+      previousWorldCoords: { x: 0, y: 0, width: 0, height: 0 }
     }
 
     this.rectRef = React.createRef()
@@ -52,23 +53,20 @@ class Rect extends React.Component {
       onDragMove
     })
 
-    this.setState({ shapeId })
-// console.log('in rect, componentDidMount', shapeId)
+    this.setState({ shapeId, previousWorldCoords: worldCoords })
   }
 
   componentDidUpdate (prevProps) {
     const { x, y, width, height, rx, ry, pathLength, onMouseUp, onMouseDown, onMouseMove, onDragMove } = this.props
+    const { previousWorldCoords } = this.state
 
     const worldCoords = this.getWorldCoords(x, y, width, height)
 
     if (
-      x !== prevProps.x ||
-      y !== prevProps.y ||
-      width !== prevProps.width ||
-      height !== prevProps.height ||
-      rx !== prevProps.rx ||
-      ry !== prevProps.ry ||
-      pathLength !== prevProps.pathLength
+      worldCoords.x !== previousWorldCoords.x ||
+      worldCoords.y !== previousWorldCoords.y ||
+      worldCoords.width !== previousWorldCoords.width ||
+      worldCoords.height !== previousWorldCoords.height
     ) {
       updateShape({
         shapeId: this.state.shapeId,
@@ -87,7 +85,7 @@ class Rect extends React.Component {
   componentWillUnmount () {
 console.log('in rect, componentWillUnmount')
     removeShape(this.state.shapeId)
-    // this.setState({ shapeId: null })
+    this.setState({ shapeId: null })
   }
 
   render () {
