@@ -3,7 +3,7 @@
 const React = require('react')
 const { Star } = require('./demo')
 const { InputController, InputFocuser } = require('./input')
-const { Center, CenterHorizontal, Margin, HorizontalSpacedRay, HorizontalSpacedLine, SpacedRay } = require('./layout')
+const { Center, CenterHorizontal, Margin, SpacedRay } = require('./layout')
 const Button = require('./button')
 const Text = require('./text')
 const DragAndDropDemo = require('./drag-and-drop-demo')
@@ -26,7 +26,7 @@ const AddressForm = (props) => {
         tabs={6}
         render={(focusedIndex, handleFocus) => (
           <SpacedRay x1={props.width / 2} y1={0} x2={props.width / 2} y2={props.height} spaceBetween={140} showLayout>
-            <Center width={inputWidth} height={inputHeight}>
+            <Center horizontal width={inputWidth} height={inputHeight}>
               <InputController
                 placeholder={'Full Name'}
                 tabIndex={0}
@@ -34,7 +34,7 @@ const AddressForm = (props) => {
                 onClick={(tabIndex) => handleFocus(tabIndex)}
               />
             </Center>
-            <Center width={inputWidth} height={inputHeight}>
+            <Center horizontal width={inputWidth} height={inputHeight}>
               <InputController
                 placeholder={'Address'}
                 tabIndex={1}
@@ -42,7 +42,7 @@ const AddressForm = (props) => {
                 onClick={(tabIndex) => handleFocus(tabIndex)}
               />
             </Center>
-            <Center width={inputWidth} height={inputHeight}>
+            <Center horizontal width={inputWidth} height={inputHeight}>
               <SpacedRay x1={0} y1={0} x2={inputWidth} y2={0} spaceBetween={60} packLeft showLayout>
                 <InputController
                   width={600}
@@ -70,7 +70,7 @@ const AddressForm = (props) => {
                 />
               </SpacedRay>
             </Center>
-            <Center width={inputWidth} height={inputHeight}>
+            <Center horizontal width={inputWidth} height={inputHeight}>
               <Margin
                 x={0} y={0} top={10} right={0} bottom={10} left={0} width={props.width} height={194} showLayout
                 render={({ x, y, width, height }) => (
@@ -101,17 +101,17 @@ const AddressForm = (props) => {
             </Center>
             */}
 
-            <HorizontalSpacedLine x1={-inputWidth / 2 + 94 / 2} y1={0} x2={inputWidth / 2 - 94 / 2} y2={0} showLayout>
-              <Center width={90} height={94}>{star}</Center>
-              <Center width={90} height={94}>{star}</Center>
-              <Center width={90} height={94}>{star}</Center>
-              <Center width={90} height={94}>{star}</Center>
-              <Center width={90} height={94}>{star}</Center>
-              <Center width={90} height={94}>{star}</Center>
-              <Center width={90} height={94}>{star}</Center>
-              <Center width={90} height={94}>{star}</Center>
-            </HorizontalSpacedLine>
-            <Center width={inputWidth} height={inputHeight}>
+            <SpacedRay x1={-inputWidth / 2 + 94 / 2} y1={0} x2={inputWidth / 2 - 94 / 2} y2={0} spaceEvenly showLayout>
+              <Center horizontal vertical width={90} height={94}>{star}</Center>
+              <Center horizontal vertical width={90} height={94}>{star}</Center>
+              <Center horizontal vertical width={90} height={94}>{star}</Center>
+              <Center horizontal vertical width={90} height={94}>{star}</Center>
+              <Center horizontal vertical width={90} height={94}>{star}</Center>
+              <Center horizontal vertical width={90} height={94}>{star}</Center>
+              <Center horizontal vertical width={90} height={94}>{star}</Center>
+              <Center horizontal vertical width={90} height={94}>{star}</Center>
+            </SpacedRay>
+            <Center horizontal width={inputWidth} height={inputHeight}>
               <Button
                 text={'Sign Up'}
                 fill={'teal'}
@@ -195,16 +195,21 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Margin
-          x={0} y={0} top={200} right={200} bottom={200} left={200} width={this.props.width} height={this.props.height} showLayout
+          x={0} y={0} top={50} right={100} bottom={100} left={100} width={this.props.width} height={this.props.height} showLayout
           render={({ x, y, width, height }) => (
-            <SpacedRay x1={width/2} y1={y} x2={width/2} y2={height} spaceBetween={[80, 200]} showLayout>
-              <Center width={width} height={80}>
-                <Button text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
-              </Center>
-              <Center width={width} height={80}>
-                <Button text={'Drag And Drop'} fill={selectedView !== 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('DragAndDrop')} />
-              </Center>
-              <Center width={width} height={800}>
+            <SpacedRay x1={width/2} y1={50} x2={width/2} y2={height} spaceBetween={100} showLayout>
+              <SpacedRay x1={-width/2} y1={0} x2={width/2} y2={0} spaceBetween={50} packLeft showLayout>
+                <Center vertical width={300} height={100}>
+                  <Button text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
+                </Center>
+                <Center vertical width={300} height={100}>
+                  <Button text={'Drag And Drop'} fill={selectedView === 'DragAndDrop' ? 'teal' : 'gray'} onClick={() => this.handleClick('DragAndDrop')} />
+                </Center>
+                <Center vertical width={300} height={100}>
+                  <Button text={'Double Margin'} fill={selectedView === 'DoubleMarginDemo' ? 'teal' : 'gray'} onClick={() => this.handleClick('DoubleMarginDemo')} />
+                </Center>
+              </SpacedRay>
+              <Center horizontal width={width} height={800}>
                 {view}
               </Center>
             </SpacedRay>

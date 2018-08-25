@@ -24,7 +24,9 @@ const Button = (props) => {
         strokeWidth={props.focused ? 4 : 0}
         onClick={event => props.onClick()}
       />
-      <Center width={textWidth} height={textHeight}><Label text={props.text} x={props.width / 2} y={props.height / 2} fill={'white'} /></Center>
+      <Center width={textWidth} horizontal vertical height={textHeight}>
+        <Label text={props.text} x={props.width / 2} y={props.height / 2} fill={'white'} />
+      </Center>
     </React.Fragment>
   )
 }

@@ -7,8 +7,8 @@ const DraggableRect = require('./draggablerectgood') // TODO: consistentify the 
 const G = require('./shapes/g')
 
 const Center = (props) => {
-  const midX = -props.width / 2
-  const midY = -props.height / 2
+  const midX = props.horizontal ? -props.width / 2 : 0
+  const midY = props.vertical ? -props.height / 2 : 0
 
   return (
     <G transform={`translate(${midX}, ${midY})`}>{
@@ -56,83 +56,16 @@ const CenterHorizontal = (props) => {
 //   )
 // }
 
-// TODO: rename!
-// mode: spaceBetween, spaceAround?
-const HorizontalSpacedRay = (props) => {
+// <SpacedRay x1={0} y1={0} x2={500} y2={500} spaceBetween={30} />
+const SpacedRay = (props) => {
   const { x1, y1, x2, y2 } = props
-
-  const slope = (y2 - y1) / (x2 - x1)
-
-  const angle = Math.atan(slope)
-
-  let deltaX = 0
-  let deltaY = 0
-  return (
-    <React.Fragment>
-      <G transform={`translate(${x1}, ${y1})`}>
-        {
-          normalizeChildren(props.children).map((child, index) => {
-            const result = (
-              <G transform={`translate(${deltaX}, ${deltaY})`} key={index}>
-                {child}
-                <circle cx={0} cy={0} r={2} stroke={'red'} />
-              </G>
-            )
-
-            deltaX += (child.props.width + props.spaceBetween) * Math.cos(angle)
-            deltaY += (child.props.width + props.spaceBetween) * Math.sin(angle)
-
-            return result
-          })
-        }
-      </G>
-      {
-        props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
-      }
-    </React.Fragment>
-  )
-}
-
-const HorizontalSpacedLine = (props) => {
-  const { x1, y1, x2, y2 } = props
-  const slope = (y2 - y1) / (x2 - x1)
 
   const a = x2 - x1
   const b = y2 - y1
 
+  const slope = b / a
   const length = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
-
   const slice = length / (props.children.length - 1)
-
-  const angle = Math.atan(slope)
-  const deltaX = slice * Math.cos(angle)
-  const deltaY = slice * Math.sin(angle)
-
-  return (
-    <React.Fragment>
-      {
-        props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
-      }
-      <G transform={`translate(${x1}, ${y1})`}>
-        {
-          normalizeChildren(props.children).map((child, index) => {
-            return (
-              <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
-                {child}
-                <circle cx={0} cy={0} r={2} stroke={'red'} />
-              </G>
-            )
-          })
-        }
-      </G>
-    </React.Fragment>
-  )
-}
-
-// <SpacedRay x1={0} y1={0} x2={500} y2={500} spaceBetween={30} />
-const SpacedRay = (props) => {
-  const { x1, y1, x2, y2 } = props
-  const slope = (y2 - y1) / (x2 - x1)
 
   const angle = Math.atan(slope)
   const spaceBetweenArrayMode = Array.isArray(props.spaceBetween)
@@ -154,6 +87,9 @@ const SpacedRay = (props) => {
               const nextIndex = index > 0 ? index - 1 : index
               deltaX = props.spaceBetween[nextIndex] * Math.cos(angle)
               deltaY = props.spaceBetween[nextIndex] * Math.sin(angle)
+            } else if (props.spaceEvenly) {
+              deltaX = slice * Math.cos(angle)
+              deltaY = slice * Math.sin(angle)
             } else {
               deltaX = props.spaceBetween * Math.cos(angle)
               deltaY = props.spaceBetween * Math.sin(angle)
@@ -169,7 +105,7 @@ const SpacedRay = (props) => {
                 </G>
               )
               scratchX += child.props.width + deltaX
-              // scratchY += child.props.height + deltaY
+              scratchY += deltaY
             } else {
               result = (
                 <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
@@ -446,4 +382,4 @@ class MarginDev extends React.Component {
 //   )
 // }
 
-module.exports = { Center, CenterHorizontal, Margin: MarginDev, HorizontalSpacedRay, HorizontalSpacedLine, SpacedRay }
+module.exports = { Center, CenterHorizontal, Margin: MarginDev, SpacedRay }
