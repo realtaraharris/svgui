@@ -7,7 +7,7 @@ const { Center, CenterHorizontal, Margin, HorizontalSpacedRay, HorizontalSpacedL
 const Button = require('./button')
 const Text = require('./text')
 const DragAndDropDemo = require('./drag-and-drop-demo')
-const { ShapeRender } = require('./events')
+// const { ShapeRender } = require('./events')
 
 const sampleText = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.
 
@@ -204,13 +204,13 @@ class App extends React.Component {
               <Center width={width} height={80}>
                 <Button text={'Drag And Drop'} fill={selectedView !== 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('DragAndDrop')} />
               </Center>
-              <Center width={width} height={200}>
+              <Center width={width} height={800}>
                 {view}
               </Center>
             </SpacedRay>
           )}
         />
-        <ShapeRender random={Math.random()} />
+        {/*<ShapeRender random={Math.random()} />*/}
       </React.Fragment>
     )
   }
