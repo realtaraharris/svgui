@@ -25,7 +25,7 @@ const AddressForm = (props) => {
       <InputFocuser
         tabs={6}
         render={(focusedIndex, handleFocus) => (
-          <SpacedRay x1={props.width / 2} y1={100} x2={props.width / 2} y2={props.height} interval={140} showLayout>
+          <SpacedRay x1={props.width / 2} y1={0} x2={props.width / 2} y2={props.height} spaceBetween={140} showLayout>
             <Center width={inputWidth} height={inputHeight}>
               <InputController
                 placeholder={'Full Name'}
@@ -43,7 +43,7 @@ const AddressForm = (props) => {
               />
             </Center>
             <Center width={inputWidth} height={inputHeight}>
-              <HorizontalSpacedRay x1={0} y1={0} x2={inputWidth} y2={0} spaceBetween={60} showLayout>
+              <SpacedRay x1={0} y1={0} x2={inputWidth} y2={0} spaceBetween={60} packLeft showLayout>
                 <InputController
                   width={600}
                   height={inputHeight}
@@ -68,7 +68,7 @@ const AddressForm = (props) => {
                   focusedIndex={focusedIndex}
                   onClick={(tabIndex) => handleFocus(tabIndex)}
                 />
-              </HorizontalSpacedRay>
+              </SpacedRay>
             </Center>
             <Center width={inputWidth} height={inputHeight}>
               <Margin
@@ -169,7 +169,7 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      selectedView: 'AddressForm' // 'DragAndDrop'
+      selectedView: 'DoubleMarginDemo' // 'AddressForm' // 'DragAndDrop'
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -197,7 +197,7 @@ class App extends React.Component {
         <Margin
           x={0} y={0} top={200} right={200} bottom={200} left={200} width={this.props.width} height={this.props.height} showLayout
           render={({ x, y, width, height }) => (
-            <SpacedRay x1={width/2} y1={y} x2={width/2} y2={height} interval={220} showLayout>
+            <SpacedRay x1={width/2} y1={y} x2={width/2} y2={height} spaceBetween={[80, 200]} showLayout>
               <Center width={width} height={80}>
                 <Button text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
               </Center>

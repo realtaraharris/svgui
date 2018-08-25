@@ -57,7 +57,6 @@ const CenterHorizontal = (props) => {
 // }
 
 // TODO: rename!
-// TODO: props.interval should be renamed to props.spaceBetween or something?
 // mode: spaceBetween, spaceAround?
 const HorizontalSpacedRay = (props) => {
   const { x1, y1, x2, y2 } = props
@@ -130,14 +129,16 @@ const HorizontalSpacedLine = (props) => {
   )
 }
 
-// <SpacedRay x1={0} y1={0} x2={500} y2={500} interval={30} />
+// <SpacedRay x1={0} y1={0} x2={500} y2={500} spaceBetween={30} />
 const SpacedRay = (props) => {
   const { x1, y1, x2, y2 } = props
   const slope = (y2 - y1) / (x2 - x1)
 
   const angle = Math.atan(slope)
-  const deltaX = props.interval * Math.cos(angle)
-  const deltaY = props.interval * Math.sin(angle)
+  const spaceBetweenArrayMode = Array.isArray(props.spaceBetween)
+
+  let scratchX = 0
+  let scratchY = 0
 
   return (
     <React.Fragment>
@@ -147,12 +148,38 @@ const SpacedRay = (props) => {
       <G transform={`translate(${x1}, ${y1})`}>
         {
           normalizeChildren(props.children).map((child, index) => {
-            return (
-              <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
-                {child}
-                <circle cx={0} cy={0} r={2} stroke={'red'} />
-              </G>
-            )
+            let deltaX = 0
+            let deltaY = 0
+            if (spaceBetweenArrayMode) {
+              const nextIndex = index > 0 ? index - 1 : index
+              deltaX = props.spaceBetween[nextIndex] * Math.cos(angle)
+              deltaY = props.spaceBetween[nextIndex] * Math.sin(angle)
+            } else {
+              deltaX = props.spaceBetween * Math.cos(angle)
+              deltaY = props.spaceBetween * Math.sin(angle)
+            }
+
+            let result
+
+            if (props.packLeft) {
+              result = (
+                <G transform={`translate(${scratchX}, ${scratchY})`} key={index}>
+                  {child}
+                  <circle cx={0} cy={0} r={2} stroke={'red'} />
+                </G>
+              )
+              scratchX += child.props.width + deltaX
+              // scratchY += child.props.height + deltaY
+            } else {
+              result = (
+                <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
+                  {child}
+                  <circle cx={0} cy={0} r={2} stroke={'red'} />
+                </G>
+              )
+            }
+
+            return result
           })
         }
       </G>
