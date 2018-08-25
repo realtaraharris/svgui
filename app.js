@@ -197,8 +197,8 @@ class App extends React.Component {
         <Margin
           x={0} y={0} top={50} right={100} bottom={100} left={100} width={this.props.width} height={this.props.height} showLayout
           render={({ x, y, width, height }) => (
-            <SpacedRay x1={width/2} y1={50} x2={width/2} y2={height} spaceBetween={100} showLayout>
-              <SpacedRay x1={-width/2} y1={0} x2={width/2} y2={0} spaceBetween={50} packLeft showLayout>
+            <SpacedRay x1={width / 2} y1={50} x2={width / 2} y2={height} spaceBetween={100} showLayout>
+              <SpacedRay x1={-width / 2} y1={0} x2={width / 2} y2={0} spaceBetween={50} packLeft showLayout>
                 <Center vertical width={300} height={100}>
                   <Button text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
                 </Center>
@@ -215,7 +215,6 @@ class App extends React.Component {
             </SpacedRay>
           )}
         />
-        {/*<ShapeRender random={Math.random()} />*/}
       </React.Fragment>
     )
   }

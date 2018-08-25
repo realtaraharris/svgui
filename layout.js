@@ -4,16 +4,14 @@ const React = require('react')
 const { normalizeChildren, forwardProps } = require('./utils')
 const DraggableRect = require('./draggablerectgood') // TODO: consistentify the naming
 
-const G = require('./shapes/g')
-
 const Center = (props) => {
   const midX = props.horizontal ? -props.width / 2 : 0
   const midY = props.vertical ? -props.height / 2 : 0
 
   return (
-    <G transform={`translate(${midX}, ${midY})`}>{
+    <g transform={`translate(${midX}, ${midY})`}>{
       normalizeChildren(props.children).map(child => forwardProps(child, { width: props.width, height: props.height }))
-    }</G>
+    }</g>
   )
 }
 
@@ -33,7 +31,7 @@ const CenterHorizontal = (props) => {
   // const midY = -childHeight / 2
 
   return (
-    <G transform={`translate(${midX}, ${props.offsetY})`}>{props.children}</G>
+    <g transform={`translate(${midX}, ${props.offsetY})`}>{props.children}</g>
   )
 }
 
@@ -52,7 +50,7 @@ const CenterHorizontal = (props) => {
 //   const midY = -childHeight / 2
 
 //   return (
-//     <G transform={`translate(${props.x}, ${midY})`}>{props.children}</G>
+//     <g transform={`translate(${props.x}, ${midY})`}>{props.children}</g>
 //   )
 // }
 
@@ -78,7 +76,7 @@ const SpacedRay = (props) => {
       {
         props.showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
       }
-      <G transform={`translate(${x1}, ${y1})`}>
+      <g transform={`translate(${x1}, ${y1})`}>
         {
           normalizeChildren(props.children).map((child, index) => {
             let deltaX = 0
@@ -99,26 +97,26 @@ const SpacedRay = (props) => {
 
             if (props.packLeft) {
               result = (
-                <G transform={`translate(${scratchX}, ${scratchY})`} key={index}>
+                <g transform={`translate(${scratchX}, ${scratchY})`} key={index}>
                   {child}
                   <circle cx={0} cy={0} r={2} stroke={'red'} />
-                </G>
+                </g>
               )
               scratchX += child.props.width + deltaX
               scratchY += deltaY
             } else {
               result = (
-                <G transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
+                <g transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
                   {child}
                   <circle cx={0} cy={0} r={2} stroke={'red'} />
-                </G>
+                </g>
               )
             }
 
             return result
           })
         }
-      </G>
+      </g>
     </React.Fragment>
   )
 }
@@ -140,9 +138,6 @@ const SpacedRay = (props) => {
 
 const DRAGGER_HEIGHT = 50
 const DRAGGER_WIDTH = 25
-
-const BEEP_HEIGHT = 0*50
-const BEEP_WIDTH = 0*25
 
 class MarginDev extends React.Component {
   constructor (props) {
@@ -272,11 +267,11 @@ class MarginDev extends React.Component {
             </React.Fragment>
           )
         }
-        <G transform={`translate(${innerX}, ${innerY})`}>
-        {
-          render(innerProps)
-        }
-        </G>
+        <g transform={`translate(${innerX}, ${innerY})`}>
+          {
+            render(innerProps)
+          }
+        </g>
         <DraggableRect
           width={DRAGGER_WIDTH}
           height={DRAGGER_HEIGHT}

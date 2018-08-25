@@ -5,8 +5,6 @@ const { Center } = require('./layout')
 const { measureTextWidth } = require('./utils')
 const Label = require('./label')
 
-const G = require('./shapes/g')
-
 const Button = (props) => {
   const textWidth = 3 * measureTextWidth({ // TODO: why 3x?
     text: props.text,

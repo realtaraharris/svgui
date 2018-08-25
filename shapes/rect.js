@@ -77,13 +77,15 @@ class Rect extends React.Component {
         onMouseUp,
         onMouseDown,
         onMouseMove,
-        onDragMove
+        onDragMove,
+        rx,
+        ry,
+        pathLength
       })
     }
   }
 
   componentWillUnmount () {
-console.log('in rect, componentWillUnmount')
     removeShape(this.state.shapeId)
     this.setState({ shapeId: null })
   }
