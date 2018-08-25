@@ -59,11 +59,11 @@ console.log('in handleMouseMove', name)
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
-  handleDragMove ({ x, y }, name) { // consider doing this on mouse up?
+  handleDragMove ({ x, y, width, height }, name) { // consider doing this on mouse up?
 console.log('in handleDragMove', name)
     if (!this.state.rects[name].mouseDown) { return }
     const nextState = Object.assign({}, this.state.rects[name], {
-      shapePosition: { x, y },
+      shapePosition: { x: x + (width / 2), y: y + (height / 2) },
       dragDelta: { x: 0, y: 0 },
       mouseDown: false
     })
