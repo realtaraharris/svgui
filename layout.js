@@ -100,7 +100,7 @@ const SpacedRay = (props) => {
 const DRAGGER_HEIGHT = 50
 const DRAGGER_WIDTH = 25
 
-class MarginDev extends React.Component {
+class MarginEditable extends React.Component {
   constructor (props) {
     super(props)
 
@@ -290,52 +290,58 @@ class MarginDev extends React.Component {
   }
 }
 
-// const Margin = (props) => {
-//   const innerX = props.x + props.left
-//   const innerY = props.y + props.top
-//   const innerWidth = props.width - props.left - props.right
-//   const innerHeight = props.height - props.top - props.bottom
+const Margin = (props) => {
+  const { x, y, width, height, left, right, top, bottom, showLayout, render, editable } = props
 
-//   const innerProps = {
-//     x: innerX,
-//     y: innerY,
-//     width: innerWidth,
-//     height: innerHeight
-//   }
+  const innerX = x + left
+  const innerY = y + top
+  const innerWidth = width - left - right
+  const innerHeight = height - top - bottom
 
-//   const innerChildren = Object.assign({}, props.children, { props: innerProps })
+  const innerProps = {
+    x: innerX,
+    y: innerY,
+    width: innerWidth,
+    height: innerHeight
+  }
 
-//   return (
-//     <React.Fragment>
-//       {
-//         props.showLayout && (
-//           <React.Fragment>
-//             <rect
-//               x={props.x}
-//               y={props.y}
-//               width={props.width}
-//               height={props.height}
-//               stroke={'red'}
-//               strokeDasharray={'5,5'}
-//               fill={'none'}
-//             />
-//             <rect
-//               x={innerX}
-//               y={innerY}
-//               width={innerWidth}
-//               height={innerHeight}
-//               stroke={'brown'}
-//               strokeDasharray={'5,5'}
-//               fill={'none'}
-//             />
-//           </React.Fragment>
-//         )
-//       }
-//       {
-//         this.props.render(innerProps)
-//       }
-//     </React.Fragment>
-//   )
-// }
+  if (editable) {
+    return <MarginEditable {...props} />
+  } else {
+    return (
+      <React.Fragment>
+        {
+          showLayout && (
+            <React.Fragment>
+              <rect
+                x={x}
+                y={y}
+                width={width}
+                height={height}
+                stroke={'red'}
+                strokeDasharray={'5,5'}
+                fill={'none'}
+              />
+              <rect
+                x={innerX}
+                y={innerY}
+                width={innerWidth}
+                height={innerHeight}
+                stroke={'brown'}
+                strokeDasharray={'5,5'}
+                fill={'none'}
+              />
+            </React.Fragment>
+          )
+        }
+        <g transform={`translate(${innerX}, ${innerY})`}>
+          {
+            render(innerProps)
+          }
+        </g>
+      </React.Fragment>
+    )
+  }
+}
 
-module.exports = { Center, Margin: MarginDev, SpacedRay }
+module.exports = { Center, Margin, SpacedRay }

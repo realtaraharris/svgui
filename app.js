@@ -149,12 +149,14 @@ const DoubleMarginDemo = (props) => {
       width={props.width} height={props.height}
       showLayout
       top={100} right={100} bottom={100} left={100}
+      editable
       render={({ x, y, width, height }) => (
         <Margin
           x={0} y={0}
           width={width} height={height}
           showLayout
           top={200} right={200} bottom={200} left={200}
+          editable
           render={({ x, y, width, height }) => (
             <Button x={x} y={y} width={width} height={height} text={'Button Inside Margin'} fill={'gray'} />
           )}
