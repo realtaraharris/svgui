@@ -1,7 +1,7 @@
 'use strict'
 
 const React = require('react')
-
+const { debounce } = require('lodash')
 const { generateQuickGuid } = require('./utils')
 
 const measure = (text, { fontWeight, fontStyle, fontSize, fontFamily }) => {
@@ -132,7 +132,7 @@ class Text extends React.Component {
     }
 
     this.scrollRectRef = React.createRef()
-    this.onWheel = this.onWheel.bind(this)
+    this.onWheel = debounce(this.onWheel.bind(this), 1, { leading: true })
     this.translateCoords = this.translateCoords.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
     this.onMouseUp = this.onMouseUp.bind(this)
