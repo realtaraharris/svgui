@@ -4,7 +4,8 @@
   "description": "",
   "main": "root.js",
   "scripts": {
-    "start": "budo index.js --live -- -t [ babelify --extensions .js ] -g [ envify --NODE_ENV development ]",
+    "start": "budo index.js --live -- -t [ babelify --extensions .js ]  -g [ envify --NODE_ENV production ] -g uglifyify",
+    "start-dev": "budo index.js --live -- -t [ babelify --extensions .js ] -g [ envify --NODE_ENV development ]",
     "prod": "budo index.js -- -g [ envify --NODE_ENV production ] -t [ babelify --extensions .js ]",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "standard"
@@ -25,15 +26,18 @@
     "babel-preset-react": "^6.24.1",
     "babelify": "^8.0.0",
     "budo": "^11.3.2",
-    "envify": "^4.1.0",
     "esprima": "^4.0.1",
     "estraverse": "^4.2.0",
     "estraverse-fb": "^1.3.2",
+    "lodash": "^4.17.10",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "standard": "^11.0.1"
+    "envify": "^4.1.0",
+    "standard": "^11.0.1",
+    "uglify-js": "^3.4.8",
+    "uglifyify": "^5.0.1"
   }
 }
