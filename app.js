@@ -3,7 +3,9 @@
 const React = require('react')
 const { Star } = require('./demo')
 const { InputController, InputFocuser } = require('./input')
-const { Center, Margin, SpacedRay } = require('./layout')
+const Center = require('./layout/center')
+const Margin = require('./layout/margin')
+const SpacedRay = require('./layout/spaced-ray')
 const Button = require('./button')
 const Text = require('./text')
 const DragAndDropDemo = require('./drag-and-drop-demo')
@@ -72,7 +74,7 @@ const AddressForm = (props) => {
             </Center>
             <Center horizontal width={inputWidth} height={inputHeight}>
               <Margin
-                x={0} y={0} top={10} right={0} bottom={10} left={0} width={props.width} height={194} showLayout
+                x={0} y={0} top={10} right={0} bottom={10} left={0} width={props.width} height={194} showLayout editable
                 render={({ x, y, width, height }) => (
                   <Button x={x} y={y} width={width} height={height} text={'Button Inside Margin'} fill={'purple'} />
                 )}

@@ -217,6 +217,8 @@ class Text extends React.Component {
       if (lineIndex < skipToLine || lineIndex > skipAfterLine) { return }
       const h = (lineIndex * this.props.lineHeight) - scrollPositionAbs
 
+      let horizontalScratchPosition = 0
+
       const liney = line.map(token => token.token).join('')
       textBoxes.push(
         <text key={lineIndex} style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
@@ -224,7 +226,6 @@ class Text extends React.Component {
         </text>
       )
 
-      let horizontalScratchPosition = 0
       return line.map((token) => {
         let result
 
