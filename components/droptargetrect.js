@@ -1,5 +1,5 @@
 const React = require('react')
-const Rect = require('./shapes/rect')
+const Rect = require('../shapes/rect')
 
 const DropTargetRect = (props) => {
   const { x, y, width, height, name, onDragMove, stroke, fill } = props

@@ -2,7 +2,7 @@
 
 const React = require('react')
 const { debounce } = require('lodash')
-const { generateQuickGuid } = require('./utils')
+const { generateQuickGuid } = require('../utils')
 
 const measure = (text, { fontWeight, fontStyle, fontSize, fontFamily }) => {
   const canvas = document.createElement('canvas')

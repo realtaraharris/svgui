@@ -1,8 +1,8 @@
 'use strict'
 
 const React = require('react')
-const Center = require('./layout/center')
-const { measureTextWidth } = require('./utils')
+const Center = require('../layout/center')
+const { measureTextWidth } = require('../utils')
 const Label = require('./label')
 
 const Button = (props) => {

@@ -6,8 +6,8 @@ const Center = require('./layout/center')
 const Margin = require('./layout/margin')
 const SpacedRay = require('./layout/spaced-ray')
 
-const Button = require('./button')
-const { Input } = require('./input')
+const Button = require('./components/button')
+const { Input } = require('./components/input')
 
 const Star = (props) => (
   <React.Fragment>

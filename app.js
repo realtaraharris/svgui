@@ -2,12 +2,12 @@
 
 const React = require('react')
 const { Star } = require('./demo')
-const { InputController, InputFocuser } = require('./input')
+const { InputController, InputFocuser } = require('./components/input')
 const Center = require('./layout/center')
 const Margin = require('./layout/margin')
 const SpacedRay = require('./layout/spaced-ray')
-const Button = require('./button')
-const Text = require('./text')
+const Button = require('./components/button')
+const Text = require('./components/text')
 const DragAndDropDemo = require('./drag-and-drop-demo')
 // const { ShapeRender } = require('./events')
 
