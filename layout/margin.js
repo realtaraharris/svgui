@@ -2,7 +2,7 @@
 
 const React = require('react')
 
-const DraggableRect = require('../components/draggablerect')
+const DraggableRect = require('../components/draggable-rect')
 
 // const dot = (v1, v2) => {
 //   const slope1 = (v1.y2 - v1.y1) / (v1.x2 - v1.x1)

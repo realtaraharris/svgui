@@ -1,6 +1,6 @@
 const React = require('react')
-const DraggableRect = require('./components/draggablerect')
-const DropTargetRect = require('./components/droptargetrect')
+const DraggableRect = require('./components/draggable-rect')
+const DropTargetRect = require('./components/drop-target-rect')
 
 class DragAndDropDemo extends React.Component {
   constructor (props) {
