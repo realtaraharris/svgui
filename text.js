@@ -217,6 +217,13 @@ class Text extends React.Component {
       if (lineIndex < skipToLine || lineIndex > skipAfterLine) { return }
       const h = (lineIndex * this.props.lineHeight) - scrollPositionAbs
 
+      const liney = line.map(token => token.token).join('')
+      textBoxes.push(
+        <text key={lineIndex} style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
+          {liney}
+        </text>
+      )
+
       let horizontalScratchPosition = 0
       return line.map((token) => {
         let result
@@ -243,15 +250,6 @@ class Text extends React.Component {
 
         if (selection) {
           selectionBoxes.push(<rect key={tokenIndex} x={textRect.x} y={textRect.y} width={textRect.width} height={textRect.height} stroke={selection} fill={selection} clipPath={`url(#${textClipId})`} />)
-        }
-
-        if (token.token !== '') {
-          // TODO: don't push all this extra geometry - just find the box encompassing the text selection for the entire line
-          textBoxes.push(
-            <text key={tokenIndex} style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
-              {token.token}
-            </text>
-          )
         }
 
         tokenIndex++
