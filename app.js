@@ -3,7 +3,7 @@
 const React = require('react')
 const { Star } = require('./demo')
 const { InputController, InputFocuser } = require('./input')
-const { Center, CenterHorizontal, Margin, SpacedRay } = require('./layout')
+const { Center, Margin, SpacedRay } = require('./layout')
 const Button = require('./button')
 const Text = require('./text')
 const DragAndDropDemo = require('./drag-and-drop-demo')
@@ -120,7 +120,7 @@ const AddressForm = (props) => {
                 focusedIndex={focusedIndex}
               />
             </Center>
-            <CenterHorizontal offsetY={-inputHeight / 2}>
+            <Center horizontal width={inputWidth} height={300}>
               <Text
                 width={inputWidth}
                 height={300}
@@ -134,7 +134,7 @@ const AddressForm = (props) => {
               >
                 {[sampleText, sampleText, sampleText].join()}
               </Text>
-            </CenterHorizontal>
+            </Center>
           </SpacedRay>
         )}
       />

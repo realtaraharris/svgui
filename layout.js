@@ -15,45 +15,6 @@ const Center = (props) => {
   )
 }
 
-const CenterHorizontal = (props) => {
-  if (Array.isArray(props.children)) {
-    return console.error('Center component only accepts single children')
-  }
-
-  if (!props.children.props.width || !props.children.props.height) {
-    return console.error('Center component requires that child have width and height props')
-  }
-
-  const childWidth = props.children.props.width
-  // const childHeight = props.children.props.height
-
-  const midX = -childWidth / 2
-  // const midY = -childHeight / 2
-
-  return (
-    <g transform={`translate(${midX}, ${props.offsetY})`}>{props.children}</g>
-  )
-}
-
-// const ShiftXCenterY = (props) => {
-//   if (Array.isArray(props.children)) {
-//     return console.error('ShiftXCenterY component only accepts single children')
-//   }
-
-//   if (!props.children.props.width || !props.children.props.height) {
-//     return console.error('ShiftXCenterY component requires that child have width and height props')
-//   }
-
-//   const childWidth = props.children.props.width
-//   const childHeight = props.children.props.height
-
-//   const midY = -childHeight / 2
-
-//   return (
-//     <g transform={`translate(${props.x}, ${midY})`}>{props.children}</g>
-//   )
-// }
-
 // <SpacedRay x1={0} y1={0} x2={500} y2={500} spaceBetween={30} />
 const SpacedRay = (props) => {
   const { x1, y1, x2, y2 } = props
@@ -377,4 +338,4 @@ class MarginDev extends React.Component {
 //   )
 // }
 
-module.exports = { Center, CenterHorizontal, Margin: MarginDev, SpacedRay }
+module.exports = { Center, Margin: MarginDev, SpacedRay }
