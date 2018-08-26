@@ -1,5 +1,5 @@
 const React = require('react')
-const DraggableRect = require('./draggablerectgood') // TODO: consistentify the naming
+const DraggableRect = require('./draggablerect')
 const DropTargetRect = require('./droptargetrect')
 
 class DragAndDropDemo extends React.Component {

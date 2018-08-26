@@ -2,7 +2,7 @@
 const React = require('react')
 
 const { normalizeChildren, forwardProps } = require('./utils')
-const DraggableRect = require('./draggablerectgood') // TODO: consistentify the naming
+const DraggableRect = require('./draggablerect')
 
 const Center = (props) => {
   const midX = props.horizontal ? -props.width / 2 : 0
