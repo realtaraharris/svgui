@@ -54,12 +54,7 @@ class MarginEditable extends React.Component {
           (props.width / 2) + props.x,
           height - bottom + props.y
         )
-      },
-
-      topDragLoc: top,
-      leftDragLoc: left,
-      rightDragLoc: width - right,
-      bottomDragLoc: height - bottom
+      }
     }
 
     this.handleMouseDown = this.handleMouseDown.bind(this)
