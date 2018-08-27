@@ -1,7 +1,120 @@
 'use strict'
 
 const React = require('react')
+const DraggableRect = require('../components/draggable-rect')
+
 const { normalizeChildren } = require('../utils')
+
+const DRAGGER_WIDTH = 50
+const DRAGGER_HEIGHT = 50
+
+class SpacedRayController extends React.Component {
+  constructor (props) {
+    super(props)
+
+    const initial = (x, y) => ({
+      mouseDown: false,
+      previousMousePosition: { x: 0, y: 0 },
+      currentPosition: { x: 0, y: 0 },
+      dragDelta: { x: 0, y: 0 },
+      shapePosition: { x, y }
+    })
+
+    const { start, end } = props
+
+    this.state = {
+      rects: {
+        start: initial(
+          start[0],
+          start[1]
+        ),
+        end: initial(
+          end[0],
+          end[1]
+        )
+      }
+    }
+
+    this.handleMouseDown = this.handleMouseDown.bind(this)
+    this.handleMouseUp = this.handleMouseUp.bind(this)
+    this.handleMouseMove = this.handleMouseMove.bind(this)
+  }
+
+  handleMouseDown (previousMousePosition, name) {
+    const nextState = Object.assign({}, this.state.rects[name], {
+      mouseDown: true,
+      previousMousePosition
+    })
+    this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
+  }
+
+  handleMouseUp (shapePosition, dragDelta, name) {
+    const nextState = Object.assign({}, this.state.rects[name], {
+      mouseDown: false,
+      shapePosition,
+      dragDelta
+    })
+    this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
+  }
+
+  handleMouseMove (dragDelta, currentPosition, name) {
+    const nextState = Object.assign({}, this.state.rects[name], {
+      currentPosition,
+      dragDelta
+    })
+    this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
+  }
+
+  render () {
+    const { start, end, children, spaceBetween, showLayout, spaceEvenly, packLeft } = this.props
+    const { rects } = this.state
+    return (
+      <React.Fragment>
+        <SpacedRay
+          start={[
+            rects.start.shapePosition.x + rects.start.dragDelta.x,
+            rects.start.shapePosition.y + rects.start.dragDelta.y
+          ]}
+          end={[
+            rects.end.shapePosition.x + rects.end.dragDelta.x,
+            rects.end.shapePosition.y + rects.end.dragDelta.y
+          ]}
+          children={children}
+          spaceBetween={spaceBetween}
+          showLayout={showLayout}
+          spaceEvenly={spaceEvenly}
+          packLeft={packLeft}
+        />
+        <DraggableRect
+          width={DRAGGER_WIDTH}
+          height={DRAGGER_HEIGHT}
+          fill={'rgba(29,82,255,0.6)'}
+          name={'start'}
+          shapePosition={rects.start.shapePosition}
+          previousMousePosition={rects.start.previousMousePosition}
+          dragDelta={rects.start.dragDelta}
+          mouseDown={rects.start.mouseDown}
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseMove={this.handleMouseMove}
+        />
+        <DraggableRect
+          width={DRAGGER_WIDTH}
+          height={DRAGGER_HEIGHT}
+          fill={'rgba(29,82,255,0.6)'}
+          name={'end'}
+          shapePosition={rects.end.shapePosition}
+          previousMousePosition={rects.end.previousMousePosition}
+          dragDelta={rects.end.dragDelta}
+          mouseDown={rects.end.mouseDown}
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseMove={this.handleMouseMove}
+        />
+      </React.Fragment>
+    )
+  }
+}
 
 const SpacedRay = (props) => {
   const { start, end, children, spaceBetween, showLayout, spaceEvenly, packLeft } = props
@@ -72,4 +185,4 @@ const SpacedRay = (props) => {
   )
 }
 
-module.exports = SpacedRay
+module.exports = SpacedRayController
