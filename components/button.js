@@ -17,7 +17,7 @@ const Button = (props) => {
 
   return (
     <React.Fragment>
-      <rect x={0} y={0} width={props.width} height={props.height} rx={15} ry={15} fill={props.fill}
+      <rect x={0} y={0} width={props.width} height={props.height} rx={props.rx} ry={props.ry} fill={props.fill}
         stroke={props.focused ? 'skyblue' : props.fill}
         strokeWidth={props.focused ? 4 : 0}
         onClick={event => props.onClick()}

@@ -76,29 +76,29 @@ const AddressForm = (props) => {
               <Margin
                 x={0} y={0} top={10} right={0} bottom={10} left={0} width={props.width} height={194} showLayout editable
                 render={({ x, y, width, height }) => (
-                  <Button x={x} y={y} width={width} height={height} text={'Button Inside Margin'} fill={'purple'} />
+                  <Button x={x} y={y} width={width} height={height} text={'Button Inside Margin'} rx={15} ry={15} fill={'purple'} />
                 )}
               />
             </Center>
             {/*
             <Center width={inputWidth} height={inputHeight}>
               <Margin x={0} y={0} top={10} right={10} bottom={10} left={10} width={props.width} height={194} showLayout>
-                <Button text={'Button Inside Margin'} fill={'purple'} />
+                <Button text={'Button Inside Margin'} fill={'purple'} rx={15} ry={15}  />
               </Margin>
             </Center>
             <Center width={inputWidth} height={inputHeight}>
               <Margin x={0} y={0} top={10} right={100} bottom={10} left={100} width={props.width} height={194} showLayout>
-                <Button text={'Button Inside Margin'} fill={'purple'} />
+                <Button text={'Button Inside Margin'} fill={'purple'} rx={15} ry={15} />
               </Margin>
             </Center>
             <Center width={inputWidth} height={inputHeight}>
               <Margin x={0} y={0} top={10} right={100} bottom={10} left={0} width={props.width} height={194} showLayout>
-                <Button text={'Button Inside Margin'} fill={'purple'} />
+                <Button text={'Button Inside Margin'} fill={'purple'} rx={15} ry={15} />
               </Margin>
             </Center>
             <Center width={inputWidth} height={inputHeight}>
               <Margin x={0} y={0} top={10} right={0} bottom={10} left={100} width={props.width} height={194} showLayout>
-                <Button text={'Button Inside Margin'} fill={'purple'} />
+                <Button text={'Button Inside Margin'} fill={'purple'} rx={15} ry={15}  />
               </Margin>
             </Center>
             */}
@@ -120,6 +120,7 @@ const AddressForm = (props) => {
                 tabIndex={5}
                 focused={focusedIndex === 5}
                 focusedIndex={focusedIndex}
+                rx={15} ry={15}
               />
             </Center>
             <Center horizontal width={inputWidth} height={300}>
@@ -160,7 +161,7 @@ const DoubleMarginDemo = (props) => {
           top={200} right={200} bottom={200} left={200}
           editable
           render={({ x, y, width, height }) => (
-            <Button x={x} y={y} width={width} height={height} text={'Button Inside Margin'} fill={'gray'} />
+            <Button x={x} y={y} width={width} height={height} text={'Button Inside Margin'} fill={'gray'} rx={15} ry={15} />
           )}
         />
       )}
