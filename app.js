@@ -27,7 +27,7 @@ const AddressForm = (props) => {
       <InputFocuser
         tabs={6}
         render={(focusedIndex, handleFocus) => (
-          <SpacedRay x1={props.width / 2} y1={0} x2={props.width / 2} y2={props.height} spaceBetween={140} showLayout>
+          <SpacedRay start={[props.width / 2, 0]} end={[props.width / 2, props.height]} spaceBetween={140} showLayout>
             <Center horizontal width={inputWidth} height={inputHeight}>
               <InputController
                 placeholder={'Full Name'}
@@ -45,7 +45,7 @@ const AddressForm = (props) => {
               />
             </Center>
             <Center horizontal width={inputWidth} height={inputHeight}>
-              <SpacedRay x1={0} y1={0} x2={inputWidth} y2={0} spaceBetween={60} packLeft showLayout>
+              <SpacedRay start={[0, 0]} end={[inputWidth, 0]} spaceBetween={60} packLeft showLayout>
                 <InputController
                   width={600}
                   height={inputHeight}
@@ -103,7 +103,7 @@ const AddressForm = (props) => {
             </Center>
             */}
 
-            <SpacedRay x1={-inputWidth / 2 + 94 / 2} y1={0} x2={inputWidth / 2 - 94 / 2} y2={0} spaceEvenly showLayout>
+            <SpacedRay start={[-inputWidth / 2 + 94 / 2, 0]} end={[inputWidth / 2 - 94 / 2, 0]} spaceEvenly showLayout>
               <Center horizontal vertical width={90} height={94}>{star}</Center>
               <Center horizontal vertical width={90} height={94}>{star}</Center>
               <Center horizontal vertical width={90} height={94}>{star}</Center>
@@ -201,8 +201,8 @@ class App extends React.Component {
         <Margin
           x={0} y={0} top={50} right={100} bottom={100} left={100} width={this.props.width} height={this.props.height} showLayout
           render={({ x, y, width, height }) => (
-            <SpacedRay x1={width / 2} y1={50} x2={width / 2} y2={height} spaceBetween={100} showLayout>
-              <SpacedRay x1={-width / 2} y1={0} x2={width / 2} y2={0} spaceBetween={50} packLeft showLayout>
+            <SpacedRay start={[width / 2, 50]} end={[width / 2, height]} spaceBetween={100} showLayout>
+              <SpacedRay start={[-width / 2, 0]} end={[width / 2, 0]} spaceBetween={50} packLeft showLayout>
                 <Center vertical width={300} height={100}>
                   <Button text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
                 </Center>
