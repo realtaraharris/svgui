@@ -20,7 +20,7 @@ const DraggableRect = require('../components/draggable-rect')
 // }
 
 const DRAGGER_HEIGHT = 50
-const DRAGGER_WIDTH = 25
+const DRAGGER_WIDTH = 50
 
 class MarginEditable extends React.Component {
   constructor (props) {
@@ -156,11 +156,11 @@ class MarginEditable extends React.Component {
           }
         </g>
         <DraggableRect
-          width={DRAGGER_WIDTH}
+          width={innerWidth}
           height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
+          fill={'rgba(29,82,255,0.05)'}
           name={'top'}
-          shapePosition={rects.top.shapePosition}
+          shapePosition={{x: innerX + innerWidth / 2, y: rects.top.shapePosition.y }}
           previousMousePosition={rects.top.previousMousePosition}
           dragDelta={rects.top.dragDelta}
           mouseDown={rects.top.mouseDown}
@@ -169,11 +169,11 @@ class MarginEditable extends React.Component {
           onMouseMove={this.handleMouseMove}
         />
         <DraggableRect
-          width={DRAGGER_WIDTH}
+          width={innerWidth}
           height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
+          fill={'rgba(29,82,255,0.05)'}
           name={'bottom'}
-          shapePosition={rects.bottom.shapePosition}
+          shapePosition={{x: innerX + innerWidth / 2, y: rects.bottom.shapePosition.y }}
           previousMousePosition={rects.bottom.previousMousePosition}
           dragDelta={rects.bottom.dragDelta}
           mouseDown={rects.bottom.mouseDown}
@@ -183,10 +183,10 @@ class MarginEditable extends React.Component {
         />
         <DraggableRect
           width={DRAGGER_WIDTH}
-          height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
+          height={innerHeight}
+          fill={'rgba(29,82,255,0.05)'}
           name={'left'}
-          shapePosition={rects.left.shapePosition}
+          shapePosition={{x: rects.left.shapePosition.x, y: innerY + innerHeight / 2 }}
           previousMousePosition={rects.left.previousMousePosition}
           dragDelta={rects.left.dragDelta}
           mouseDown={rects.left.mouseDown}
@@ -196,10 +196,10 @@ class MarginEditable extends React.Component {
         />
         <DraggableRect
           width={DRAGGER_WIDTH}
-          height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
+          height={innerHeight}
+          fill={'rgba(29,82,255,0.05)'}
           name={'right'}
-          shapePosition={rects.right.shapePosition}
+          shapePosition={{x: rects.right.shapePosition.x, y: innerY + innerHeight / 2 }}
           previousMousePosition={rects.right.previousMousePosition}
           dragDelta={rects.right.dragDelta}
           mouseDown={rects.right.mouseDown}
