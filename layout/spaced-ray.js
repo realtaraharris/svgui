@@ -126,10 +126,12 @@ const SpacedRay = (props) => {
   const b = y2 - y1
 
   const slope = b / a
+  const angle = Math.atan(slope)
+  const flippy = x1 > x2 ? -1 : 1
+
   const length = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
   const slice = length / (children.length - 1)
 
-  const angle = Math.atan(slope)
   const spaceBetweenArrayMode = Array.isArray(spaceBetween)
 
   let scratchX = 0
@@ -161,16 +163,16 @@ const SpacedRay = (props) => {
 
             if (packLeft) {
               result = (
-                <g transform={`translate(${scratchX}, ${scratchY})`} key={index}>
+                <g transform={`translate(${scratchX * flippy}, ${scratchY * flippy})`} key={index}>
                   {child}
                   <circle cx={0} cy={0} r={2} stroke={'red'} />
                 </g>
               )
-              scratchX += child.props.width + deltaX
-              scratchY += deltaY
+              scratchX += (child.props.width + deltaX) * Math.cos(angle)
+              scratchY += (child.props.width + deltaX) * Math.sin(angle)
             } else {
               result = (
-                <g transform={`translate(${deltaX * index}, ${deltaY * index})`} key={index}>
+                <g transform={`translate(${deltaX * index * flippy}, ${deltaY * index * flippy})`} key={index}>
                   {child}
                   <circle cx={0} cy={0} r={2} stroke={'red'} />
                 </g>
