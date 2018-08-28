@@ -3,6 +3,7 @@
 const React = require('react')
 
 const DraggableRect = require('../components/draggable-rect')
+const LayoutEditorContext = require('../layout-editor-context')
 
 // const dot = (v1, v2) => {
 //   const slope1 = (v1.y2 - v1.y1) / (v1.x2 - v1.x1)
@@ -87,22 +88,6 @@ class MarginEditable extends React.Component {
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
-  componentDidUpdate (prevProps) {
-    if (prevProps.x !== this.props.x) {
-      this.state.rects.left.shapePosition.x = this.props.x + this.props.left
-      this.forceUpdate()
-    } else if (prevProps.y !== this.props.y) {
-      this.state.rects.top.shapePosition.y = this.props.y + this.props.top
-      this.forceUpdate()
-    } else if (prevProps.width !== this.props.width) {
-      this.state.rects.right.shapePosition.x = this.props.width - this.props.left + this.props.x
-      this.forceUpdate()
-    } else if (prevProps.height !== this.props.height) {
-      this.state.rects.bottom.shapePosition.y = this.props.height - this.props.top + this.props.y
-      this.forceUpdate()
-    }
-  }
-
   render () {
     const { x, y, width, height, showLayout, render } = this.props
     const { rects } = this.state
@@ -120,89 +105,95 @@ class MarginEditable extends React.Component {
     }
 
     return (
-      <React.Fragment>
-        {
-          showLayout && (
+      <LayoutEditorContext.Consumer>
+        {({ updated, setUpdate }) => {
+          return (
             <React.Fragment>
-              <rect
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                stroke={'blue'}
-                strokeDasharray={'1,1'}
-                fill={'none'}
+              {
+                showLayout && (
+                  <React.Fragment>
+                    <rect
+                      x={x}
+                      y={y}
+                      width={width}
+                      height={height}
+                      stroke={'blue'}
+                      strokeDasharray={'1,1'}
+                      fill={'none'}
+                    />
+                    <rect
+                      x={innerX}
+                      y={innerY}
+                      width={innerWidth}
+                      height={innerHeight}
+                      stroke={'red'}
+                      strokeDasharray={'5,5'}
+                      fill={'none'}
+                    />
+                  </React.Fragment>
+                )
+              }
+              <g transform={`translate(${innerX}, ${innerY})`}>
+                {
+                  render(innerProps)
+                }
+              </g>
+              <DraggableRect
+                width={DRAGGER_WIDTH}
+                height={DRAGGER_HEIGHT}
+                fill={'rgba(29,82,255,0.6)'}
+                name={'top'}
+                shapePosition={rects.top.shapePosition}
+                previousMousePosition={rects.top.previousMousePosition}
+                dragDelta={rects.top.dragDelta}
+                mouseDown={rects.top.mouseDown}
+                onMouseDown={(previousMousePosition, name) => { this.handleMouseDown(previousMousePosition, name); setUpdate() }}
+                onMouseUp={(shapePosition, dragDelta, name) => { this.handleMouseUp(shapePosition, dragDelta, name); setUpdate() }}
+                onMouseMove={(dragDelta, currentPosition, name) => { this.handleMouseMove(dragDelta, currentPosition, name); setUpdate() }}
               />
-              <rect
-                x={innerX}
-                y={innerY}
-                width={innerWidth}
-                height={innerHeight}
-                stroke={'red'}
-                strokeDasharray={'5,5'}
-                fill={'none'}
+              <DraggableRect
+                width={DRAGGER_WIDTH}
+                height={DRAGGER_HEIGHT}
+                fill={'rgba(29,82,255,0.6)'}
+                name={'bottom'}
+                shapePosition={rects.bottom.shapePosition}
+                previousMousePosition={rects.bottom.previousMousePosition}
+                dragDelta={rects.bottom.dragDelta}
+                mouseDown={rects.bottom.mouseDown}
+                onMouseDown={(previousMousePosition, name) => { this.handleMouseDown(previousMousePosition, name); setUpdate() }}
+                onMouseUp={(shapePosition, dragDelta, name) => { this.handleMouseUp(shapePosition, dragDelta, name); setUpdate() }}
+                onMouseMove={(dragDelta, currentPosition, name) => { this.handleMouseMove(dragDelta, currentPosition, name); setUpdate() }}
+              />
+              <DraggableRect
+                width={DRAGGER_WIDTH}
+                height={DRAGGER_HEIGHT}
+                fill={'rgba(29,82,255,0.6)'}
+                name={'left'}
+                shapePosition={rects.left.shapePosition}
+                previousMousePosition={rects.left.previousMousePosition}
+                dragDelta={rects.left.dragDelta}
+                mouseDown={rects.left.mouseDown}
+                onMouseDown={(previousMousePosition, name) => { this.handleMouseDown(previousMousePosition, name); setUpdate() }}
+                onMouseUp={(shapePosition, dragDelta, name) => { this.handleMouseUp(shapePosition, dragDelta, name); setUpdate() }}
+                onMouseMove={(dragDelta, currentPosition, name) => { this.handleMouseMove(dragDelta, currentPosition, name); setUpdate() }}
+              />
+              <DraggableRect
+                width={DRAGGER_WIDTH}
+                height={DRAGGER_HEIGHT}
+                fill={'rgba(29,82,255,0.6)'}
+                name={'right'}
+                shapePosition={rects.right.shapePosition}
+                previousMousePosition={rects.right.previousMousePosition}
+                dragDelta={rects.right.dragDelta}
+                mouseDown={rects.right.mouseDown}
+                onMouseDown={(previousMousePosition, name) => { this.handleMouseDown(previousMousePosition, name); setUpdate() }}
+                onMouseUp={(shapePosition, dragDelta, name) => { this.handleMouseUp(shapePosition, dragDelta, name); setUpdate() }}
+                onMouseMove={(dragDelta, currentPosition, name) => { this.handleMouseMove(dragDelta, currentPosition, name); setUpdate() }}
               />
             </React.Fragment>
           )
-        }
-        <g transform={`translate(${innerX}, ${innerY})`}>
-          {
-            render(innerProps)
-          }
-        </g>
-        <DraggableRect
-          width={DRAGGER_WIDTH}
-          height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
-          name={'top'}
-          shapePosition={rects.top.shapePosition}
-          previousMousePosition={rects.top.previousMousePosition}
-          dragDelta={rects.top.dragDelta}
-          mouseDown={rects.top.mouseDown}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onMouseMove={this.handleMouseMove}
-        />
-        <DraggableRect
-          width={DRAGGER_WIDTH}
-          height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
-          name={'bottom'}
-          shapePosition={rects.bottom.shapePosition}
-          previousMousePosition={rects.bottom.previousMousePosition}
-          dragDelta={rects.bottom.dragDelta}
-          mouseDown={rects.bottom.mouseDown}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onMouseMove={this.handleMouseMove}
-        />
-        <DraggableRect
-          width={DRAGGER_WIDTH}
-          height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
-          name={'left'}
-          shapePosition={rects.left.shapePosition}
-          previousMousePosition={rects.left.previousMousePosition}
-          dragDelta={rects.left.dragDelta}
-          mouseDown={rects.left.mouseDown}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onMouseMove={this.handleMouseMove}
-        />
-        <DraggableRect
-          width={DRAGGER_WIDTH}
-          height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
-          name={'right'}
-          shapePosition={rects.right.shapePosition}
-          previousMousePosition={rects.right.previousMousePosition}
-          dragDelta={rects.right.dragDelta}
-          mouseDown={rects.right.mouseDown}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onMouseMove={this.handleMouseMove}
-        />
-      </React.Fragment>
+        }}
+      </LayoutEditorContext.Consumer>
     )
   }
 }

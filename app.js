@@ -209,6 +209,7 @@ class App extends React.Component {
       <LayoutEditorContext.Provider value={{ updated, setUpdate: this.handleSetUpdate }}>
         <Margin
           x={0} y={0} top={50} right={100} bottom={100} left={100} width={this.props.width} height={this.props.height} showLayout
+          editable
           render={({ x, y, width, height }) => (
             <SpacedRay start={[width / 2, 50]} end={[width / 2, height]} spaceBetween={100} showLayout>
               <SpacedRay start={[-width / 2, 0]} end={[width / 2, 0]} spaceBetween={50} packLeft showLayout>
