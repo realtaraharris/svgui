@@ -23,7 +23,7 @@ const LayoutEditorContext = require('../layout-editor-context')
 const DRAGGER_HEIGHT = 50
 const DRAGGER_WIDTH = 25
 
-class MarginEditable extends React.Component {
+class MarginEditorController extends React.Component {
   constructor (props) {
     super(props)
 
@@ -92,52 +92,20 @@ class MarginEditable extends React.Component {
     const { x, y, width, height, showLayout, render } = this.props
     const { rects } = this.state
 
-    const innerX = rects.left.shapePosition.x + rects.left.dragDelta.x
-    const innerY = rects.top.shapePosition.y + rects.top.dragDelta.y
-    const innerWidth = rects.right.shapePosition.x - rects.left.shapePosition.x + rects.right.dragDelta.x - rects.left.dragDelta.x
-    const innerHeight = rects.bottom.shapePosition.y - rects.top.shapePosition.y + rects.bottom.dragDelta.y - rects.top.dragDelta.y
-
-    const innerProps = {
-      x: innerX,
-      y: innerY,
-      width: innerWidth,
-      height: innerHeight
-    }
-
     return (
       <LayoutEditorContext.Consumer>
         {({ updated, setUpdate }) => {
           return (
             <React.Fragment>
-              {
-                showLayout && (
-                  <React.Fragment>
-                    <rect
-                      x={x}
-                      y={y}
-                      width={width}
-                      height={height}
-                      stroke={'blue'}
-                      strokeDasharray={'1,1'}
-                      fill={'none'}
-                    />
-                    <rect
-                      x={innerX}
-                      y={innerY}
-                      width={innerWidth}
-                      height={innerHeight}
-                      stroke={'red'}
-                      strokeDasharray={'5,5'}
-                      fill={'none'}
-                    />
-                  </React.Fragment>
-                )
-              }
-              <g transform={`translate(${innerX}, ${innerY})`}>
-                {
-                  render(innerProps)
-                }
-              </g>
+              <Margin
+                x={x} y={y}
+                width={width} height={height}
+                left={rects.left.shapePosition.x + rects.left.dragDelta.x}
+                top={rects.top.shapePosition.y + rects.top.dragDelta.y}
+                right={width - rects.right.shapePosition.x - rects.right.dragDelta.x}
+                bottom={height - rects.bottom.shapePosition.y - rects.bottom.dragDelta.y}
+                showLayout={showLayout} render={render}
+              />
               <DraggableRect
                 width={DRAGGER_WIDTH}
                 height={DRAGGER_HEIGHT}
@@ -199,7 +167,7 @@ class MarginEditable extends React.Component {
 }
 
 const Margin = (props) => {
-  const { x, y, width, height, left, right, top, bottom, showLayout, render, editable } = props
+  const { x, y, width, height, left, right, top, bottom, showLayout, render } = props
 
   const innerX = x + left
   const innerY = y + top
@@ -213,43 +181,39 @@ const Margin = (props) => {
     height: innerHeight
   }
 
-  if (editable) {
-    return <MarginEditable {...props} />
-  } else {
-    return (
-      <React.Fragment>
+  return (
+    <React.Fragment>
+      {
+        showLayout && (
+          <React.Fragment>
+            <rect
+              x={x}
+              y={y}
+              width={width}
+              height={height}
+              stroke={'red'}
+              strokeDasharray={'5,5'}
+              fill={'none'}
+            />
+            <rect
+              x={innerX}
+              y={innerY}
+              width={innerWidth}
+              height={innerHeight}
+              stroke={'brown'}
+              strokeDasharray={'5,5'}
+              fill={'none'}
+            />
+          </React.Fragment>
+        )
+      }
+      <g transform={`translate(${innerX}, ${innerY})`}>
         {
-          showLayout && (
-            <React.Fragment>
-              <rect
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                stroke={'red'}
-                strokeDasharray={'5,5'}
-                fill={'none'}
-              />
-              <rect
-                x={innerX}
-                y={innerY}
-                width={innerWidth}
-                height={innerHeight}
-                stroke={'brown'}
-                strokeDasharray={'5,5'}
-                fill={'none'}
-              />
-            </React.Fragment>
-          )
+          render(innerProps)
         }
-        <g transform={`translate(${innerX}, ${innerY})`}>
-          {
-            render(innerProps)
-          }
-        </g>
-      </React.Fragment>
-    )
-  }
+      </g>
+    </React.Fragment>
+  )
 }
 
-module.exports = Margin
+module.exports = MarginEditorController
