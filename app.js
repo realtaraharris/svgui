@@ -11,6 +11,7 @@ const Text = require('./components/text')
 const DragAndDropDemo = require('./drag-and-drop-demo')
 // const { ShapeRender } = require('./events')
 const Toolbar = require('./toolbar')
+const LayoutEditorContext = require('./layout-editor-context')
 
 const sampleText = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.
 
@@ -175,18 +176,24 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      selectedView: 'DoubleMarginDemo' // 'AddressForm' // 'DragAndDrop'
+      selectedView: 'DoubleMarginDemo', // 'AddressForm', // 'DragAndDrop',
+      updated: true
     }
 
     this.handleClick = this.handleClick.bind(this)
+    this.handleSetUpdate = this.handleSetUpdate.bind(this)
   }
 
   handleClick (selectedView) {
     this.setState({ selectedView })
   }
 
+  handleSetUpdate () {
+    this.setState({ updated: !this.state.updated })
+  }
+
   render () {
-    const { selectedView } = this.state
+    const { selectedView, updated } = this.state
 
     let view
 
@@ -199,7 +206,7 @@ class App extends React.Component {
     }
 
     return (
-      <React.Fragment>
+      <LayoutEditorContext.Provider value={{ updated, setUpdate: this.handleSetUpdate }}>
         <Margin
           x={0} y={0} top={50} right={100} bottom={100} left={100} width={this.props.width} height={this.props.height} showLayout
           render={({ x, y, width, height }) => (
@@ -222,7 +229,8 @@ class App extends React.Component {
           )}
         />
         <Toolbar />
-      </React.Fragment>
+        {/* <ShapeRender /> */}
+      </LayoutEditorContext.Provider>
     )
   }
 }

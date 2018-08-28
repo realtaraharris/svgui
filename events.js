@@ -4,7 +4,30 @@ const uuid = require('uuid')
 let shapes = []
 
 const React = require('react')
-const ShapeRender = (props) => shapes.map(shape => <rect fill={'orange'} stroke={'red'} x={shape.x * 2} y={shape.y * 2} width={shape.width * 2} height={shape.height * 2} />)
+
+class ShapeRender extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.handleKeystroke = this.handleKeystroke.bind(this)
+  }
+
+  handleKeystroke (event) {
+    this.forceUpdate()
+  }
+
+  componentDidMount () {
+    window.addEventListener('keydown', this.handleKeystroke)
+  }
+
+  componentWillUnmount () {
+    window.removeEventListener('keydown', this.handleKeystroke)
+  }
+
+  render () {
+    return shapes.map(shape => <rect fill={'orange'} stroke={'red'} x={shape.x * 2} y={shape.y * 2} width={shape.width * 2} height={shape.height * 2} />)
+  }
+}
 
 const findHits = (x, y) => shapes.filter(shape => {
   return (

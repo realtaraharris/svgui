@@ -2,6 +2,7 @@
 
 const React = require('react')
 const DraggableRect = require('../components/draggable-rect')
+const LayoutEditorContext = require('../layout-editor-context')
 
 const { normalizeChildren } = require('../utils')
 
@@ -66,52 +67,58 @@ class SpacedRayController extends React.Component {
   }
 
   render () {
-    const { start, end, children, spaceBetween, showLayout, spaceEvenly, packLeft } = this.props
+    const { children, spaceBetween, showLayout, spaceEvenly, packLeft } = this.props
     const { rects } = this.state
     return (
-      <React.Fragment>
-        <SpacedRay
-          start={[
-            rects.start.shapePosition.x + rects.start.dragDelta.x,
-            rects.start.shapePosition.y + rects.start.dragDelta.y
-          ]}
-          end={[
-            rects.end.shapePosition.x + rects.end.dragDelta.x,
-            rects.end.shapePosition.y + rects.end.dragDelta.y
-          ]}
-          children={children}
-          spaceBetween={spaceBetween}
-          showLayout={showLayout}
-          spaceEvenly={spaceEvenly}
-          packLeft={packLeft}
-        />
-        <DraggableRect
-          width={DRAGGER_WIDTH}
-          height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
-          name={'start'}
-          shapePosition={rects.start.shapePosition}
-          previousMousePosition={rects.start.previousMousePosition}
-          dragDelta={rects.start.dragDelta}
-          mouseDown={rects.start.mouseDown}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onMouseMove={this.handleMouseMove}
-        />
-        <DraggableRect
-          width={DRAGGER_WIDTH}
-          height={DRAGGER_HEIGHT}
-          fill={'rgba(29,82,255,0.6)'}
-          name={'end'}
-          shapePosition={rects.end.shapePosition}
-          previousMousePosition={rects.end.previousMousePosition}
-          dragDelta={rects.end.dragDelta}
-          mouseDown={rects.end.mouseDown}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-          onMouseMove={this.handleMouseMove}
-        />
-      </React.Fragment>
+      <LayoutEditorContext.Consumer>
+        {({ updated, setUpdate }) => {
+          return (
+            <React.Fragment>
+              <SpacedRay
+                start={[
+                  rects.start.shapePosition.x + rects.start.dragDelta.x,
+                  rects.start.shapePosition.y + rects.start.dragDelta.y
+                ]}
+                end={[
+                  rects.end.shapePosition.x + rects.end.dragDelta.x,
+                  rects.end.shapePosition.y + rects.end.dragDelta.y
+                ]}
+                children={children}
+                spaceBetween={spaceBetween}
+                showLayout={showLayout}
+                spaceEvenly={spaceEvenly}
+                packLeft={packLeft}
+              />
+              <DraggableRect
+                width={DRAGGER_WIDTH}
+                height={DRAGGER_HEIGHT}
+                fill={'rgba(29,82,255,0.6)'}
+                name={'start'}
+                shapePosition={rects.start.shapePosition}
+                previousMousePosition={rects.start.previousMousePosition}
+                dragDelta={rects.start.dragDelta}
+                mouseDown={rects.start.mouseDown}
+                onMouseDown={(previousMousePosition, name) => { this.handleMouseDown(previousMousePosition, name); setUpdate() }}
+                onMouseUp={(shapePosition, dragDelta, name) => { this.handleMouseUp(shapePosition, dragDelta, name); setUpdate() }}
+                onMouseMove={(dragDelta, currentPosition, name) => { this.handleMouseMove(dragDelta, currentPosition, name); setUpdate() }}
+              />
+              <DraggableRect
+                width={DRAGGER_WIDTH}
+                height={DRAGGER_HEIGHT}
+                fill={'rgba(29,82,255,0.6)'}
+                name={'end'}
+                shapePosition={rects.end.shapePosition}
+                previousMousePosition={rects.end.previousMousePosition}
+                dragDelta={rects.end.dragDelta}
+                mouseDown={rects.end.mouseDown}
+                onMouseDown={(previousMousePosition, name) => { this.handleMouseDown(previousMousePosition, name); setUpdate() }}
+                onMouseUp={(shapePosition, dragDelta, name) => { this.handleMouseUp(shapePosition, dragDelta, name); setUpdate() }}
+                onMouseMove={(dragDelta, currentPosition, name) => { this.handleMouseMove(dragDelta, currentPosition, name); setUpdate() }}
+              />
+            </React.Fragment>
+          )
+        }}
+      </LayoutEditorContext.Consumer>
     )
   }
 }
