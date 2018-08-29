@@ -25,7 +25,6 @@ const AddressForm = (props) => {
   const inputHeight = 80
   return (
     <React.Fragment>
-      <rect x={0} y={0} width={props.width} height={props.height} fill={'mintcream'} stroke={'cornsilk'} strokeWidth={2} strokeDasharray={'5,5'} />
       <InputFocuser
         tabs={6}
         render={(focusedIndex, handleFocus) => (
@@ -208,7 +207,7 @@ class App extends React.Component {
     return (
       <LayoutEditorContext.Provider value={{ updated, setUpdate: this.handleSetUpdate }}>
         <Margin
-          x={0} y={0} top={50} right={100} bottom={100} left={100} width={this.props.width} height={this.props.height} showLayout
+          x={0} y={0} top={10} right={10} bottom={10} left={10} width={this.props.width} height={this.props.height} showLayout
           editable
           render={({ x, y, width, height }) => (
             <SpacedRay start={[width / 2, 50]} end={[width / 2, height]} spaceBetween={100} showLayout>

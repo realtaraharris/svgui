@@ -66,6 +66,23 @@ class SpacedRayController extends React.Component {
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
+  componentDidUpdate (prevProps) {
+    const { props } = this
+
+    if (
+      prevProps.start[0] !== props.start[0] ||
+      prevProps.start[1] !== props.start[1] ||
+      prevProps.end[0] !== props.end[0] ||
+      prevProps.end[1] !== props.end[1]
+    ) {
+      this.state.rects.start.shapePosition.x = props.start[0]
+      this.state.rects.start.shapePosition.y = props.start[1]
+      this.state.rects.end.shapePosition.x = props.end[0]
+      this.state.rects.end.shapePosition.y = props.end[1]
+      this.forceUpdate()
+    }
+  }
+
   render () {
     const { children, spaceBetween, showLayout, spaceEvenly, packLeft } = this.props
     const { rects } = this.state

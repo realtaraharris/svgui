@@ -88,6 +88,22 @@ class MarginEditorController extends React.Component {
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
+  componentDidUpdate (prevProps) {
+    if (prevProps.x !== this.props.x) {
+      this.state.rects.left.shapePosition.x = this.props.x + this.props.left
+      this.forceUpdate()
+    } else if (prevProps.y !== this.props.y) {
+      this.state.rects.top.shapePosition.y = this.props.y + this.props.top
+      this.forceUpdate()
+    } else if (prevProps.width !== this.props.width) {
+      this.state.rects.right.shapePosition.x = this.props.width - this.props.left + this.props.x
+      this.forceUpdate()
+    } else if (prevProps.height !== this.props.height) {
+      this.state.rects.bottom.shapePosition.y = this.props.height - this.props.top + this.props.y
+      this.forceUpdate()
+    }
+  }
+
   render () {
     const { x, y, width, height, showLayout, render } = this.props
     const { rects } = this.state
