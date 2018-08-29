@@ -3,6 +3,7 @@
 const React = require('react')
 const { Star } = require('./demo')
 const { InputController, InputFocuser } = require('./components/input')
+// const Box = require('./layout/box')
 const Center = require('./layout/center')
 const Margin = require('./layout/margin')
 const SpacedRay = require('./layout/spaced-ray')
