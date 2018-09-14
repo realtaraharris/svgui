@@ -1,6 +1,7 @@
 'use strict'
 
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 const { normalizeChildren, forwardProps } = require('../utils')
 
 const Center = (props) => {

@@ -1,6 +1,7 @@
 'use strict'
 
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 const merge = require('lodash.merge')
 
 // this is a dispatcher that focuses the KeyboardContext onto the input element in focus

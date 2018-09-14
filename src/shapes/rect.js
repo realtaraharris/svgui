@@ -1,4 +1,5 @@
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 function createRef() { return function ref(c) { ref.current = c } } // preact is about to get this in the next release
 const { addShape, updateShape, removeShape } = require('../events')
 

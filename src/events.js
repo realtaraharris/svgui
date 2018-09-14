@@ -3,7 +3,8 @@ const uuid = require('uuid')
 // do this slowly, simply at first. replace with quadtree once API is right
 let shapes = []
 
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 
 class ShapeRender extends Component {
   constructor (props) {

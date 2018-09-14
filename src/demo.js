@@ -1,6 +1,7 @@
 'use strict'
 
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 
 const Center = require('./layout/center')
 const Margin = require('./layout/margin')

@@ -1,7 +1,8 @@
 'use strict'
 
-const { h, Component } = require('preact')
-// const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
+
 const App = require('./app')
 
 // const { Demo } = require('./demo')

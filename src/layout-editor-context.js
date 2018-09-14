@@ -1,4 +1,6 @@
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
+
 const { createContext } = require('./preact-context')
 
 module.exports = createContext({

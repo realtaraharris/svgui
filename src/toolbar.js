@@ -1,6 +1,7 @@
 'use strict'
 
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 const Button = require('./components/button')
 const SpacedRay = require('./layout/spaced-ray')
 const Center = require('./layout/center')

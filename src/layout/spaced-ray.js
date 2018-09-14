@@ -1,6 +1,7 @@
 'use strict'
 
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 const DraggableRect = require('../components/draggable-rect')
 const LayoutEditorContext = require('../layout-editor-context')
 

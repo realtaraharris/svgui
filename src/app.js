@@ -1,6 +1,7 @@
 'use strict'
 
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 const { Star } = require('./demo')
 const { InputController, InputFocuser } = require('./components/input')
 const merge = require('lodash.merge')
@@ -195,7 +196,7 @@ class App extends Component {
 
   render () {
     const { selectedView, updated } = this.state
-return <AddressForm {...this.props} />
+//return <AddressForm {...this.props} />
     let view
 
     if (selectedView === 'AddressForm') {

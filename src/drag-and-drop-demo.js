@@ -1,4 +1,5 @@
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 const DraggableRect = require('./components/draggable-rect')
 const DropTargetRect = require('./components/drop-target-rect')
 

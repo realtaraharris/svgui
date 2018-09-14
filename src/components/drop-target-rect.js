@@ -1,4 +1,5 @@
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 const Rect = require('../shapes/rect')
 
 const DropTargetRect = (props) => {

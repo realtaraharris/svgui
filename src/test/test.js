@@ -8,7 +8,8 @@ console.dir(document)
 
 
 
-const { h, Component } = require('preact')
+const React = require('react')
+const { Component } = React
 const ReactDOM = require('react-dom')
 
 
