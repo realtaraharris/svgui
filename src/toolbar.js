@@ -1,13 +1,50 @@
 'use strict'
 
-const React = require('react')
+const { h, Component } = require('preact')
 const Button = require('./components/button')
 const SpacedRay = require('./layout/spaced-ray')
 const Center = require('./layout/center')
 
-class ToolbarController extends React.Component {
+class ToolbarController extends Component {
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      mouseDown: false,
+      previousMousePosition: { x: 0, y: 0 },
+      currentPosition: { x: 0, y: 0 },
+      dragDelta: { x: 0, y: 0 },
+      shapePosition: { x: 100, y: 100 } // this is the initial position
+    }
+  }
+
+
+  handleMouseDown (previousMousePosition) {
+    this.setState({
+      mouseDown: true,
+      previousMousePosition
+    })
+  }
+
+  handleMouseUp (shapePosition, dragDelta) {
+    this.setState({
+      mouseDown: false,
+      shapePosition,
+      dragDelta
+    })
+  }
+
+  handleMouseMove (dragDelta, currentPosition) {
+    this.setState({
+      currentPosition,
+      dragDelta
+    })
+  }
+
+
   render () {
-    return <Toolbar />
+    const { shapePosition } = this.state
+    return <Toolbar x={shapePosition.x} y={shapePosition.y} />
   }
 }
 

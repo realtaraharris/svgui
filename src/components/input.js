@@ -1,9 +1,10 @@
 'use strict'
 
-const React = require('react')
+const { h, Component } = require('preact')
+const merge = require('lodash.merge')
 
 // this is a dispatcher that focuses the KeyboardContext onto the input element in focus
-class InputFocuser extends React.Component {
+class InputFocuser extends Component {
   constructor (props) {
     super(props)
 
@@ -106,7 +107,7 @@ const permittedKeys = [
   'Space'
 ]
 
-class InputController extends React.Component {
+class InputController extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -156,7 +157,7 @@ class InputController extends React.Component {
 const Input = (props) => {
   const textHeight = 21
   return (
-    <React.Fragment>
+    <g>
       <rect
         x={0}
         y={0}
@@ -176,7 +177,7 @@ const Input = (props) => {
         fill={!props.text ? 'gray' : 'black'}
         style={{ font: '30px sans-serif' }}
       >{!props.text ? props.placeholder : props.text}</text>
-    </React.Fragment>
+    </g>
   )
 }
 

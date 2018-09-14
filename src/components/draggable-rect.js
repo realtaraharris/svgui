@@ -1,7 +1,7 @@
-const React = require('react')
+const { h, Component } = require('preact')
 const Rect = require('../shapes/rect')
 
-class DraggableRect extends React.Component {
+class DraggableRect extends Component {
   constructor (props) {
     super(props)
 

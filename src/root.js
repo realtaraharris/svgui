@@ -1,13 +1,14 @@
 'use strict'
 
-const React = require('react')
+const { h, Component } = require('preact')
+// const { h, Component } = require('preact')
 const App = require('./app')
 
 // const { Demo } = require('./demo')
 
 require('./events')
 
-class Root extends React.Component {
+class Root extends Component {
   constructor (props) {
     super(props)
 

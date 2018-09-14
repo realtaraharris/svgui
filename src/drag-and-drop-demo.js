@@ -1,8 +1,8 @@
-const React = require('react')
+const { h, Component } = require('preact')
 const DraggableRect = require('./components/draggable-rect')
 const DropTargetRect = require('./components/drop-target-rect')
 
-class DragAndDropDemo extends React.Component {
+class DragAndDropDemo extends Component {
   constructor (props) {
     super(props)
 
@@ -11,7 +11,8 @@ class DragAndDropDemo extends React.Component {
       previousMousePosition: { x: 0, y: 0 },
       currentPosition: { x: 0, y: 0 },
       dragDelta: { x: 0, y: 0 },
-      shapePosition: { x, y }
+      shapePosition: { x, y },
+      docked: false
     })
 
     this.state = {
@@ -30,9 +31,11 @@ class DragAndDropDemo extends React.Component {
   }
 
   handleMouseDown (previousMousePosition, name) {
+console.log('handleMouseDown:', name)
     const nextState = Object.assign({}, this.state.rects[name], {
       mouseDown: true,
-      previousMousePosition
+      previousMousePosition,
+      docked: false
     })
 
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
@@ -42,25 +45,34 @@ class DragAndDropDemo extends React.Component {
     const nextState = Object.assign({}, this.state.rects[name], {
       mouseDown: false,
       shapePosition,
-      dragDelta
+      dragDelta,
+      // docked: false
     })
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
   handleMouseMove (dragDelta, currentPosition, name) {
+console.log('in handleMouseMove, name:', name)
     const nextState = Object.assign({}, this.state.rects[name], {
       currentPosition,
-      dragDelta
+      dragDelta,
+      docked: false
     })
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
 
   handleDragMove ({ x, y, width, height }, name) { // consider doing this on mouse up?
-    if (!this.state.rects[name].mouseDown) { return }
+    const f = this.state.rects[name]
+    // if (!f.mouseDown && !f.docked) { return }
+    if (!f.docked && !f.mouseDown) { return }
+
+console.log('in handleDragMove, f:', f)
+
     const nextState = Object.assign({}, this.state.rects[name], {
       shapePosition: { x: x + (width / 2), y: y + (height / 2) },
       dragDelta: { x: 0, y: 0 },
-      mouseDown: false
+      mouseDown: true,
+      docked: true
     })
     this.setState({ rects: Object.assign({}, this.state.rects, { [name]: nextState }) })
   }
@@ -68,7 +80,7 @@ class DragAndDropDemo extends React.Component {
   render () {
     const { rects } = this.state
     return (
-      <React.Fragment>
+      <g>
         <DraggableRect
           width={200}
           height={200}
@@ -140,7 +152,7 @@ class DragAndDropDemo extends React.Component {
         />
         <DropTargetRect x={550} y={550} width={200} height={200} fill={'none'} stroke={'rgba(255,176,0,0.6)'} name={'orange'} onDragMove={this.handleDragMove} />
         <DropTargetRect x={1150} y={550} width={200} height={200} fill={'none'} stroke={'rgba(255,176,0,0.6)'} name={'orange'} onDragMove={this.handleDragMove} />
-      </React.Fragment>
+      </g>
     )
   }
 }

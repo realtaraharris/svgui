@@ -1,6 +1,6 @@
 'use strict'
 
-const React = require('react')
+const { h, Component } = require('preact')
 
 const DraggableRect = require('../components/draggable-rect')
 const LayoutEditorContext = require('../layout-editor-context')
@@ -23,7 +23,7 @@ const LayoutEditorContext = require('../layout-editor-context')
 const DRAGGER_HEIGHT = 50
 const DRAGGER_WIDTH = 25
 
-class MarginEditorController extends React.Component {
+class MarginEditorController extends Component {
   constructor (props) {
     super(props)
 
@@ -112,7 +112,7 @@ class MarginEditorController extends React.Component {
       <LayoutEditorContext.Consumer>
         {({ updated, setUpdate }) => {
           return (
-            <React.Fragment>
+            <g>
               <Margin
                 x={x} y={y}
                 width={width} height={height}
@@ -174,7 +174,7 @@ class MarginEditorController extends React.Component {
                 onMouseUp={(shapePosition, dragDelta, name) => { this.handleMouseUp(shapePosition, dragDelta, name); setUpdate() }}
                 onMouseMove={(dragDelta, currentPosition, name) => { this.handleMouseMove(dragDelta, currentPosition, name); setUpdate() }}
               />
-            </React.Fragment>
+            </g>
           )
         }}
       </LayoutEditorContext.Consumer>
@@ -198,10 +198,10 @@ const Margin = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <g>
       {
         showLayout && (
-          <React.Fragment>
+          <g>
             <rect
               x={x}
               y={y}
@@ -220,7 +220,7 @@ const Margin = (props) => {
               strokeDasharray={'5,5'}
               fill={'none'}
             />
-          </React.Fragment>
+          </g>
         )
       }
       <g transform={`translate(${innerX}, ${innerY})`}>
@@ -228,7 +228,7 @@ const Margin = (props) => {
           render(innerProps)
         }
       </g>
-    </React.Fragment>
+    </g>
   )
 }
 

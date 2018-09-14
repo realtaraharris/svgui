@@ -1,8 +1,9 @@
 'use strict'
 
-const React = require('react')
+const { h, Component } = require('preact')
 const { Star } = require('./demo')
 const { InputController, InputFocuser } = require('./components/input')
+const merge = require('lodash.merge')
 // const Box = require('./layout/box')
 const Center = require('./layout/center')
 const Margin = require('./layout/margin')
@@ -25,7 +26,7 @@ const AddressForm = (props) => {
   const inputWidth = 1200
   const inputHeight = 80
   return (
-    <React.Fragment>
+    <g>
       <InputFocuser
         tabs={6}
         render={(focusedIndex, handleFocus) => (
@@ -143,7 +144,7 @@ const AddressForm = (props) => {
           </SpacedRay>
         )}
       />
-    </React.Fragment>
+    </g>
   )
 }
 
@@ -171,7 +172,7 @@ const DoubleMarginDemo = (props) => {
   )
 }
 
-class App extends React.Component {
+class App extends Component {
   constructor (props) {
     super(props)
 
@@ -194,7 +195,7 @@ class App extends React.Component {
 
   render () {
     const { selectedView, updated } = this.state
-
+return <AddressForm {...this.props} />
     let view
 
     if (selectedView === 'AddressForm') {

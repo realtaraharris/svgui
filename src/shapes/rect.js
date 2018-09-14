@@ -1,4 +1,5 @@
-const React = require('react')
+const { h, Component } = require('preact')
+function createRef() { return function ref(c) { ref.current = c } } // preact is about to get this in the next release
 const { addShape, updateShape, removeShape } = require('../events')
 
 const getWorldCoordinate = (x, y, root, shape) => {
@@ -9,7 +10,7 @@ const getWorldCoordinate = (x, y, root, shape) => {
   return point.matrixTransform(ctm)
 }
 
-class Rect extends React.Component {
+class Rect extends Component {
   constructor (props) {
     super(props)
 
@@ -18,7 +19,7 @@ class Rect extends React.Component {
       previousWorldCoords: { x: 0, y: 0, width: 0, height: 0 }
     }
 
-    this.rectRef = React.createRef()
+    this.rectRef = createRef()
     this.getWorldCoords = this.getWorldCoords.bind(this)
   }
 

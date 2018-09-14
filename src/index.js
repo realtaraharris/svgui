@@ -1,7 +1,6 @@
 'use strict'
 
-const React = require('react')
-const ReactDOM = require('react-dom')
+const { h, Component, render } = require('preact')
 
 const Root = require('./root.js')
 
@@ -30,7 +29,10 @@ injectStyle(`
   }
 `)
 
-const root = document.createElement('root')
-document.body.appendChild(root)
+render(<Root />, document.body)
 
-ReactDOM.render(<Root />, root)
+// const root = document.createElement('div')
+// root.setAttribute('id', 'root')
+// document.body.appendChild(root)
+
+// ReactDOM.render(<Root />, root)

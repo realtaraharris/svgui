@@ -1,6 +1,6 @@
 'use strict'
 
-const React = require('react')
+const { h, Component } = require('preact')
 const DraggableRect = require('../components/draggable-rect')
 const LayoutEditorContext = require('../layout-editor-context')
 
@@ -9,7 +9,7 @@ const { normalizeChildren } = require('../utils')
 const DRAGGER_WIDTH = 50
 const DRAGGER_HEIGHT = 50
 
-class SpacedRayController extends React.Component {
+class SpacedRayController extends Component {
   constructor (props) {
     super(props)
 
@@ -90,7 +90,7 @@ class SpacedRayController extends React.Component {
       <LayoutEditorContext.Consumer>
         {({ updated, setUpdate }) => {
           return (
-            <React.Fragment>
+            <g>
               <SpacedRay
                 start={[
                   rects.start.shapePosition.x + rects.start.dragDelta.x,
@@ -132,7 +132,7 @@ class SpacedRayController extends React.Component {
                 onMouseUp={(shapePosition, dragDelta, name) => { this.handleMouseUp(shapePosition, dragDelta, name); setUpdate() }}
                 onMouseMove={(dragDelta, currentPosition, name) => { this.handleMouseMove(dragDelta, currentPosition, name); setUpdate() }}
               />
-            </React.Fragment>
+            </g>
           )
         }}
       </LayoutEditorContext.Consumer>
@@ -162,13 +162,14 @@ const SpacedRay = (props) => {
   let scratchY = 0
 
   return (
-    <React.Fragment>
+    <g>
       {
         showLayout && <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={'green'} strokeDasharray={'5,5'} />
       }
       <g transform={`translate(${x1}, ${y1})`}>
+      {console.log('children:', children)}
         {
-          normalizeChildren(children).map((child, index) => {
+          children.map((child, index) => {
             let deltaX = 0
             let deltaY = 0
             if (spaceBetweenArrayMode) {
@@ -184,7 +185,6 @@ const SpacedRay = (props) => {
             }
 
             let result
-
             if (packLeft) {
               result = (
                 <g transform={`translate(${scratchX * flippy}, ${scratchY * flippy})`} key={index}>
@@ -192,8 +192,8 @@ const SpacedRay = (props) => {
                   <circle cx={0} cy={0} r={2} stroke={'red'} />
                 </g>
               )
-              scratchX += (child.props.width + deltaX) * Math.cos(angle)
-              scratchY += (child.props.width + deltaX) * Math.sin(angle)
+              scratchX += (child.attributes.width + deltaX) * Math.cos(angle)
+              scratchY += (child.attributes.width + deltaX) * Math.sin(angle)
             } else {
               result = (
                 <g transform={`translate(${deltaX * index * flippy}, ${deltaY * index * flippy})`} key={index}>
@@ -207,7 +207,7 @@ const SpacedRay = (props) => {
           })
         }
       </g>
-    </React.Fragment>
+    </g>
   )
 }
 

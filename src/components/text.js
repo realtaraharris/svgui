@@ -1,7 +1,8 @@
 'use strict'
 
-const React = require('react')
-const { debounce } = require('lodash')
+const { h, Component } = require('preact')
+function createRef() { return function ref(c) { ref.current = c } } // preact is about to get this in the next release
+const debounce = require('lodash.debounce')
 const { generateQuickGuid } = require('../utils')
 
 const measure = (text, { fontWeight, fontStyle, fontSize, fontFamily }) => {
@@ -112,13 +113,13 @@ const wrap = (tokens, maxWrapWidth) => (
 
 // const getLineWidths = lines => lines.map(line => line.reduce((width, line) => width + line.width, 0))
 
-class Text extends React.Component {
+class Text extends Component {
   constructor (props) {
     super(props)
 
     const text = this.props.children
     // const text = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone. There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.`
-    const tokens = measure(text, props.fontStyle)
+    const tokens = measure(text.toString(), props.fontStyle)
 
     this.state = {
       scrollPositionVertical: 0,
@@ -131,7 +132,7 @@ class Text extends React.Component {
       dragEndCoords: {}
     }
 
-    this.scrollRectRef = React.createRef()
+    this.scrollRectRef = createRef()
     this.onWheel = debounce(this.onWheel.bind(this), 1, { leading: true })
     this.translateCoords = this.translateCoords.bind(this)
     this.onMouseDown = this.onMouseDown.bind(this)
@@ -215,13 +216,13 @@ class Text extends React.Component {
 
     this.state.wrappedText.map((line, lineIndex) => {
       if (lineIndex < skipToLine || lineIndex > skipAfterLine) { return }
-      const h = (lineIndex * this.props.lineHeight) - scrollPositionAbs
+      const herpes = (lineIndex * this.props.lineHeight) - scrollPositionAbs
 
       let horizontalScratchPosition = 0
 
       const liney = line.map(token => token.token).join('')
       textBoxes.push(
-        <text key={lineIndex} style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + h - textHeightFudge} clipPath={`url(#${textClipId})`}>
+        <text key={lineIndex} style={this.props.fontStyle} x={horizontalScratchPosition} y={verticalScratchPosition + herpes - textHeightFudge} clipPath={`url(#${textClipId})`}>
           {liney}
         </text>
       )
@@ -231,7 +232,7 @@ class Text extends React.Component {
 
         const textRect = {
           x: horizontalScratchPosition,
-          y: verticalScratchPosition - this.props.lineHeight + h,
+          y: verticalScratchPosition - this.props.lineHeight + herpes,
           width: token.width,
           height: this.props.lineHeight
         }

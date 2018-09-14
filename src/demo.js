@@ -1,6 +1,6 @@
 'use strict'
 
-const React = require('react')
+const { h, Component } = require('preact')
 
 const Center = require('./layout/center')
 const Margin = require('./layout/margin')
@@ -10,18 +10,18 @@ const Button = require('./components/button')
 const { Input } = require('./components/input')
 
 const Star = (props) => (
-  <React.Fragment>
+  <g>
     {props.showLayout && <rect x={0} y={0} width={props.width} height={props.height} stroke={'orange'} fill={'none'} strokeDasharray={'5,5'} />}
     <g transform={`scale(${props.scale}, ${props.scale})`}>
       <polygon points={'90,0 30,188 180,68 0,68 150,188'} fill={'navy'} />
     </g>
-  </React.Fragment>
+  </g>
 )
 
 const Demo = (props) => {
   const star = <Star width={90} height={94} scale={0.5} />
   return (
-    <React.Fragment>
+    <g>
       <Button x={100} y={800} width={400} height={380} text={'App'} fill={'teal'} showLayout={props.showLayout} />
       <Input x={600} y={800} width={400} height={100} text={'This is an input element'} showLayout={props.showLayout} />
       <SpacedRay width={props.width} x={0} y={120} showLayout={props.showLayout} >
@@ -56,7 +56,7 @@ const Demo = (props) => {
       {/* TODO: when missing layout args and not inside layout container, console.error('layout props required - supply layout args or put ${componentName} into a layout container') */}
       {/* TODO: linear flow container that flows components in a text-like manner */}
       {/* TODO: scrolling container */}
-    </React.Fragment>
+    </g>
   )
 }
 
