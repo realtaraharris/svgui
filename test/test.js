@@ -27,3 +27,34 @@ tape('drag and drop works', async t => {
 
   t.end()
 })
+
+tape('scrolling text component works', async t => {
+  const tester = await ScreenTest()
+
+  const browser = await puppeteer.launch()
+  const page = await browser.newPage()
+
+  const { mouse } = page
+  await page.goto('http://localhost:9966')
+
+  await mouse.click(50, 33) // Address Form
+
+  page.evaluate(() => {
+    const cEvent = new Event('wheel')
+
+    cEvent.detail = 0
+    cEvent.deltaX = 0
+    cEvent.deltaY = -500
+
+    const textScrollRect = document.getElementById('textScrollRect')
+    textScrollRect.dispatchEvent(cEvent)
+  })
+
+  const result = await tester(page, 'scrolling-text-component')
+
+  await browser.close()
+
+  t.ok(result)
+
+  t.end()
+})

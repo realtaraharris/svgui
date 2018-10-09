@@ -276,7 +276,7 @@ class Text extends React.Component {
         {selectionBoxes}
         {textBoxes}
         // NB: this rect catches pointer events, so it _must_ sit on top of the text
-        <rect ref={this.scrollRectRef} fill={'rgba(0,0,0,0)'} stroke={'none'} x={0} y={0} width={this.props.width} height={this.props.height} />
+        <rect id={'textScrollRect'} ref={this.scrollRectRef} fill={'rgba(0,0,0,0)'} stroke={'none'} x={0} y={0} width={this.props.width} height={this.props.height} />
       </g>
     )
   }
