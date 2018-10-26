@@ -131,6 +131,11 @@ class Text extends React.Component {
       dragEndCoords: {}
     }
 
+    if (this.props.getTextHeight) {
+      this.props.getTextHeight(this.state.wrappedText.length * this.props.lineHeight)
+    }
+
+
     this.scrollRectRef = React.createRef()
     this.onWheel = debounce(this.onWheel.bind(this), 1, { leading: true })
     this.translateCoords = this.translateCoords.bind(this)
@@ -193,6 +198,18 @@ class Text extends React.Component {
     this.scrollRectRef.current.removeEventListener('mousemove', this.onMouseMove)
     this.scrollRectRef.current.removeEventListener('mousedown', this.onMouseDown)
     this.scrollRectRef.current.removeEventListener('mouseup', this.onMouseUp)
+  }
+
+  componentDidUpdate (prevProps) {
+    if (this.props.width !== prevProps.width) {
+      this.setState({
+        wrappedText: wrap(this.state.tokens, this.props.width)
+      })
+
+      if (this.props.getTextHeight) {
+        this.props.getTextHeight(this.state.wrappedText.length * this.props.lineHeight)
+      }
+    }
   }
 
   render () {

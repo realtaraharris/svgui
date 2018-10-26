@@ -1,5 +1,16 @@
 `npm start`
 
+I built a library that helps you build UIs that render to pure SVG (no HTML, no CSS).
+
+Features:
+- handles layout without relying on the browser's layout engine
+- implements its own shape picking system, events
+- provides a scrollable text-wrapping component
+- replaces the browser's input element with a new one
+- supports drag-and-drop
+- has a built-in dynamic layout editor
+- currently a React library
+
 TODO:
 - [x] finish navigation between App and App2 demos - just need to add tabs or buttons or something
 - [] make it possible to drag box _out_ of drag target

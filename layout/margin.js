@@ -5,21 +5,6 @@ const React = require('react')
 const DraggableRect = require('../components/draggable-rect')
 const LayoutEditorContext = require('../layout-editor-context')
 
-// const dot = (v1, v2) => {
-//   const slope1 = (v1.y2 - v1.y1) / (v1.x2 - v1.x1)
-
-//   const a = v2.x2 - v2.x1
-//   const b = v2.y2 - v2.y1
-
-//   const length = Math.sqrt(Math.pow(a, 2) + Math.pow(b, 2))
-
-//   const angle = Math.atan(slope1)
-//   const deltaX = length * Math.cos(angle)
-//   const deltaY = length * Math.sin(angle)
-
-//   return { x: deltaX, y: deltaY }
-// }
-
 const DRAGGER_HEIGHT = 50
 const DRAGGER_WIDTH = 25
 

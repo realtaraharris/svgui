@@ -1,11 +1,14 @@
 'use strict'
 
 const React = require('react')
+const { Fragment } = React
 const { Star } = require('./demo')
 const { InputController, InputFocuser } = require('./components/input')
 // const Box = require('./layout/box')
 const Center = require('./layout/center')
 const Margin = require('./layout/margin')
+const Offset = require('./layout/offset')
+
 const SpacedRay = require('./layout/spaced-ray')
 const Button = require('./components/button')
 const Text = require('./components/text')
@@ -14,7 +17,11 @@ const DragAndDropDemo = require('./drag-and-drop-demo')
 const Toolbar = require('./toolbar')
 const LayoutEditorContext = require('./layout-editor-context')
 
-const sampleText = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.
+// const SpacedRays = require('./slides/01. SpacedRays')
+const SpacedRays = require('./slides/01. SpacedRays')
+
+const twilight = `There is a fifth dimension beyond that which is known to man. It is a dimension as vast as space and as timeless as infinity. It is the middle ground between light and shadow, between science and superstition, and it lies between the pit of man's fears and the summit of his knowledge. This is the dimension of imagination. It is an area which we call the Twilight Zone.`
+const sampleText = `${twilight}
 
 But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?
 
@@ -30,7 +37,7 @@ const AddressForm = (props) => {
         tabs={6}
         render={(focusedIndex, handleFocus) => (
           <SpacedRay start={[props.width / 2, 0]} end={[props.width / 2, props.height]} spaceBetween={140} showLayout>
-            <Center horizontal width={inputWidth} height={inputHeight}>
+            <Center horizontal width={inputWidth} height={inputHeight} showLayout>
               <InputController
                 placeholder={'Full Name'}
                 tabIndex={0}
@@ -171,12 +178,119 @@ const DoubleMarginDemo = (props) => {
   )
 }
 
+class TextDemo extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      textHeights: [100, 100, 100],
+      // hue: 0
+    }
+
+    this.getTextHeight = this.getTextHeight.bind(this)
+  }
+
+  getTextHeight (textHeight, position) {
+    const { textHeights } = this.state
+    textHeights[position] = textHeight - 31
+    this.setState({ textHeights })
+  }
+
+  // componentDidMount () {
+  //   setInterval(() => {
+  //     const { hue } = this.state
+  //     if (hue >= 200) {
+  //       this.setState({ hue: 0 })
+  //     } else {
+  //       this.setState({ hue: hue + 1 })
+  //     }
+  //   }, 16.666666 * 10)
+  // }
+
+  render () {
+    const { textHeights, hue } = this.state
+    const { x, y, width, height } = this.props
+
+    const fontStyle = {
+      fontWeight: 100,
+      fontStyle: 'regular',
+      fontSize: 30,
+      fontFamily: 'helvetica, sans-serif'
+    }
+
+    const circleRadius = 20
+    const circle = (label) => (
+      <g>
+        <circle cx={0} cy={0} r={20} fill={`hsla(${49}, 50%, 45%, 1.0)`} />
+        <text x={-4} y={5} fill={'white'}>{label + 1}</text>
+      </g>
+    )
+
+    const offset = 40
+    const margin = 20
+    const lineHeight = 31
+
+    const finalTextHeight = textHeights.reduce((accumulator, height) => accumulator + height, 0) + (2 * margin)
+    return (
+      <Fragment>
+        <rect width={width} height={finalTextHeight} fill={`hsla(${49}, ${100}%, ${50}%, 1.0)`} />
+        <Margin
+          x={0} y={0} top={margin} right={margin} bottom={margin} left={margin} width={width} height={finalTextHeight} showLayout editable
+          render={({ x, y, width, height }) => (
+            <Fragment>
+              <SpacedRay start={[offset, 0]} end={[offset, 500]} spaceBetween={0} packLeft mode={'vertical'} showLayout>
+                <Center width={width - offset} height={textHeights[0]}>
+                  <Text
+                    fontStyle={fontStyle}
+                    lineHeight={lineHeight}
+                    getTextHeight={textHeight => this.getTextHeight(textHeight, 0)}
+                  >
+                    {'Everything around you that you call life, was made up by people that were no smarter than you. And you can change it, you can influence it, you can build your own things that other people can use.\n'}
+                  </Text>
+                </Center>
+                <Center width={width - offset} height={textHeights[1]}>
+                  <Text
+                    fontStyle={fontStyle}
+                    lineHeight={lineHeight}
+                    getTextHeight={textHeight => this.getTextHeight(textHeight, 1)}
+                  >
+                    {twilight + '\n'}
+                  </Text>
+                </Center>
+                <Center width={width - offset} height={textHeights[2]}>
+                  <Text
+                    fontStyle={fontStyle}
+                    lineHeight={lineHeight}
+                    getTextHeight={textHeight => this.getTextHeight(textHeight, 2)}
+                  >
+                    {'What drives me to you is what drives me insane'}
+                  </Text>
+                </Center>
+              </SpacedRay>
+              <SpacedRay start={[0, 0]} end={[0, 500]} spaceBetween={0} packLeft mode={'vertical'} showLayout>
+                <Offset offsetX={10} offsetY={10} height={textHeights[0]} showLayout>
+                  {circle(0)}
+                </Offset>
+                <Offset offsetX={10} offsetY={10} height={textHeights[1]} showLayout>
+                  {circle(1)}
+                </Offset>
+                <Offset offsetX={10} offsetY={10} height={textHeights[2]} showLayout>
+                  {circle(2)}
+                </Offset>
+              </SpacedRay>
+            </Fragment>
+          )}
+        />
+      </Fragment>
+    )
+  }
+}
+
 class App extends React.Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      selectedView: 'DoubleMarginDemo', // 'AddressForm', // 'DragAndDrop',
+      selectedView: 'SpacedRay', // 'DoubleMarginDemo', // 'AddressForm', // 'DragAndDrop',
       updated: true
     }
 
@@ -203,6 +317,10 @@ class App extends React.Component {
       view = <DoubleMarginDemo x={0} y={0} width={this.props.width} height={this.props.height} />
     } else if (selectedView === 'DragAndDrop') {
       view = <DragAndDropDemo {...this.props} />
+    } else if (selectedView === 'SpacedRay') {
+      view = <SpacedRays />
+    } else {
+      view = <TextDemo {...this.props} />
     }
 
     return (
@@ -214,13 +332,19 @@ class App extends React.Component {
             <SpacedRay start={[width / 2, 50]} end={[width / 2, height]} spaceBetween={100} showLayout>
               <SpacedRay start={[-width / 2, 0]} end={[width / 2, 0]} spaceBetween={50} packLeft showLayout>
                 <Center vertical width={300} height={100}>
-                  <Button text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
+                  <Button text={'Spaced Ray'} fill={selectedView === 'SpacedRay' ? 'teal' : 'gray'} onClick={() => this.handleClick('SpacedRay')} />
+                </Center>
+                <Center vertical width={300} height={100}>
+                  <Button text={'Double Margin'} fill={selectedView === 'DoubleMarginDemo' ? 'teal' : 'gray'} onClick={() => this.handleClick('DoubleMarginDemo')} />
                 </Center>
                 <Center vertical width={300} height={100}>
                   <Button text={'Drag And Drop'} fill={selectedView === 'DragAndDrop' ? 'teal' : 'gray'} onClick={() => this.handleClick('DragAndDrop')} />
                 </Center>
                 <Center vertical width={300} height={100}>
-                  <Button text={'Double Margin'} fill={selectedView === 'DoubleMarginDemo' ? 'teal' : 'gray'} onClick={() => this.handleClick('DoubleMarginDemo')} />
+                  <Button text={'Text Demo'} fill={selectedView === 'TextDemo' ? 'teal' : 'gray'} onClick={() => this.handleClick('TextDemo')} />
+                </Center>
+                <Center vertical width={300} height={100}>
+                  <Button text={'Address Form'} fill={selectedView === 'AddressForm' ? 'teal' : 'gray'} onClick={() => this.handleClick('AddressForm')} />
                 </Center>
               </SpacedRay>
               <Center horizontal width={width} height={800}>

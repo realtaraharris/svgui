@@ -84,7 +84,7 @@ class SpacedRayController extends React.Component {
   }
 
   render () {
-    const { children, spaceBetween, showLayout, spaceEvenly, packLeft } = this.props
+    const { children, spaceBetween, showLayout, spaceEvenly, packLeft, mode } = this.props
     const { rects } = this.state
     return (
       <LayoutEditorContext.Consumer>
@@ -105,6 +105,7 @@ class SpacedRayController extends React.Component {
                 showLayout={showLayout}
                 spaceEvenly={spaceEvenly}
                 packLeft={packLeft}
+                mode={mode}
               />
               <DraggableRect
                 width={DRAGGER_WIDTH}
@@ -141,7 +142,7 @@ class SpacedRayController extends React.Component {
 }
 
 const SpacedRay = (props) => {
-  const { start, end, children, spaceBetween, showLayout, spaceEvenly, packLeft } = props
+  const { start, end, children, spaceBetween, showLayout, spaceEvenly, packLeft, mode } = props
 
   const [x1, y1] = start
   const [x2, y2] = end
@@ -192,8 +193,11 @@ const SpacedRay = (props) => {
                   <circle cx={0} cy={0} r={2} stroke={'red'} />
                 </g>
               )
-              scratchX += (child.props.width + deltaX) * Math.cos(angle)
-              scratchY += (child.props.width + deltaX) * Math.sin(angle)
+
+              const selfSize = mode === 'vertical' ? child.props.height : child.props.width
+
+              scratchX += (selfSize + deltaX) * Math.cos(angle)
+              scratchY += (selfSize + deltaX) * Math.sin(angle)
             } else {
               result = (
                 <g transform={`translate(${deltaX * index * flippy}, ${deltaY * index * flippy})`} key={index}>
